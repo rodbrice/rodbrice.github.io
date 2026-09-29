@@ -50,9 +50,10 @@ All colours, type sizes, spacing and motion live as CSS custom properties in
 Colours are defined in OKLCH for both themes with `light-dark()`. The site
 follows the system theme, and the header button stores an explicit choice.
 
-The accent colour is a single hue. To change it, edit `--accent-hue` in
-`src/styles/tokens.css` (for example `185` teal, `270` indigo, `65` amber); the
-lightness of each theme is fixed so text contrast stays within WCAG AA.
+The accent colour is a single hue, currently amber (`65`). To change it, edit
+`--accent-hue` in `src/styles/tokens.css` (for example `185` teal or `270`
+indigo); the lightness of each theme is fixed so text contrast stays within
+WCAG AA.
 
 Inter is self-hosted from `@fontsource-variable/inter` (Latin subset only) and
 preloaded, with a metric-matched fallback so the layout does not shift when it
