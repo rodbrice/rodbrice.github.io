@@ -21,7 +21,7 @@ describe("UI dictionaries", () => {
     "%s translates the page texts instead of copying English",
     (locale) => {
       const t = useTranslations(locale);
-      expect(t("home.eyebrow")).not.toBe(ui.en["home.eyebrow"]);
+      expect(t("about.body")).not.toBe(ui.en["about.body"]);
       expect(t("notFound.title")).not.toBe(ui.en["notFound.title"]);
     },
   );

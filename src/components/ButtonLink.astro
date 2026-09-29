@@ -1,0 +1,51 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+  /** `primary` for the main action of a section, `secondary` for the others. */
+  variant?: "primary" | "secondary";
+}
+
+const { variant = "secondary", ...attributes } = Astro.props;
+---
+
+<a class:list={["button", variant]} {...attributes}>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+
+    &:hover {
+      background: var(--color-text);
+    }
+  }
+
+  .secondary {
+    border-color: var(--color-border);
+    color: var(--color-text);
+
+    &:hover {
+      border-color: var(--color-text-muted);
+    }
+  }
+</style>
