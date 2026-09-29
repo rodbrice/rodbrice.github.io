@@ -7,8 +7,8 @@
 :root {
   color-scheme: light dark;
 
-  /* The accent colour is a single hue: 185 teal, 270 indigo, 65 amber. */
-  --accent-hue: 185;
+  /* The accent colour is a single hue: 65 amber (185 teal and 270 indigo also pass contrast). */
+  --accent-hue: 65;
 
   --color-bg: light-dark(oklch(99% 0.002 250), oklch(17% 0.008 250));
   --color-surface: light-dark(oklch(96.5% 0.004 250), oklch(21% 0.01 250));
