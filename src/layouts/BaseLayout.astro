@@ -1,4 +1,10 @@
 ---
+import { Font } from "astro:assets";
+
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/global.css";
+
 interface Props {
   title: string;
   description: string;
@@ -16,8 +22,50 @@ const { title, description } = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <title>{title}</title>
+    <script is:inline>
+      // Apply a saved theme before the first paint to avoid a flash of the other one.
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light" || theme === "dark")
+          document.documentElement.dataset.theme = theme;
+      } catch {
+        // Storage unavailable: follow the system theme.
+      }
+    </script>
+    <Font cssVariable="--font-sans" preload />
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
   </body>
 </html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--space-2);
+    inset-inline-start: var(--space-2);
+    z-index: 1;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    translate: 0 -200%;
+
+    &:focus-visible {
+      translate: 0;
+    }
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

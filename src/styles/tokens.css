@@ -1,0 +1,81 @@
+/*
+ * Design tokens. Components use these variables only, never raw values.
+ *
+ * Colours are OKLCH so each shade keeps the same perceived lightness across
+ * hues, and every pair is defined for both themes with light-dark().
+ */
+:root {
+  color-scheme: light dark;
+
+  /* The accent colour is a single hue: 185 teal, 270 indigo, 65 amber. */
+  --accent-hue: 185;
+
+  --color-bg: light-dark(oklch(99% 0.002 250), oklch(17% 0.008 250));
+  --color-surface: light-dark(oklch(96.5% 0.004 250), oklch(21% 0.01 250));
+  --color-border: light-dark(oklch(90% 0.006 250), oklch(31% 0.012 250));
+  --color-text: light-dark(oklch(22% 0.012 250), oklch(93% 0.006 250));
+  --color-text-muted: light-dark(oklch(46% 0.014 250), oklch(72% 0.012 250));
+  --color-accent: light-dark(
+    oklch(47% 0.11 var(--accent-hue)),
+    oklch(80% 0.12 var(--accent-hue))
+  );
+  --color-accent-soft: light-dark(
+    oklch(95% 0.03 var(--accent-hue)),
+    oklch(28% 0.05 var(--accent-hue))
+  );
+
+  --font-body: var(--font-sans), sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 680;
+
+  /* Fluid type scale (ratio about 1.25), from 360px to 1440px viewports. */
+  --text-sm: clamp(0.875rem, 0.85rem + 0.11vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.19vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.56vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.5rem + 1.11vw, 2.5rem);
+  --text-3xl: clamp(2.25rem, 1.8rem + 2vw, 3.75rem);
+
+  --leading-tight: 1.15;
+  --leading-normal: 1.6;
+  --tracking-tight: -0.02em;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-full: 999px;
+
+  --measure: 68ch;
+  --page-width: 72rem;
+  --page-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+
+  --focus-ring: 2px solid var(--color-accent);
+  --focus-offset: 3px;
+
+  --duration-fast: 150ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+  }
+}
