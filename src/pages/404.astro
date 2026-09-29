@@ -1,17 +1,23 @@
 ---
+// GitHub Pages serves a single 404.html for every missing URL, so this page is in the default language.
+import { DEFAULT_LOCALE } from "../i18n/locales";
+import { useTranslations } from "../i18n/ui";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const t = useTranslations(DEFAULT_LOCALE);
 ---
 
 <BaseLayout
-  title="Page not found · Roduit Brice"
-  description="This page does not exist."
+  title={`${t("notFound.pageTitle")} · Roduit Brice`}
+  description={t("notFound.description")}
+  locale={DEFAULT_LOCALE}
 >
   <section class="container not-found">
     <p class="code">404</p>
-    <h1>Page not found</h1>
-    <p>The page you are looking for does not exist or has moved.</p>
+    <h1>{t("notFound.title")}</h1>
+    <p>{t("notFound.body")}</p>
     <p>
-      <a href="/">Back to the home page</a>
+      <a href="/">{t("notFound.back")}</a>
     </p>
   </section>
 </BaseLayout>

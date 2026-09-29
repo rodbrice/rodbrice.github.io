@@ -1,0 +1,65 @@
+---
+import { LOCALE_INFO, LOCALES, localizePath } from "../i18n/locales";
+import type { Locale } from "../i18n/locales";
+import { useTranslations } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+  /** The current page's path without its locale prefix. */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<nav aria-label={t("language.label")}>
+  <ul class="languages">
+    {LOCALES.map((option) => {
+      const { lang, label } = LOCALE_INFO[option];
+      return (
+        <li>
+          <a
+            href={localizePath(path, option)}
+            hreflang={lang}
+            lang={lang}
+            aria-current={option === locale ? "page" : undefined}
+          >
+            <span aria-hidden="true">{option.toUpperCase()}</span>
+            <span class="visually-hidden">{label}</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</nav>
+
+<style>
+  .languages {
+    display: flex;
+    gap: var(--space-1);
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-text);
+    }
+
+    &[aria-current="page"] {
+      color: var(--color-accent);
+    }
+  }
+</style>
