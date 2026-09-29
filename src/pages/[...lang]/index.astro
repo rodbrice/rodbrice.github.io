@@ -1,12 +1,16 @@
 ---
 import type { GetStaticPaths } from "astro";
 
+import { getCollection } from "astro:content";
+
 import ButtonLink from "../../components/ButtonLink.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
 import { PROFILES } from "../../data/profile";
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../i18n/locales";
 import type { Locale } from "../../i18n/locales";
 import { useTranslations } from "../../i18n/ui";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projectsFor } from "../../lib/projects";
 
 export const getStaticPaths = (() =>
   LOCALES.map((locale) => ({
@@ -20,6 +24,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+const projects = projectsFor(await getCollection("projects"), locale);
 
 // Structured data so search engines can tie the site to its author and profiles.
 const person = {
@@ -50,7 +55,12 @@ const person = {
     <p class="lead">{t("home.lead")}</p>
     <ul class="actions">
       <li>
-        <ButtonLink href={PROFILES.linkedin} variant="primary" rel="me">
+        <ButtonLink href="#projects" variant="primary">
+          {t("home.projectsLink")}
+        </ButtonLink>
+      </li>
+      <li>
+        <ButtonLink href={PROFILES.linkedin} rel="me">
           {t("home.linkedinLink")}
         </ButtonLink>
       </li>
@@ -60,6 +70,29 @@ const person = {
         </ButtonLink>
       </li>
     </ul>
+  </section>
+
+  <section
+    id="projects"
+    class="container projects"
+    aria-labelledby="projects-title"
+  >
+    <h2 id="projects-title">{t("projects.title")}</h2>
+    <ol class="project-list">
+      {projects.map(({ slug, data }) => (
+        <li>
+          <ProjectCard
+            project={data}
+            href={
+              data.caseStudy
+                ? localizePath(`/projects/${slug}/`, locale)
+                : undefined
+            }
+            stackLabel={t("project.stack")}
+          />
+        </li>
+      ))}
+    </ol>
   </section>
 
   <section id="about" class="container about" aria-labelledby="about-title">
@@ -103,6 +136,7 @@ const person = {
     list-style: none;
   }
 
+  .projects,
   .about {
     display: grid;
     gap: var(--space-6);
@@ -112,6 +146,18 @@ const person = {
 
   h2 {
     font-size: var(--text-2xl);
+  }
+
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      display: grid;
+    }
   }
 
   .prose {

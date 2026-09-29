@@ -1,0 +1,71 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import TagList from "./TagList.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">["data"];
+  /** Link to the case study; cards without one show the summary only. */
+  href?: string | undefined;
+  stackLabel: string;
+}
+
+const { project, href, stackLabel } = Astro.props;
+---
+
+<article class="card">
+  <p class="kind">{project.kind}</p>
+  <h3>
+    {href === undefined ? project.title : <a href={href}>{project.title}</a>}
+  </h3>
+  <p class="summary">{project.summary}</p>
+  <TagList tags={project.stack} label={stackLabel} />
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-fast) var(--ease-out);
+
+    &:has(a:hover) {
+      border-color: var(--color-text-muted);
+    }
+  }
+
+  .kind {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+
+    /* The whole card is the link's hit area. */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .summary {
+    color: var(--color-text-muted);
+  }
+</style>

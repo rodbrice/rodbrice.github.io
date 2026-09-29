@@ -14,6 +14,13 @@ const en = {
     "I build business applications end to end: APIs and data models in .NET, interfaces in React, with automated tests throughout.",
   "home.linkedinLink": "LinkedIn profile",
   "home.githubLink": "Code on GitHub",
+  "home.projectsLink": "View projects",
+  "projects.title": "Selected projects",
+  "project.back": "All projects",
+  "project.stack": "Technologies",
+  "project.confidential":
+    "Client project: names, screens and code are confidential. This page describes the problem, the architecture and the technical decisions.",
+  "project.media": "Screenshots",
   "about.title": "About",
   "about.body":
     "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software.",
@@ -45,6 +52,13 @@ const pt: Dictionary = {
     "Desenvolvo aplicações de negócio de ponta a ponta: APIs e modelos de dados em .NET, interfaces em React, com testes automatizados em cada etapa.",
   "home.linkedinLink": "Perfil no LinkedIn",
   "home.githubLink": "Código no GitHub",
+  "home.projectsLink": "Ver projetos",
+  "projects.title": "Projetos selecionados",
+  "project.back": "Todos os projetos",
+  "project.stack": "Tecnologias",
+  "project.confidential":
+    "Projeto de cliente: nomes, telas e código são confidenciais. Esta página descreve o problema, a arquitetura e as decisões técnicas.",
+  "project.media": "Capturas de tela",
   "about.title": "Sobre",
   "about.body":
     "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio.",
@@ -71,6 +85,13 @@ const fr: Dictionary = {
     "Je développe des applications métier de bout en bout\u00a0: API et modèles de données en .NET, interfaces en React, avec des tests automatisés à chaque étape.",
   "home.linkedinLink": "Profil LinkedIn",
   "home.githubLink": "Code sur GitHub",
+  "home.projectsLink": "Voir les projets",
+  "projects.title": "Projets choisis",
+  "project.back": "Tous les projets",
+  "project.stack": "Technologies",
+  "project.confidential":
+    "Projet client\u00a0: les noms, les écrans et le code sont confidentiels. Cette page décrit le problème, l’architecture et les décisions techniques.",
+  "project.media": "Captures d’écran",
   "about.title": "À propos",
   "about.body":
     "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier.",
