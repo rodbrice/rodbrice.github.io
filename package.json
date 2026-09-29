@@ -22,9 +22,11 @@
     "check:images": "node scripts/check-image-metadata.ts",
     "check:html": "html-validate \"dist/**/*.html\"",
     "check:links": "linkinator dist",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm check:images && pnpm build && pnpm check:html && pnpm check:links && pnpm test:e2e"
+    "check:lighthouse": "lhci autorun",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm check:images && pnpm build && pnpm check:html && pnpm check:links && pnpm test:e2e && pnpm check:lighthouse"
   },
   "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
     "@fontsource-variable/inter": "5.3.0",
     "astro": "7.3.5"
   },
@@ -32,6 +34,7 @@
     "@astrojs/check": "0.9.10",
     "@axe-core/playwright": "4.13.0",
     "@eslint/js": "10.0.1",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.63.0",
     "@types/node": "24.19.0",
     "eslint": "10.11.0",

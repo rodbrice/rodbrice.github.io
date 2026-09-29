@@ -23,12 +23,15 @@ interface Props {
    * for pages with no stable URL, such as the 404 page.
    */
   path?: string;
+  /** Open Graph type: `article` for case studies, `website` otherwise. */
+  type?: "website" | "article";
 }
 
-const { title, description, locale, path } = Astro.props;
+const { title, description, locale, path, type = "website" } = Astro.props;
 const t = useTranslations(locale);
 const absolute = (pagePath: string, pageLocale: Locale) =>
   new URL(localizePath(pagePath, pageLocale), Astro.site).href;
+const shareImage = new URL("/og.png", Astro.site).href;
 ---
 
 <!doctype html>
@@ -56,6 +59,25 @@ const absolute = (pagePath: string, pageLocale: Locale) =>
       </>
     )}
     <title>{title}</title>
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Roduit Brice" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {path !== undefined && (
+      <meta property="og:url" content={absolute(path, locale)} />
+    )}
+    <meta property="og:locale" content={LOCALE_INFO[locale].ogLocale} />
+    {LOCALES.filter((alternate) => alternate !== locale).map((alternate) => (
+      <meta
+        property="og:locale:alternate"
+        content={LOCALE_INFO[alternate].ogLocale}
+      />
+    ))}
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t("meta.imageAlt")} />
+    <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>
       // Apply a saved theme before the first paint to avoid a flash of the other one.
       try {

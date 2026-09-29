@@ -1,7 +1,21 @@
+import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
+
+import { DEFAULT_LOCALE, LOCALE_INFO, LOCALES } from "./src/i18n/locales.ts";
 
 export default defineConfig({
   site: "https://rodbrice.github.io",
+  integrations: [
+    sitemap({
+      // Each URL lists its translations, matching the hreflang links in the page head.
+      i18n: {
+        defaultLocale: DEFAULT_LOCALE,
+        locales: Object.fromEntries(
+          LOCALES.map((locale) => [locale, LOCALE_INFO[locale].lang]),
+        ),
+      },
+    }),
+  ],
   fonts: [
     {
       // Only the Latin subset of Inter: it covers English, Portuguese and French

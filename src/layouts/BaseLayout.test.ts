@@ -8,12 +8,14 @@ interface RenderOptions {
   url: string;
   locale?: Locale;
   path?: string;
+  type?: "website" | "article";
 }
 
 async function render({
   url,
   locale = "en",
   path,
+  type,
 }: RenderOptions): Promise<string> {
   const container = await AstroContainer.create({
     astroConfig: { site: "https://rodbrice.github.io" },
@@ -24,11 +26,17 @@ async function render({
       description: "Page description",
       locale,
       ...(path === undefined ? {} : { path }),
+      ...(type === undefined ? {} : { type }),
     },
     request: new Request(`https://rodbrice.github.io${url}`),
     slots: { default: "Content" },
   });
 }
+
+const meta = (property: string, content: string): RegExp =>
+  new RegExp(
+    `<meta property="${property}" content="${content.replaceAll(".", "\\.")}"[\\s>]`,
+  );
 
 const alternate = (hreflang: string, href: string): RegExp =>
   new RegExp(
@@ -96,6 +104,45 @@ describe("BaseLayout", () => {
       /<a class="skip-link" href="#main"[^>]*>Aller au contenu<\/a>/,
     );
     expect(html).toMatch(/<main id="main"[^>]*>Content<\/main>/);
+  });
+
+  it("describes the page for link previews", async () => {
+    const html = await render({
+      url: "/fr/projects/",
+      locale: "fr",
+      path: "/projects/",
+    });
+    expect(html).toMatch(meta("og:type", "website"));
+    expect(html).toMatch(meta("og:title", "Page title"));
+    expect(html).toMatch(meta("og:description", "Page description"));
+    expect(html).toMatch(
+      meta("og:url", "https://rodbrice.github.io/fr/projects/"),
+    );
+    expect(html).toMatch(meta("og:image", "https://rodbrice.github.io/og.png"));
+    expect(html).toMatch(
+      /<meta name="twitter:card" content="summary_large_image"[\s>]/,
+    );
+  });
+
+  it("gives the Open Graph locale and its translations", async () => {
+    const html = await render({ url: "/pt/", locale: "pt", path: "/" });
+    expect(html).toMatch(meta("og:locale", "pt_BR"));
+    expect(html).toMatch(meta("og:locale:alternate", "en_US"));
+    expect(html).toMatch(meta("og:locale:alternate", "fr_FR"));
+    expect(html).not.toMatch(meta("og:locale:alternate", "pt_BR"));
+  });
+
+  it("lets case studies declare themselves as articles", async () => {
+    const html = await render({
+      url: "/projects/theone/",
+      path: "/projects/theone/",
+      type: "article",
+    });
+    expect(html).toMatch(meta("og:type", "article"));
+  });
+
+  it("omits og:url for pages without a path", async () => {
+    expect(await render({ url: "/missing/" })).not.toContain('"og:url"');
   });
 
   it("preloads the self-hosted font", async () => {
