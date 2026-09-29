@@ -5,6 +5,9 @@ import { getCollection } from "astro:content";
 
 import ButtonLink from "../../components/ButtonLink.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import TagList from "../../components/TagList.astro";
+import Timeline from "../../components/Timeline.astro";
+import { SKILLS, TIMELINE } from "../../data/experience";
 import { PROFILES } from "../../data/profile";
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../i18n/locales";
 import type { Locale } from "../../i18n/locales";
@@ -102,6 +105,51 @@ const person = {
       <p>{t("about.availability")}</p>
     </div>
   </section>
+
+  <section
+    id="experience"
+    class="container experience"
+    aria-labelledby="experience-title"
+  >
+    <h2 id="experience-title">{t("experience.title")}</h2>
+    <Timeline entries={TIMELINE} locale={locale} />
+  </section>
+
+  <section id="skills" class="container skills" aria-labelledby="skills-title">
+    <h2 id="skills-title">{t("skills.title")}</h2>
+    <ul class="skill-groups">
+      {SKILLS.map(({ label, skills }) => (
+        <li>
+          <h3>{label[locale]}</h3>
+          <TagList
+            tags={skills.map((skill) => skill[locale])}
+            label={label[locale]}
+          />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section
+    id="contact"
+    class="container contact"
+    aria-labelledby="contact-title"
+  >
+    <h2 id="contact-title">{t("contact.title")}</h2>
+    <p class="prose">{t("contact.body")}</p>
+    <ul class="actions">
+      <li>
+        <ButtonLink href={PROFILES.linkedin} rel="me" variant="primary">
+          LinkedIn
+        </ButtonLink>
+      </li>
+      <li>
+        <ButtonLink href={PROFILES.github} rel="me">
+          GitHub
+        </ButtonLink>
+      </li>
+    </ul>
+  </section>
 </BaseLayout>
 
 <style>
@@ -137,7 +185,10 @@ const person = {
   }
 
   .projects,
-  .about {
+  .about,
+  .experience,
+  .skills,
+  .contact {
     display: grid;
     gap: var(--space-6);
     padding-block: var(--space-16) var(--space-24);
@@ -158,6 +209,24 @@ const person = {
     & > li {
       display: grid;
     }
+  }
+
+  .skill-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      display: grid;
+      align-content: start;
+      gap: var(--space-3);
+    }
+  }
+
+  h3 {
+    font-size: var(--text-lg);
   }
 
   .prose {

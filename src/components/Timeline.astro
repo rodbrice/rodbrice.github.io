@@ -1,0 +1,70 @@
+---
+import type { TimelineEntry } from "../data/experience";
+import type { Locale } from "../i18n/locales";
+
+interface Props {
+  entries: readonly TimelineEntry[];
+  locale: Locale;
+}
+
+const { entries, locale } = Astro.props;
+---
+
+<ol class="timeline">
+  {entries.map(({ period, title, place, description }) => (
+    <li>
+      <p class="period">{period[locale]}</p>
+      <div class="body">
+        <h3>{title[locale]}</h3>
+        <p class="place">{place[locale]}</p>
+        <p class="description">{description[locale]}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    display: grid;
+    gap: var(--space-8);
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      display: grid;
+      gap: var(--space-2) var(--space-8);
+
+      @media (width >= 48rem) {
+        grid-template-columns: 11rem 1fr;
+      }
+    }
+  }
+
+  .period {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-1);
+    max-inline-size: var(--measure);
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--color-border);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+  }
+
+  .place {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .description {
+    margin-block-start: var(--space-2);
+  }
+</style>

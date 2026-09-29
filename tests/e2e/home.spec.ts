@@ -1,8 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+import { SKILLS, TIMELINE } from "../../src/data/experience.ts";
 import { PROFILES } from "../../src/data/profile.ts";
 import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
+import { useTranslations } from "../../src/i18n/ui.ts";
 
 const WCAG_TAGS = [
   "wcag2a",
@@ -43,6 +45,62 @@ test.describe("home page", () => {
     await expect(about).toBeInViewport();
     await expect(about).toContainText("based in Switzerland");
   });
+
+  test("shows the owner's timeline word for word in French", async ({
+    page,
+  }) => {
+    await page.goto("/fr/#experience");
+    const timeline = page.getByRole("region", { name: "Parcours" });
+    await expect(timeline).toBeInViewport();
+    const entries = await timeline
+      .getByRole("listitem")
+      .evaluateAll((items) =>
+        items.map((item) =>
+          (item as HTMLElement).innerText.replace(/\s+/g, " ").trim(),
+        ),
+      );
+    expect(entries).toEqual([
+      "2026–Aujourd’hui Développeur logiciel indépendant Suisse / Europe Missions privées en développement backend et full stack. Travail sur des applications métier avec C#/.NET, ASP.NET Core, React, TypeScript, PostgreSQL, tests automatisés, Docker et CI/CD.",
+      "2023–2025 Développeur logiciel freelance Brésil Réalisation de solutions backend et full stack pour différents clients. Analyse des besoins, conception technique, bases de données relationnelles, API REST, logique métier, interfaces web, tests et livraisons itératives.",
+      "2022 Web Development Le Wagon, Lausanne Programme intensif de 10 semaines en développement web.",
+      "Formation en cours Bachelor en ingénierie logicielle Instituto Infnet, Brésil Diplôme prévu en 2029.",
+    ]);
+  });
+
+  for (const locale of LOCALES) {
+    const t = useTranslations(locale);
+
+    test(`shows the timeline, technologies and contact in ${locale}`, async ({
+      page,
+    }) => {
+      await page.goto(localizePath("/", locale));
+
+      const timeline = page.getByRole("region", {
+        name: t("experience.title"),
+      });
+      await expect(timeline.getByRole("heading", { level: 3 })).toHaveText(
+        TIMELINE.map(({ title }) => title[locale]),
+      );
+
+      const skills = page.getByRole("region", { name: t("skills.title") });
+      for (const { label, skills: names } of SKILLS) {
+        await expect(
+          skills
+            .getByRole("list", { name: label[locale] })
+            .getByRole("listitem"),
+        ).toHaveText(names.map((name) => name[locale]));
+      }
+
+      const contact = page.getByRole("region", { name: t("contact.title") });
+      await expect(
+        contact.getByRole("link", { name: "LinkedIn" }),
+      ).toHaveAttribute("href", PROFILES.linkedin);
+      await expect(
+        contact.getByRole("link", { name: "GitHub" }),
+      ).toHaveAttribute("href", PROFILES.github);
+      await expect(contact.getByRole("link")).toHaveCount(2);
+    });
+  }
 
   test("describes its author as structured data", async ({ page }) => {
     await page.goto("/fr/");
