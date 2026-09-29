@@ -21,23 +21,31 @@ The dev server runs at <http://localhost:4321>.
 
 ## Scripts
 
-| Command             | What it does                                             |
-| ------------------- | -------------------------------------------------------- |
-| `pnpm dev`          | Start the dev server                                     |
-| `pnpm build`        | Build the static site into `dist/`                       |
-| `pnpm preview`      | Serve the production build locally                       |
-| `pnpm check`        | Type-check `.astro` and TypeScript files                 |
-| `pnpm lint`         | Lint with ESLint (type-aware rules and a11y checks)      |
-| `pnpm format`       | Format everything with Prettier                          |
-| `pnpm format:check` | Check formatting without writing                         |
-| `pnpm test`         | Run unit tests with Vitest                               |
-| `pnpm test:e2e`     | Run browser tests and axe accessibility checks on `dist` |
-| `pnpm check:images` | Fail if a committed image still carries EXIF/XMP data    |
-| `pnpm check:html`   | Validate the built HTML                                  |
-| `pnpm check:links`  | Check internal links in the built site                   |
-| `pnpm verify`       | Run all of the above, in the order CI does               |
+| Command                 | What it does                                             |
+| ----------------------- | -------------------------------------------------------- |
+| `pnpm dev`              | Start the dev server                                     |
+| `pnpm build`            | Build the static site into `dist/`                       |
+| `pnpm preview`          | Serve the production build locally                       |
+| `pnpm check`            | Type-check `.astro` and TypeScript files                 |
+| `pnpm lint`             | Lint with ESLint (type-aware rules and a11y checks)      |
+| `pnpm format`           | Format everything with Prettier                          |
+| `pnpm format:check`     | Check formatting without writing                         |
+| `pnpm test`             | Run unit tests with Vitest                               |
+| `pnpm test:e2e`         | Run browser tests and axe accessibility checks on `dist` |
+| `pnpm check:images`     | Fail if a committed image still carries EXIF/XMP data    |
+| `pnpm check:html`       | Validate the built HTML                                  |
+| `pnpm check:links`      | Check internal links in the built site                   |
+| `pnpm check:lighthouse` | Run Lighthouse on the built site against the budget      |
+| `pnpm verify`           | Run all of the above, in the order CI does               |
 
 Browser tests need Chromium once: `pnpm exec playwright install chromium`.
+Lighthouse uses the Chrome it finds on the system; set `CHROME_PATH` to point it
+at another build.
+
+The Lighthouse budget in `lighthouserc.json` requires, on the median of three
+runs per language: performance and best practices of at least 95,
+accessibility and SEO of 100, a largest contentful paint under 1.5 s, a
+cumulative layout shift under 0.05 and less than 10 kB of JavaScript.
 
 CI also scans the full git history for secrets with
 [gitleaks](https://github.com/gitleaks/gitleaks). Images must be committed
@@ -58,6 +66,13 @@ WCAG AA.
 Inter is self-hosted from `@fontsource-variable/inter` (Latin subset only) and
 preloaded, with a metric-matched fallback so the layout does not shift when it
 loads.
+
+## Publishing
+
+Every push to `main` builds the site and deploys it to GitHub Pages
+(`.github/workflows/deploy.yml`). The build writes a sitemap with the
+translations of each page, a `robots.txt` that points to it, and Open Graph
+tags for link previews; `public/og.png` is the shared preview image.
 
 ## Languages
 

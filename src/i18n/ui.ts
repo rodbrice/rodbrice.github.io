@@ -2,6 +2,7 @@ import type { Locale } from "./locales.ts";
 
 const en = {
   "a11y.skipLink": "Skip to content",
+  "meta.imageAlt": "Roduit Brice, software developer",
   "language.label": "Language",
   "theme.dark": "Dark theme",
   "home.description":
@@ -24,6 +25,7 @@ type Dictionary = Record<UiKey, string>;
 
 const pt: Dictionary = {
   "a11y.skipLink": "Pular para o conteúdo",
+  "meta.imageAlt": "Roduit Brice, desenvolvedor de software",
   "language.label": "Idioma",
   "theme.dark": "Tema escuro",
   "home.description":
@@ -41,6 +43,7 @@ const pt: Dictionary = {
 
 const fr: Dictionary = {
   "a11y.skipLink": "Aller au contenu",
+  "meta.imageAlt": "Roduit Brice, développeur logiciel",
   "language.label": "Langue",
   "theme.dark": "Thème sombre",
   "home.description":

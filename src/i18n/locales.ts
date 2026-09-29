@@ -10,12 +10,14 @@ interface LocaleInfo {
   lang: string;
   /** Name of the language, written in that language. */
   label: string;
+  /** Open Graph locale, in the `language_TERRITORY` form it requires. */
+  ogLocale: string;
 }
 
 export const LOCALE_INFO: Record<Locale, LocaleInfo> = {
-  en: { lang: "en", label: "English" },
-  pt: { lang: "pt-BR", label: "Português" },
-  fr: { lang: "fr", label: "Français" },
+  en: { lang: "en", label: "English", ogLocale: "en_US" },
+  pt: { lang: "pt-BR", label: "Português", ogLocale: "pt_BR" },
+  fr: { lang: "fr", label: "Français", ogLocale: "fr_FR" },
 };
 
 export function isLocale(value: string | undefined): value is Locale {
