@@ -1,7 +1,9 @@
 ---
 import type { GetStaticPaths } from "astro";
 
-import { DEFAULT_LOCALE, LOCALES } from "../../i18n/locales";
+import ButtonLink from "../../components/ButtonLink.astro";
+import { PROFILES } from "../../data/profile";
+import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../i18n/locales";
 import type { Locale } from "../../i18n/locales";
 import { useTranslations } from "../../i18n/ui";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -18,46 +20,103 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+
+// Structured data so search engines can tie the site to its author and profiles.
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Roduit Brice",
+  url: new URL(localizePath("/", locale), Astro.site).href,
+  jobTitle: t("meta.jobTitle"),
+  knowsAbout: ["C#", ".NET", "React", "TypeScript"],
+  sameAs: [PROFILES.github, PROFILES.linkedin],
+};
 ---
 
 <BaseLayout
-  title="Roduit Brice"
+  title={t("home.title")}
   description={t("home.description")}
   locale={locale}
   path="/"
 >
-  <section class="container intro">
-    <p class="eyebrow">{t("home.eyebrow")}</p>
-    <h1>Roduit Brice</h1>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(person)}
+  />
+  <section class="container hero" aria-labelledby="hero-title">
+    <h1 id="hero-title">Roduit Brice</h1>
+    <p class="role">{t("home.role")}</p>
     <p class="lead">{t("home.lead")}</p>
-    <p>
-      <a href="https://github.com/rodbrice">{t("home.githubLink")}</a>
-    </p>
+    <ul class="actions">
+      <li>
+        <ButtonLink href={PROFILES.linkedin} variant="primary" rel="me">
+          {t("home.linkedinLink")}
+        </ButtonLink>
+      </li>
+      <li>
+        <ButtonLink href={PROFILES.github} rel="me">
+          {t("home.githubLink")}
+        </ButtonLink>
+      </li>
+    </ul>
+  </section>
+
+  <section id="about" class="container about" aria-labelledby="about-title">
+    <h2 id="about-title">{t("about.title")}</h2>
+    <div class="prose">
+      <p>{t("about.body")}</p>
+      <p>{t("about.availability")}</p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .intro {
+  .hero {
     display: grid;
     gap: var(--space-4);
-    padding-block: var(--space-24);
-  }
-
-  .eyebrow {
-    color: var(--color-accent);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    padding-block: var(--space-24) var(--space-16);
   }
 
   h1 {
     font-size: var(--text-3xl);
   }
 
+  .role {
+    color: var(--color-accent);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+  }
+
   .lead {
     max-inline-size: var(--measure);
     color: var(--color-text-muted);
     font-size: var(--text-lg);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .about {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-16) var(--space-24);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .prose {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: var(--measure);
   }
 </style>

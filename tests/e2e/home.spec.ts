@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+import { PROFILES } from "../../src/data/profile.ts";
 import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
 
 const WCAG_TAGS = [
@@ -13,12 +14,48 @@ const WCAG_TAGS = [
 ];
 
 test.describe("home page", () => {
-  test("shows the name as the main heading", async ({ page }) => {
+  test("shows the name as the main heading, with the role", async ({
+    page,
+  }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle("Roduit Brice");
+    await expect(page).toHaveTitle("Roduit Brice · Software Developer");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Roduit Brice",
     );
+    await expect(
+      page.getByText("Software Developer — C#/.NET, React & TypeScript"),
+    ).toBeVisible();
+  });
+
+  test("links to the public profiles", async ({ page }) => {
+    await page.goto("/");
+    await expect(
+      page.getByRole("link", { name: "LinkedIn profile" }),
+    ).toHaveAttribute("href", PROFILES.linkedin);
+    await expect(
+      page.getByRole("link", { name: "Code on GitHub" }),
+    ).toHaveAttribute("href", PROFILES.github);
+  });
+
+  test("has an about section reachable by its anchor", async ({ page }) => {
+    await page.goto("/#about");
+    const about = page.getByRole("region", { name: "About" });
+    await expect(about).toBeInViewport();
+    await expect(about).toContainText("based in Switzerland");
+  });
+
+  test("describes its author as structured data", async ({ page }) => {
+    await page.goto("/fr/");
+    const json = await page
+      .locator('script[type="application/ld+json"]')
+      .textContent();
+    expect(JSON.parse(json ?? "")).toMatchObject({
+      "@type": "Person",
+      name: "Roduit Brice",
+      url: "https://rodbrice.github.io/fr/",
+      jobTitle: "Développeur logiciel",
+      sameAs: [PROFILES.github, PROFILES.linkedin],
+    });
   });
 
   test("loads without console errors", async ({ page }) => {

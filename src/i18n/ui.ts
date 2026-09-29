@@ -5,12 +5,20 @@ const en = {
   "meta.imageAlt": "Roduit Brice, software developer",
   "language.label": "Language",
   "theme.dark": "Dark theme",
+  "meta.jobTitle": "Software Developer",
+  "home.title": "Roduit Brice · Software Developer",
   "home.description":
-    "Software engineer building backends, field service systems and multiplayer games.",
-  "home.eyebrow": "Software engineer",
+    "Roduit Brice, software developer based in Switzerland: backend and full-stack applications in C#/.NET, React and TypeScript.",
+  "home.role": "Software Developer — C#/.NET, React & TypeScript",
   "home.lead":
-    "Backends, field service systems and multiplayer games. The full portfolio is on its way.",
-  "home.githubLink": "See my code on GitHub",
+    "I build business applications end to end: APIs and data models in .NET, interfaces in React, with automated tests throughout.",
+  "home.linkedinLink": "LinkedIn profile",
+  "home.githubLink": "Code on GitHub",
+  "about.title": "About",
+  "about.body":
+    "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software.",
+  "about.availability":
+    "I am open to software developer positions in Switzerland and to freelance projects.",
   "notFound.pageTitle": "Page not found",
   "notFound.description": "This page does not exist.",
   "notFound.title": "Page not found",
@@ -28,12 +36,20 @@ const pt: Dictionary = {
   "meta.imageAlt": "Roduit Brice, desenvolvedor de software",
   "language.label": "Idioma",
   "theme.dark": "Tema escuro",
+  "meta.jobTitle": "Desenvolvedor de software",
+  "home.title": "Roduit Brice · Desenvolvedor de software",
   "home.description":
-    "Engenheiro de software que desenvolve backends, sistemas de serviço de campo e jogos multiplayer.",
-  "home.eyebrow": "Engenheiro de software",
+    "Roduit Brice, desenvolvedor de software baseado na Suíça: aplicações backend e full stack em C#/.NET, React e TypeScript.",
+  "home.role": "Desenvolvedor de software — C#/.NET, React & TypeScript",
   "home.lead":
-    "Backends, sistemas de serviço de campo e jogos multiplayer. O portfólio completo está a caminho.",
-  "home.githubLink": "Veja meu código no GitHub",
+    "Desenvolvo aplicações de negócio de ponta a ponta: APIs e modelos de dados em .NET, interfaces em React, com testes automatizados em cada etapa.",
+  "home.linkedinLink": "Perfil no LinkedIn",
+  "home.githubLink": "Código no GitHub",
+  "about.title": "Sobre",
+  "about.body":
+    "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio.",
+  "about.availability":
+    "Estou aberto a vagas de desenvolvedor de software na Suíça e a projetos freelance.",
   "notFound.pageTitle": "Página não encontrada",
   "notFound.description": "Esta página não existe.",
   "notFound.title": "Página não encontrada",
@@ -46,12 +62,20 @@ const fr: Dictionary = {
   "meta.imageAlt": "Roduit Brice, développeur logiciel",
   "language.label": "Langue",
   "theme.dark": "Thème sombre",
+  "meta.jobTitle": "Développeur logiciel",
+  "home.title": "Roduit Brice · Développeur logiciel",
   "home.description":
-    "Ingénieur logiciel qui conçoit des backends, des systèmes d’intervention sur le terrain et des jeux multijoueurs.",
-  "home.eyebrow": "Ingénieur logiciel",
+    "Roduit Brice, développeur logiciel basé en Suisse\u00a0: applications backend et full stack en C#/.NET, React et TypeScript.",
+  "home.role": "Développeur logiciel — C#/.NET, React & TypeScript",
   "home.lead":
-    "Backends, systèmes d’intervention sur le terrain et jeux multijoueurs. Le portfolio complet arrive bientôt.",
-  "home.githubLink": "Voir mon code sur GitHub",
+    "Je développe des applications métier de bout en bout\u00a0: API et modèles de données en .NET, interfaces en React, avec des tests automatisés à chaque étape.",
+  "home.linkedinLink": "Profil LinkedIn",
+  "home.githubLink": "Code sur GitHub",
+  "about.title": "À propos",
+  "about.body":
+    "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier.",
+  "about.availability":
+    "Je suis ouvert à un poste de développeur logiciel en Suisse ainsi qu’à des missions freelance.",
   "notFound.pageTitle": "Page introuvable",
   "notFound.description": "Cette page n’existe pas.",
   "notFound.title": "Page introuvable",

@@ -17,7 +17,7 @@ for (const locale of LOCALES) {
         LOCALE_INFO[locale].lang,
       );
       await expect(
-        page.getByText(t("home.eyebrow"), { exact: true }),
+        page.getByText(t("home.role"), { exact: true }),
       ).toBeVisible();
       await expect(
         page.getByRole("link", { name: t("a11y.skipLink") }),
