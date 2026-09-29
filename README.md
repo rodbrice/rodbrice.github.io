@@ -8,7 +8,7 @@ plain HTML and CSS, with no client-side framework.
 ## Requirements
 
 - Node.js 24 (see `.nvmrc`; Astro needs 22.12 or later)
-- pnpm 12 (the exact version is pinned in `package.json`)
+- pnpm 10 (the exact version is pinned in `package.json`)
 
 ## Getting started
 
