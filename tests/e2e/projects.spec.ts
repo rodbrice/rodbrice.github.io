@@ -22,7 +22,7 @@ test.describe("project list", () => {
     await page.goto("/");
     const list = page.getByRole("region", { name: "Selected projects" });
     await expect(list.getByRole("heading", { level: 3 })).toHaveText([
-      "Work orders and field operations",
+      "Field operations management platform",
       "Property management platform",
       "TheOne",
       "AGV dispatch simulation",

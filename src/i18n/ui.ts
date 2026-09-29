@@ -19,7 +19,7 @@ const en = {
   "project.back": "All projects",
   "project.stack": "Technologies",
   "project.confidential":
-    "Client project: names, screens and code are confidential. This page describes the problem, the architecture and the technical decisions.",
+    "Client project: names, screens and code are confidential. This page describes only the scope, the architecture and the technologies.",
   "project.media": "Screenshots",
   "about.title": "About",
   "about.body":
@@ -61,7 +61,7 @@ const pt: Dictionary = {
   "project.back": "Todos os projetos",
   "project.stack": "Tecnologias",
   "project.confidential":
-    "Projeto de cliente: nomes, telas e código são confidenciais. Esta página descreve o problema, a arquitetura e as decisões técnicas.",
+    "Projeto de cliente: nomes, telas e código são confidenciais. Esta página descreve apenas o escopo, a arquitetura e as tecnologias.",
   "project.media": "Capturas de tela",
   "about.title": "Sobre",
   "about.body":
@@ -99,7 +99,7 @@ const fr: Dictionary = {
   "project.back": "Tous les projets",
   "project.stack": "Technologies",
   "project.confidential":
-    "Projet client\u00a0: les noms, les écrans et le code sont confidentiels. Cette page décrit le problème, l’architecture et les décisions techniques.",
+    "Projet client\u00a0: les noms, les écrans et le code sont confidentiels. Cette page décrit uniquement le périmètre, l’architecture et les technologies.",
   "project.media": "Captures d’écran",
   "about.title": "À propos",
   "about.body":
