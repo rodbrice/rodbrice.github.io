@@ -26,6 +26,10 @@ const en = {
     "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software.",
   "about.availability":
     "I am open to software developer positions in Switzerland and to freelance projects.",
+  "experience.title": "Experience and education",
+  "skills.title": "Technologies",
+  "contact.title": "Contact",
+  "contact.body": "You can reach me on LinkedIn or find my code on GitHub.",
   "notFound.pageTitle": "Page not found",
   "notFound.description": "This page does not exist.",
   "notFound.title": "Page not found",
@@ -64,6 +68,11 @@ const pt: Dictionary = {
     "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio.",
   "about.availability":
     "Estou aberto a vagas de desenvolvedor de software na Suíça e a projetos freelance.",
+  "experience.title": "Trajetória",
+  "skills.title": "Tecnologias",
+  "contact.title": "Contato",
+  "contact.body":
+    "Você pode falar comigo pelo LinkedIn ou ver meu código no GitHub.",
   "notFound.pageTitle": "Página não encontrada",
   "notFound.description": "Esta página não existe.",
   "notFound.title": "Página não encontrada",
@@ -97,6 +106,11 @@ const fr: Dictionary = {
     "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier.",
   "about.availability":
     "Je suis ouvert à un poste de développeur logiciel en Suisse ainsi qu’à des missions freelance.",
+  "experience.title": "Parcours",
+  "skills.title": "Technologies",
+  "contact.title": "Contact",
+  "contact.body":
+    "Vous pouvez me contacter sur LinkedIn ou voir mon code sur GitHub.",
   "notFound.pageTitle": "Page introuvable",
   "notFound.description": "Cette page n’existe pas.",
   "notFound.title": "Page introuvable",
