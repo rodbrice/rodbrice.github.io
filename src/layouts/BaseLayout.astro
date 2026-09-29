@@ -3,24 +3,58 @@ import { Font } from "astro:assets";
 
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import {
+  DEFAULT_LOCALE,
+  LOCALE_INFO,
+  LOCALES,
+  localizePath,
+} from "../i18n/locales";
+import type { Locale } from "../i18n/locales";
+import { useTranslations } from "../i18n/ui";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
+  locale: Locale;
+  /**
+   * The page's path without its locale prefix, e.g. `/projects/`. It drives the
+   * canonical URL, the hreflang alternates and the language picker. Leave it out
+   * for pages with no stable URL, such as the 404 page.
+   */
+  path?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, locale, path } = Astro.props;
+const t = useTranslations(locale);
+const absolute = (pagePath: string, pageLocale: Locale) =>
+  new URL(localizePath(pagePath, pageLocale), Astro.site).href;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={LOCALE_INFO[locale].lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    {path !== undefined && (
+      <>
+        <link rel="canonical" href={absolute(path, locale)} />
+        {LOCALES.map((alternate) => (
+          <link
+            rel="alternate"
+            hreflang={LOCALE_INFO[alternate].lang}
+            href={absolute(path, alternate)}
+          />
+        ))}
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={absolute(path, DEFAULT_LOCALE)}
+        />
+      </>
+    )}
     <title>{title}</title>
     <script is:inline>
       // Apply a saved theme before the first paint to avoid a flash of the other one.
@@ -36,9 +70,9 @@ const { title, description } = Astro.props;
   </head>
   <body>
     <a class="skip-link" href="#main">
-      Skip to content
+      {t("a11y.skipLink")}
     </a>
-    <SiteHeader />
+    <SiteHeader locale={locale} path={path ?? "/"} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

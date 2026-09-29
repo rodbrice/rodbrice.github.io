@@ -59,12 +59,22 @@ Inter is self-hosted from `@fontsource-variable/inter` (Latin subset only) and
 preloaded, with a metric-matched fallback so the layout does not shift when it
 loads.
 
+## Languages
+
+The site is in English at the root, Portuguese under `/pt/` and French under
+`/fr/`. The locale list and URL helpers live in `src/i18n/locales.ts`; interface
+strings live in `src/i18n/ui.ts`, where TypeScript requires every language to
+define exactly the English keys and a unit test checks the same at runtime.
+Each page declares its canonical URL and `hreflang` alternates for all three
+languages.
+
 ## Project structure
 
 ```text
 public/          Static files copied as-is
 scripts/         Repository checks, with their unit tests
-src/components/  Header, footer and theme toggle
+src/components/  Header, footer, language picker and theme toggle
+src/i18n/        Locales, URL helpers and interface strings
 src/layouts/     Page shells
 src/pages/       One file per route
 src/scripts/     Client-side logic, with unit tests

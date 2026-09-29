@@ -1,15 +1,31 @@
 ---
+import { localizePath } from "../i18n/locales";
+import type { Locale } from "../i18n/locales";
+import { useTranslations } from "../i18n/ui";
+import LanguagePicker from "./LanguagePicker.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
-const isHome = Astro.url.pathname === "/";
+interface Props {
+  locale: Locale;
+  /** The current page's path without its locale prefix. */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = useTranslations(locale);
+const home = localizePath("/", locale);
+const isHome = Astro.url.pathname === home;
 ---
 
 <header class="site-header">
   <div class="container inner">
-    <a class="wordmark" href="/" aria-current={isHome ? "page" : undefined}>
+    <a class="wordmark" href={home} aria-current={isHome ? "page" : undefined}>
       Roduit Brice
     </a>
-    <ThemeToggle />
+    <div class="actions">
+      <LanguagePicker locale={locale} path={path} />
+      <ThemeToggle label={t("theme.dark")} />
+    </div>
   </div>
 </header>
 
@@ -24,6 +40,12 @@ const isHome = Astro.url.pathname === "/";
     justify-content: space-between;
     gap: var(--space-4);
     min-block-size: 4.5rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
   }
 
   .wordmark {

@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
+
 const WCAG_TAGS = [
   "wcag2a",
   "wcag2aa",
@@ -30,17 +32,19 @@ test.describe("home page", () => {
     expect(errors).toEqual([]);
   });
 
-  for (const colorScheme of ["light", "dark"] as const) {
-    test(`has no detectable accessibility violations in the ${colorScheme} theme`, async ({
-      page,
-    }) => {
-      await page.emulateMedia({ colorScheme });
-      await page.goto("/");
-      const results = await new AxeBuilder({ page })
-        .withTags(WCAG_TAGS)
-        .analyze();
-      expect(results.violations).toEqual([]);
-    });
+  for (const locale of LOCALES) {
+    for (const colorScheme of ["light", "dark"] as const) {
+      test(`has no detectable accessibility violations in ${locale}, ${colorScheme} theme`, async ({
+        page,
+      }) => {
+        await page.emulateMedia({ colorScheme });
+        await page.goto(localizePath("/", locale));
+        const results = await new AxeBuilder({ page })
+          .withTags(WCAG_TAGS)
+          .analyze();
+        expect(results.violations).toEqual([]);
+      });
+    }
   }
 });
 
