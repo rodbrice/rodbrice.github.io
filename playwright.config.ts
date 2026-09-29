@@ -17,7 +17,8 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: `pnpm preview --port ${String(port)}`,
+    // --ignore-lock keeps the preview server in the foreground, so Playwright owns its lifecycle.
+    command: `pnpm preview --port ${String(port)} --ignore-lock`,
     port,
     reuseExistingServer: !process.env.CI,
   },
