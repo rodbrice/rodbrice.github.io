@@ -83,14 +83,29 @@ define exactly the English keys and a unit test checks the same at runtime.
 Each page declares its canonical URL and `hreflang` alternates for all three
 languages.
 
+## Projects
+
+Each project is a Markdown file per language in
+`src/content/projects/<locale>/<slug>.md`: the front matter feeds the card on
+the home page (schema in `src/content.config.ts`) and the body is the case
+study at `/projects/<slug>/`. Set `caseStudy: false` for a card without a page,
+and `confidential: true` for client work, which adds a note that names, screens
+and code are withheld. Screenshots go in `src/assets/` and are listed under
+`media`; Astro serves them as responsive AVIF/WebP. The build fails if a
+project is missing in a language or its translations disagree on order, stack
+or `caseStudy`.
+
 ## Project structure
 
 ```text
 public/          Static files copied as-is
 scripts/         Repository checks, with their unit tests
-src/components/  Header, footer, language picker and theme toggle
+src/components/  Header, footer, project cards, language picker and theme toggle
+src/content/     Projects, one Markdown file per language
+src/data/        Public profile links
 src/i18n/        Locales, URL helpers and interface strings
 src/layouts/     Page shells
+src/lib/         Pure helpers, with unit tests
 src/pages/       One file per route
 src/scripts/     Client-side logic, with unit tests
 src/styles/      Design tokens, reset and global styles

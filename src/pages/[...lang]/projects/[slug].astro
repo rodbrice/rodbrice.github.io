@@ -1,0 +1,173 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
+import { getCollection, render } from "astro:content";
+
+import TagList from "../../../components/TagList.astro";
+import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../../i18n/locales";
+import { useTranslations } from "../../../i18n/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { projectsFor } from "../../../lib/projects";
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection("projects");
+  return LOCALES.flatMap((locale) =>
+    projectsFor(entries, locale)
+      .filter((project) => project.data.caseStudy)
+      .map((project) => ({
+        params: {
+          lang: locale === DEFAULT_LOCALE ? undefined : locale,
+          slug: project.slug,
+        },
+        props: { locale, project },
+      })),
+  );
+}) satisfies GetStaticPaths;
+
+type Props = Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
+
+const { locale, project } = Astro.props;
+const { title, kind, summary, stack, confidential, media } = project.data;
+const { Content } = await render(project);
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  title={`${title} · Roduit Brice`}
+  description={summary}
+  locale={locale}
+  path={`/projects/${project.slug}/`}
+>
+  <article class="container case-study">
+    <header class="intro">
+      <p>
+        <a class="back" href={`${localizePath("/", locale)}#projects`}>
+          <span aria-hidden="true">←</span>
+          {t("project.back")}
+        </a>
+      </p>
+      <p class="kind">{kind}</p>
+      <h1>{title}</h1>
+      <p class="lead">{summary}</p>
+      <TagList tags={stack} label={t("project.stack")} />
+      {confidential && <p class="note">{t("project.confidential")}</p>}
+    </header>
+
+    {media.length > 0 && (
+      <section class="media" aria-label={t("project.media")}>
+        {media.map(({ image, alt, caption }) => (
+          <figure>
+            <Image
+              src={image}
+              alt={alt}
+              widths={[640, 1280, image.width]}
+              sizes="(min-width: 72rem) 72rem, 100vw"
+            />
+            {caption !== undefined && <figcaption>{caption}</figcaption>}
+          </figure>
+        ))}
+      </section>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-study {
+    display: grid;
+    gap: var(--space-12);
+    padding-block: var(--space-12) var(--space-24);
+  }
+
+  .intro {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: var(--measure);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 2.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  .kind {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .lead {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .note {
+    padding: var(--space-3) var(--space-4);
+    border-inline-start: 3px solid var(--color-accent);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .media {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  figure {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  figure :global(img) {
+    border-radius: var(--radius-md);
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  figcaption {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .prose {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: var(--measure);
+
+    & :global(h2) {
+      margin-block-start: var(--space-8);
+      font-size: var(--text-xl);
+    }
+
+    & :global(ul) {
+      display: grid;
+      gap: var(--space-3);
+      padding-inline-start: var(--space-6);
+    }
+
+    & :global(li::marker) {
+      color: var(--color-accent);
+    }
+
+    & :global(strong) {
+      font-weight: var(--font-weight-bold);
+    }
+  }
+</style>
