@@ -17,22 +17,32 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm build"
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check:images": "node scripts/check-image-metadata.ts",
+    "check:html": "html-validate \"dist/**/*.html\"",
+    "check:links": "linkinator dist",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm check:images && pnpm build && pnpm check:html && pnpm check:links && pnpm test:e2e"
   },
   "dependencies": {
     "astro": "7.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
     "@types/node": "24.19.0",
     "eslint": "10.11.0",
     "eslint-plugin-astro": "3.2.1",
     "eslint-plugin-jsx-a11y-x": "0.2.0",
     "globals": "17.12.0",
+    "html-validate": "11.16.1",
+    "linkinator": "8.1.0",
     "prettier": "3.9.9",
     "prettier-plugin-astro": "1.1.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "8.70.1"
+    "typescript-eslint": "8.70.1",
+    "vitest": "5.0.2"
   }
 }
