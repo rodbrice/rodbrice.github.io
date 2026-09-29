@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - esbuild
+
+# Refuse packages published less than a day ago.
+minimumReleaseAge: 1440
