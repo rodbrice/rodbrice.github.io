@@ -1,0 +1,39 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+
+const isHome = Astro.url.pathname === "/";
+---
+
+<header class="site-header">
+  <div class="container inner">
+    <a class="wordmark" href="/" aria-current={isHome ? "page" : undefined}>
+      Roduit Brice
+    </a>
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-block-size: 4.5rem;
+  }
+
+  .wordmark {
+    color: var(--color-text);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+</style>

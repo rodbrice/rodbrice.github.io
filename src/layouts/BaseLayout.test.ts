@@ -10,30 +10,36 @@ async function render(path: string): Promise<string> {
   return container.renderToString(BaseLayout, {
     props: { title: "Page title", description: "Page description" },
     request: new Request(`https://rodbrice.github.io${path}`),
-    slots: { default: "<main>Content</main>" },
+    slots: { default: "Content" },
   });
 }
 
 describe("BaseLayout", () => {
   it("renders the document language, title and description", async () => {
     const html = await render("/");
-    expect(html).toContain('<html lang="en">');
+    expect(html).toMatch(/<html lang="en"[\s>]/);
     expect(html).toContain("<title>Page title</title>");
-    expect(html).toContain(
-      '<meta name="description" content="Page description">',
+    expect(html).toMatch(
+      /<meta name="description" content="Page description"[\s>]/,
     );
   });
 
   it("points the canonical link at the absolute URL of the page", async () => {
     const html = await render("/projects/");
-    expect(html).toContain(
-      '<link rel="canonical" href="https://rodbrice.github.io/projects/">',
+    expect(html).toMatch(
+      /<link rel="canonical" href="https:\/\/rodbrice\.github\.io\/projects\/"[\s>]/,
     );
   });
 
-  it("renders the page content inside the body", async () => {
+  it("renders the page content in the main landmark, behind a skip link", async () => {
+    const html = await render("/");
+    expect(html).toMatch(/<a class="skip-link" href="#main"[\s>]/);
+    expect(html).toMatch(/<main id="main"[^>]*>Content<\/main>/);
+  });
+
+  it("preloads the self-hosted font", async () => {
     expect(await render("/")).toMatch(
-      /<body[^>]*>\s*<main>Content<\/main>\s*<\/body>/,
+      /<link rel="preload" href="[^"]+\.woff2" as="font"/,
     );
   });
 });

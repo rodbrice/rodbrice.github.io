@@ -43,14 +43,32 @@ CI also scans the full git history for secrets with
 [gitleaks](https://github.com/gitleaks/gitleaks). Images must be committed
 without metadata; `exiftool -all= <file>` strips it.
 
+## Design
+
+All colours, type sizes, spacing and motion live as CSS custom properties in
+`src/styles/tokens.css`; components use those tokens rather than raw values.
+Colours are defined in OKLCH for both themes with `light-dark()`. The site
+follows the system theme, and the header button stores an explicit choice.
+
+The accent colour is a single hue. To change it, edit `--accent-hue` in
+`src/styles/tokens.css` (for example `185` teal, `270` indigo, `65` amber); the
+lightness of each theme is fixed so text contrast stays within WCAG AA.
+
+Inter is self-hosted from `@fontsource-variable/inter` (Latin subset only) and
+preloaded, with a metric-matched fallback so the layout does not shift when it
+loads.
+
 ## Project structure
 
 ```text
-public/        Static files copied as-is
-scripts/       Repository checks, with their unit tests
-src/layouts/   Page shells
-src/pages/     One file per route
-tests/e2e/     Playwright browser and accessibility tests
+public/          Static files copied as-is
+scripts/         Repository checks, with their unit tests
+src/components/  Header, footer and theme toggle
+src/layouts/     Page shells
+src/pages/       One file per route
+src/scripts/     Client-side logic, with unit tests
+src/styles/      Design tokens, reset and global styles
+tests/e2e/       Playwright browser and accessibility tests
 ```
 
 ## License
