@@ -40,7 +40,9 @@ describe("technologies", () => {
       ]
         .join("\n")
         .toLowerCase();
-      for (const { skills } of SKILLS) {
+      for (const { label, skills } of SKILLS) {
+        // A way of working, not a technology from the timeline or projects.
+        if (label.en === "AI-assisted development") continue;
         for (const skill of skills) {
           expect(sources).toContain(skill[locale].toLowerCase());
         }

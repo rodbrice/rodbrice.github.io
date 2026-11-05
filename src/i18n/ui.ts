@@ -23,7 +23,7 @@ const en = {
   "project.media": "Screenshots",
   "about.title": "About",
   "about.body":
-    "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software.",
+    "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software. I use AI tools to move faster without giving up control: I design the architecture, review every change and only ship what is tested.",
   "about.availability":
     "I am open to software developer positions in Switzerland and to freelance projects.",
   "experience.title": "Experience and education",
@@ -65,7 +65,7 @@ const pt: Dictionary = {
   "project.media": "Capturas de tela",
   "about.title": "Sobre",
   "about.body":
-    "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio.",
+    "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio. Uso ferramentas de IA para ganhar velocidade, sem abrir mão do controle: eu defino a arquitetura, reviso cada mudança e só entrego o que está testado.",
   "about.availability":
     "Estou aberto a vagas de desenvolvedor de software na Suíça e a projetos freelance.",
   "experience.title": "Trajetória",
@@ -103,7 +103,7 @@ const fr: Dictionary = {
   "project.media": "Captures d’écran",
   "about.title": "À propos",
   "about.body":
-    "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier.",
+    "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier. J'utilise des outils d'IA pour aller plus vite, sans perdre le contrôle : je conçois l'architecture, je relis chaque changement et je ne livre que ce qui est testé.",
   "about.availability":
     "Je suis ouvert à un poste de développeur logiciel en Suisse ainsi qu’à des missions freelance.",
   "experience.title": "Parcours",
