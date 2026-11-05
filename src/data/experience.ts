@@ -93,7 +93,7 @@ function same(name: string): Localized {
   return { en: name, pt: name, fr: name };
 }
 
-/** Only technologies named in the timeline above or in the projects. */
+/** Technologies named in the timeline above or in the projects, plus the AI-assisted way of working. */
 export const SKILLS: readonly SkillGroup[] = [
   {
     label: same("Backend"),
@@ -133,6 +133,22 @@ export const SKILLS: readonly SkillGroup[] = [
       },
       same("Docker"),
       same("CI/CD"),
+    ],
+  },
+  {
+    label: {
+      en: "AI-assisted development",
+      pt: "Desenvolvimento assistido por IA",
+      fr: "Développement assisté par IA",
+    },
+    skills: [
+      same("Claude Code"),
+      { en: "Code review", pt: "Revisão de código", fr: "Revue de code" },
+      {
+        en: "Automated testing",
+        pt: "Testes automatizados",
+        fr: "Tests automatisés",
+      },
     ],
   },
   {
