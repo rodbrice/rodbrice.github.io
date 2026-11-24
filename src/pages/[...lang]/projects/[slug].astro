@@ -3,7 +3,6 @@ import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 
-import TagList from "../../../components/TagList.astro";
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../../i18n/locales";
 import { useTranslations } from "../../../i18n/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
@@ -49,7 +48,11 @@ const t = useTranslations(locale);
       <p class="kind">{kind}</p>
       <h1>{title}</h1>
       <p class="lead">{summary}</p>
-      <TagList tags={stack} label={t("project.stack")} />
+      <ul class="technology-list" aria-label={t("project.stack")}>
+        {stack.map((technology) => (
+          <li>{technology}</li>
+        ))}
+      </ul>
       {confidential && <p class="note">{t("project.confidential")}</p>}
     </header>
 
@@ -103,13 +106,14 @@ const t = useTranslations(locale);
   }
 
   .kind {
+    font-family: var(--font-technical);
     color: var(--color-accent);
     font-size: var(--text-sm);
     font-weight: var(--font-weight-medium);
   }
 
   h1 {
-    font-size: var(--text-3xl);
+    font-size: var(--text-4xl);
   }
 
   .lead {
