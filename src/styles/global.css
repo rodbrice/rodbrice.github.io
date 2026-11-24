@@ -62,3 +62,22 @@ a {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Plain text technologies in project summaries, case studies and skill groups. */
+.technology-list {
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-technical);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+
+  & > li {
+    display: inline;
+    overflow-wrap: anywhere;
+  }
+
+  & > li:not(:last-child)::after {
+    content: " · ";
+  }
+}

@@ -7,39 +7,42 @@
 :root {
   color-scheme: light dark;
 
-  /* The accent colour is a single hue: 65 amber (185 teal and 270 indigo also pass contrast). */
-  --accent-hue: 65;
+  /* Laboratory blue, shared by both themes. */
+  --accent-hue: 255;
 
-  --color-bg: light-dark(oklch(99% 0.002 250), oklch(17% 0.008 250));
-  --color-surface: light-dark(oklch(96.5% 0.004 250), oklch(21% 0.01 250));
-  --color-border: light-dark(oklch(90% 0.006 250), oklch(31% 0.012 250));
-  --color-text: light-dark(oklch(22% 0.012 250), oklch(93% 0.006 250));
-  --color-text-muted: light-dark(oklch(46% 0.014 250), oklch(72% 0.012 250));
+  --color-bg: light-dark(oklch(97.8% 0.007 85), oklch(16.5% 0.01 260));
+  --color-surface: light-dark(oklch(99.3% 0.003 85), oklch(20% 0.012 260));
+  --color-border: light-dark(oklch(88% 0.008 85), oklch(31% 0.012 260));
+  --color-text: light-dark(oklch(21% 0.015 260), oklch(93% 0.006 260));
+  --color-text-muted: light-dark(oklch(46% 0.014 260), oklch(71% 0.012 260));
   --color-accent: light-dark(
-    oklch(47% 0.11 var(--accent-hue)),
-    oklch(80% 0.12 var(--accent-hue))
+    oklch(48% 0.15 var(--accent-hue)),
+    oklch(77% 0.12 var(--accent-hue))
   );
   --color-accent-soft: light-dark(
-    oklch(95% 0.03 var(--accent-hue)),
-    oklch(28% 0.05 var(--accent-hue))
+    oklch(94% 0.03 var(--accent-hue)),
+    oklch(26% 0.05 var(--accent-hue))
   );
 
   --font-body: var(--font-sans), sans-serif;
+  --font-technical: var(--font-mono), monospace;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-bold: 680;
+  --font-weight-bold: 640;
 
-  /* Fluid type scale (ratio about 1.25), from 360px to 1440px viewports. */
-  --text-sm: clamp(0.875rem, 0.85rem + 0.11vw, 0.9375rem);
-  --text-base: clamp(1rem, 0.96rem + 0.19vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem);
-  --text-xl: clamp(1.375rem, 1.25rem + 0.56vw, 1.75rem);
-  --text-2xl: clamp(1.75rem, 1.5rem + 1.11vw, 2.5rem);
-  --text-3xl: clamp(2.25rem, 1.8rem + 2vw, 3.75rem);
+  /* Laboratory type scale: compact metadata, readable prose and fluid headings. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: clamp(1rem, 0.97rem + 0.15vw, 1.0938rem);
+  --text-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1vw, 2.125rem);
+  --text-3xl: clamp(1.6rem, 1.1rem + 2.1vw, 2.75rem);
+  --text-4xl: clamp(2rem, 1.3rem + 3vw, 3.75rem);
 
   --leading-tight: 1.15;
-  --leading-normal: 1.6;
-  --tracking-tight: -0.02em;
+  --leading-normal: 1.65;
+  --tracking-tight: -0.03em;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;

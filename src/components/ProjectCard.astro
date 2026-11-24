@@ -1,8 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import TagList from "./TagList.astro";
-
 interface Props {
   project: CollectionEntry<"projects">["data"];
   /** Link to the case study; cards without one show the summary only. */
@@ -19,7 +17,11 @@ const { project, href, stackLabel } = Astro.props;
     {href === undefined ? project.title : <a href={href}>{project.title}</a>}
   </h3>
   <p class="summary">{project.summary}</p>
-  <TagList tags={project.stack} label={stackLabel} />
+  <ul class="technology-list" aria-label={stackLabel}>
+    {project.stack.map((technology) => (
+      <li>{technology}</li>
+    ))}
+  </ul>
 </article>
 
 <style>
@@ -39,6 +41,7 @@ const { project, href, stackLabel } = Astro.props;
   }
 
   .kind {
+    font-family: var(--font-technical);
     color: var(--color-accent);
     font-size: var(--text-sm);
     font-weight: var(--font-weight-medium);
