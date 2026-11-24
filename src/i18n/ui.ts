@@ -1,6 +1,7 @@
 import type { Locale } from "./locales.ts";
 
 const en = {
+  "nav.sections": "On this page",
   "a11y.skipLink": "Skip to content",
   "meta.imageAlt": "Roduit Brice, software developer",
   "language.label": "Language",
@@ -43,6 +44,7 @@ export type UiKey = keyof typeof en;
 type Dictionary = Record<UiKey, string>;
 
 const pt: Dictionary = {
+  "nav.sections": "Nesta página",
   "a11y.skipLink": "Pular para o conteúdo",
   "meta.imageAlt": "Roduit Brice, desenvolvedor de software",
   "language.label": "Idioma",
@@ -81,6 +83,7 @@ const pt: Dictionary = {
 };
 
 const fr: Dictionary = {
+  "nav.sections": "Sur cette page",
   "a11y.skipLink": "Aller au contenu",
   "meta.imageAlt": "Roduit Brice, développeur logiciel",
   "language.label": "Langue",
