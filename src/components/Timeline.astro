@@ -26,16 +26,35 @@ const { entries, locale } = Astro.props;
 <style>
   .timeline {
     display: grid;
-    gap: var(--space-8);
+
     padding: 0;
     list-style: none;
 
     & > li {
       display: grid;
+      position: relative;
       gap: var(--space-2) var(--space-8);
+      padding-inline-start: var(--space-6);
+      padding-block-end: var(--space-8);
+      border-inline-start: 1px solid var(--color-border);
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: calc(-1 * var(--space-1));
+        inset-block-start: var(--space-2);
+        inline-size: var(--space-2);
+        block-size: var(--space-2);
+        border-radius: var(--radius-full);
+        background: var(--color-accent);
+      }
+
+      &:last-child {
+        padding-block-end: 0;
+      }
 
       @media (width >= 48rem) {
-        grid-template-columns: 11rem 1fr;
+        grid-template-columns: 9rem minmax(0, 1fr);
       }
     }
   }
@@ -52,8 +71,6 @@ const { entries, locale } = Astro.props;
     display: grid;
     gap: var(--space-1);
     max-inline-size: var(--measure);
-    padding-inline-start: var(--space-4);
-    border-inline-start: 2px solid var(--color-border);
   }
 
   h3 {

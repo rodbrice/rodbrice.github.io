@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 
 import ButtonLink from "../../components/ButtonLink.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import SectionIndex from "../../components/SectionIndex.astro";
 import Timeline from "../../components/Timeline.astro";
 import { SKILLS, TIMELINE } from "../../data/experience";
 import { PROFILES } from "../../data/profile";
@@ -51,108 +52,158 @@ const person = {
     type="application/ld+json"
     set:html={JSON.stringify(person)}
   />
-  <section class="container hero" aria-labelledby="hero-title">
-    <h1 id="hero-title">Roduit Brice</h1>
-    <p class="role">{t("home.role")}</p>
-    <p class="lead">{t("home.lead")}</p>
-    <ul class="actions">
-      <li>
-        <ButtonLink href="#projects" variant="primary">
-          {t("home.projectsLink")}
-        </ButtonLink>
-      </li>
-      <li>
-        <ButtonLink href={PROFILES.linkedin} rel="me">
-          {t("home.linkedinLink")}
-        </ButtonLink>
-      </li>
-      <li>
-        <ButtonLink href={PROFILES.github} rel="me">
-          {t("home.githubLink")}
-        </ButtonLink>
-      </li>
-    </ul>
-  </section>
+  <div class="container home-layout">
+    <SectionIndex locale={locale} />
+    <div class="home-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">Roduit Brice</h1>
+        <p class="role">{t("home.role")}</p>
+        <p class="lead">{t("home.lead")}</p>
+        <ul class="actions">
+          <li>
+            <ButtonLink href="#projects" variant="primary">
+              {t("home.projectsLink")}
+            </ButtonLink>
+          </li>
+          <li>
+            <ButtonLink href={PROFILES.linkedin} rel="me">
+              {t("home.linkedinLink")}
+            </ButtonLink>
+          </li>
+          <li>
+            <ButtonLink href={PROFILES.github} rel="me">
+              {t("home.githubLink")}
+            </ButtonLink>
+          </li>
+        </ul>
+      </section>
 
-  <section
-    id="projects"
-    class="container projects"
-    aria-labelledby="projects-title"
-  >
-    <h2 id="projects-title">{t("projects.title")}</h2>
-    <ol class="project-list">
-      {projects.map(({ slug, data }) => (
-        <li>
-          <ProjectCard
-            project={data}
-            href={
-              data.caseStudy
-                ? localizePath(`/projects/${slug}/`, locale)
-                : undefined
-            }
-            stackLabel={t("project.stack")}
-          />
-        </li>
-      ))}
-    </ol>
-  </section>
+      <section id="projects" class="projects" aria-labelledby="projects-title">
+        <h2 id="projects-title">
+          <span class="section-number" aria-hidden="true">
+            01
+          </span>
+          {t("projects.title")}
+        </h2>
+        <ol class="project-list">
+          {projects.map(({ slug, data }) => (
+            <li>
+              <ProjectCard
+                project={data}
+                href={
+                  data.caseStudy
+                    ? localizePath(`/projects/${slug}/`, locale)
+                    : undefined
+                }
+                stackLabel={t("project.stack")}
+              />
+            </li>
+          ))}
+        </ol>
+      </section>
 
-  <section id="about" class="container about" aria-labelledby="about-title">
-    <h2 id="about-title">{t("about.title")}</h2>
-    <div class="prose">
-      <p>{t("about.body")}</p>
-      <p>{t("about.availability")}</p>
+      <section id="about" class="about" aria-labelledby="about-title">
+        <h2 id="about-title">
+          <span class="section-number" aria-hidden="true">
+            02
+          </span>
+          {t("about.title")}
+        </h2>
+        <div class="prose">
+          <p>{t("about.body")}</p>
+          <p>{t("about.availability")}</p>
+        </div>
+      </section>
+
+      <section
+        id="experience"
+        class="experience"
+        aria-labelledby="experience-title"
+      >
+        <h2 id="experience-title">
+          <span class="section-number" aria-hidden="true">
+            03
+          </span>
+          {t("experience.title")}
+        </h2>
+        <Timeline entries={TIMELINE} locale={locale} />
+      </section>
+
+      <section id="skills" class="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title">
+          <span class="section-number" aria-hidden="true">
+            04
+          </span>
+          {t("skills.title")}
+        </h2>
+        <ul class="skill-groups">
+          {SKILLS.map(({ label, skills }) => (
+            <li>
+              <h3>{label[locale]}</h3>
+              <ul class="technology-list" aria-label={label[locale]}>
+                {skills.map((skill) => (
+                  <li>{skill[locale]}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="contact" class="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">
+          <span class="section-number" aria-hidden="true">
+            05
+          </span>
+          {t("contact.title")}
+        </h2>
+        <p class="prose">{t("contact.body")}</p>
+        <ul class="actions">
+          <li>
+            <ButtonLink href={PROFILES.linkedin} rel="me" variant="primary">
+              LinkedIn
+            </ButtonLink>
+          </li>
+          <li>
+            <ButtonLink href={PROFILES.github} rel="me">
+              GitHub
+            </ButtonLink>
+          </li>
+        </ul>
+      </section>
     </div>
-  </section>
-
-  <section
-    id="experience"
-    class="container experience"
-    aria-labelledby="experience-title"
-  >
-    <h2 id="experience-title">{t("experience.title")}</h2>
-    <Timeline entries={TIMELINE} locale={locale} />
-  </section>
-
-  <section id="skills" class="container skills" aria-labelledby="skills-title">
-    <h2 id="skills-title">{t("skills.title")}</h2>
-    <ul class="skill-groups">
-      {SKILLS.map(({ label, skills }) => (
-        <li>
-          <h3>{label[locale]}</h3>
-          <ul class="technology-list" aria-label={label[locale]}>
-            {skills.map((skill) => (
-              <li>{skill[locale]}</li>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section
-    id="contact"
-    class="container contact"
-    aria-labelledby="contact-title"
-  >
-    <h2 id="contact-title">{t("contact.title")}</h2>
-    <p class="prose">{t("contact.body")}</p>
-    <ul class="actions">
-      <li>
-        <ButtonLink href={PROFILES.linkedin} rel="me" variant="primary">
-          LinkedIn
-        </ButtonLink>
-      </li>
-      <li>
-        <ButtonLink href={PROFILES.github} rel="me">
-          GitHub
-        </ButtonLink>
-      </li>
-    </ul>
-  </section>
+  </div>
 </BaseLayout>
 
 <style>
+  .home-layout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .home-content {
+    min-inline-size: 0;
+  }
+
+  @media (width >= 64rem) {
+    .home-layout {
+      grid-template-columns: 13rem minmax(0, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  section {
+    scroll-margin-block-start: var(--space-8);
+  }
+
+  .section-number {
+    color: var(--color-accent);
+    font-family: var(--font-technical);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: normal;
+  }
+
   .hero {
     display: grid;
     gap: var(--space-4);
@@ -196,6 +247,9 @@ const person = {
   }
 
   h2 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
     font-size: var(--text-2xl);
   }
 
@@ -213,7 +267,6 @@ const person = {
 
   .skill-groups {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
     gap: var(--space-6);
     padding: 0;
     list-style: none;
@@ -222,6 +275,12 @@ const person = {
       display: grid;
       align-content: start;
       gap: var(--space-3);
+      padding-block-end: var(--space-6);
+      border-block-end: 1px solid var(--color-border);
+
+      @media (width >= 48rem) {
+        grid-template-columns: minmax(8rem, 1fr) 2fr;
+      }
     }
   }
 

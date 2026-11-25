@@ -70,6 +70,29 @@ test.describe("home page", () => {
   for (const locale of LOCALES) {
     const t = useTranslations(locale);
 
+    test(`has a numbered section index in ${locale}`, async ({ page }) => {
+      await page.goto(localizePath("/", locale));
+      const index = page.getByRole("navigation", { name: t("nav.sections") });
+      const ids = [
+        "projects",
+        "about",
+        "experience",
+        "skills",
+        "contact",
+      ] as const;
+      await expect(index.getByRole("link")).toHaveCount(ids.length);
+      for (const [position, id] of ids.entries()) {
+        await expect(
+          index.getByRole("link", { name: t(`${id}.title`), exact: true }),
+        ).toHaveAttribute("href", `#${id}`);
+        const heading = page.locator(`#${id}-title`);
+        await expect(heading.locator(".section-number")).toHaveText(
+          `0${String(position + 1)}`,
+        );
+        await expect(heading).toHaveAccessibleName(t(`${id}.title`));
+      }
+    });
+
     test(`shows the timeline, technologies and contact in ${locale}`, async ({
       page,
     }) => {

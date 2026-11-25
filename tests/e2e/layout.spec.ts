@@ -71,3 +71,76 @@ test.describe("keyboard navigation", () => {
     await expect(page.locator("main")).toBeFocused();
   });
 });
+
+test.describe("section index", () => {
+  test("tracks sections when scrolling in both directions and opening an anchor", async ({
+    page,
+  }) => {
+    await page.goto("/#experience");
+    const index = page.getByRole("navigation", { name: "On this page" });
+    for (const id of ["experience", "contact", "skills", "about", "projects"]) {
+      await page.locator(`#${id}`).evaluate((section) => {
+        section.scrollIntoView();
+      });
+      await expect(index.locator('[aria-current="location"]')).toHaveCount(1);
+      await expect(index.locator(`[href="#${id}"]`)).toHaveAttribute(
+        "aria-current",
+        "location",
+      );
+    }
+  });
+
+  test("supports keyboard activation and visible focus", async ({ page }) => {
+    await page.goto("/");
+    const link = page
+      .getByRole("navigation", { name: "On this page" })
+      .getByRole("link")
+      .first();
+    await page.getByRole("button", { name: "Dark theme" }).focus();
+    await page.keyboard.press("Tab");
+    await expect(link).toBeFocused();
+    await expect(link).toBeInViewport();
+    expect(await link.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe(
+      "solid",
+    );
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL("/#projects");
+    await expect(page.locator("#projects")).toBeInViewport();
+    await expect(link).toHaveAttribute("aria-current", "location");
+  });
+
+  test("fits the viewport and stays alongside content on desktop", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    if ((page.viewportSize()?.width ?? 0) >= 1024) {
+      await page.locator("#skills").evaluate((section) => {
+        section.scrollIntoView();
+      });
+      await expect(
+        page.getByRole("navigation", { name: "On this page" }),
+      ).toBeInViewport();
+    }
+  });
+
+  test("keeps the index usable without JavaScript", async ({
+    browser,
+    baseURL,
+  }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto(baseURL ?? "http://localhost:4321");
+    await page
+      .getByRole("navigation", { name: "On this page" })
+      .getByRole("link", { name: "About", exact: true })
+      .click();
+    await expect(page).toHaveURL(/#about$/);
+    await expect(page.locator("#about")).toBeInViewport();
+    await context.close();
+  });
+});
