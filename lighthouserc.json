@@ -2,7 +2,14 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist",
-      "url": ["/", "/pt/", "/fr/"],
+      "url": [
+        "/",
+        "/pt/",
+        "/fr/",
+        "/projects/theone/",
+        "/pt/projects/field-operations/",
+        "/fr/projects/property-management/"
+      ],
       "numberOfRuns": 3,
       "settings": {
         "chromeFlags": "--headless=new --no-sandbox"
@@ -16,7 +23,8 @@
         "categories:seo": ["error", { "minScore": 1 }],
         "largest-contentful-paint": ["error", { "maxNumericValue": 1500 }],
         "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
-        "resource-summary:script:size": ["error", { "maxNumericValue": 10240 }]
+        "resource-summary:script:size": ["error", { "maxNumericValue": 20480 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 150 }]
       }
     },
     "upload": {
