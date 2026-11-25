@@ -20,13 +20,16 @@ test.describe("home page", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle("Roduit Brice · Software Developer");
+    await expect(page).toHaveTitle("Roduit Brice · Full Stack Developer");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Roduit Brice",
     );
     await expect(
-      page.getByText("Software Developer — C#/.NET, React & TypeScript"),
+      page.getByText("Full Stack Developer | C#/.NET · React · TypeScript"),
     ).toBeVisible();
+    await expect(
+      page.locator("section.hero").getByRole("link", { name: "Contact" }),
+    ).toHaveAttribute("href", "#contact");
   });
 
   test("links to the public profiles", async ({ page }) => {
@@ -134,7 +137,7 @@ test.describe("home page", () => {
       "@type": "Person",
       name: "Roduit Brice",
       url: "https://rodbrice.github.io/fr/",
-      jobTitle: "Développeur logiciel",
+      jobTitle: "Développeur full stack",
       sameAs: [PROFILES.github, PROFILES.linkedin],
     });
   });

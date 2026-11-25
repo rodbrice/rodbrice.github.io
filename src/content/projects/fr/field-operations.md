@@ -1,24 +1,58 @@
 ---
-title: Plateforme de gestion des opérations de terrain
-kind: Application métier full stack
-summary: Une plateforme de gestion des opérations de terrain, avec authentification, workflows métier, persistance des données et génération de fichiers Excel et PDF, construite avec ASP.NET Core, PostgreSQL, React et TypeScript.
+title: Système de gestion des opérations de chantier
+kind: Projet client privé · Validation finale par le client
+summary: Les chefs d’équipe consignaient le travail quotidien sur papier, puis le bureau le ressaisissait dans des tableurs. J’ai conçu et développé une saisie sur tablette utilisable hors ligne, reliée au contrôle au bureau.
 order: 1
-stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker, GitHub Actions]
+stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true
 ---
 
-## Périmètre
+## Le problème
 
-Une plateforme de gestion des opérations de terrain. Elle couvre
-l’authentification, les workflows métier, la persistance des données et la
-génération de documents Excel et PDF.
+Dans une entreprise de maintenance industrielle, les chefs d’équipe
+remplissaient leurs rapports quotidiens sur papier. Une personne au bureau
+ressaisissait ensuite ces données dans des tableurs pour préparer les feuilles
+de métrés, les documents destinés aux clients et les données prêtes à être
+saisies dans SAP. La saisie sur le terrain et le contrôle au bureau demandaient
+des outils différents, mais devaient partager les mêmes informations.
 
-## Architecture
+## Mon rôle et la découverte
 
-Le backend est développé en ASP.NET Core et stocke ses données dans
-PostgreSQL ; le front end est développé en React et TypeScript.
+J’ai échangé directement avec la personne chargée de la comptabilité pour
+préciser les règles et valider des prototypes interactifs avant la réalisation.
+J’ai conçu et développé le parcours tablette, le backend et l’application de
+bureau. Pendant le développement, j’ai utilisé des agents de programmation sous
+ma supervision, avec revue du code et tests automatisés.
 
-## Qualité et livraison
+## Du terrain au bureau
 
-Le code est couvert par des tests unitaires, d’intégration et de bout en bout
-(E2E). Le projet utilise Docker et GitHub Actions.
+- **Sur le terrain :** les chefs d’équipe peuvent saisir les équipes, les
+  heures, les temps d’attente, les informations de sécurité et les signatures
+  sur tablette. L’interface tient compte du port de gants et la saisie fonctionne
+  sans connexion.
+- **Au bureau :** les rapports passent par une file de contrôle et de
+  validation. L’application gère les tarifs, l’affectation aux postes de
+  commande, les feuilles de métrés, les exports PDF et Excel et les données
+  préparées pour SAP.
+
+## Choix techniques
+
+La saisie hors ligne répond aux contraintes de connexion sur le terrain ;
+l’usage avec des gants guide les interactions sur tablette. La séparation entre
+saisie et validation permet au bureau de vérifier les rapports avant de produire
+les documents. Les formats de sortie suivent ce travail de bureau.
+
+## Qualité et état actuel
+
+L’implémentation comprend des tests automatisés d’intégration, du frontend et
+de bout en bout. Le client teste actuellement le système dans sa phase finale
+de validation. Le déploiement en production et l’impact opérationnel ne sont
+pas établis.
+
+## Ce que j’ai appris et éléments vérifiables
+
+Valider les règles de comptabilité avec la personne concernée m’a aidé à
+transformer un processus papier en parcours concrets pour le terrain et le
+bureau. Il s’agit d’un projet client privé ; je peux présenter l’architecture
+lors d’un entretien. Le code, les écrans et les données du client restent
+confidentiels.
