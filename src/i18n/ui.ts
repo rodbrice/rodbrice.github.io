@@ -21,6 +21,15 @@ const en = {
   "project.stack": "Technologies",
   "project.confidential":
     "Client project: names, screens and code are confidential. This page describes only the scope, the architecture and the technologies.",
+  "project.facts": "Facts",
+  "project.type": "Type",
+  "project.context": "Context",
+  "project.clientWork": "Client work, confidential",
+  "project.next": "Next project",
+  "project.architecture": "Architecture",
+  "project.figure": "Figure",
+  "project.illustration":
+    "An illustration for this site, not the project code.",
   "project.media": "Screenshots",
   "about.title": "About",
   "about.body":
@@ -64,6 +73,15 @@ const pt: Dictionary = {
   "project.stack": "Tecnologias",
   "project.confidential":
     "Projeto de cliente: nomes, telas e código são confidenciais. Esta página descreve apenas o escopo, a arquitetura e as tecnologias.",
+  "project.facts": "Ficha de fatos",
+  "project.type": "Tipo",
+  "project.context": "Contexto",
+  "project.clientWork": "Projeto de cliente, confidencial",
+  "project.next": "Próximo projeto",
+  "project.architecture": "Arquitetura",
+  "project.figure": "Figura",
+  "project.illustration":
+    "Uma ilustração para este site, não o código do projeto.",
   "project.media": "Capturas de tela",
   "about.title": "Sobre",
   "about.body":
@@ -103,6 +121,15 @@ const fr: Dictionary = {
   "project.stack": "Technologies",
   "project.confidential":
     "Projet client\u00a0: les noms, les écrans et le code sont confidentiels. Cette page décrit uniquement le périmètre, l’architecture et les technologies.",
+  "project.facts": "Fiche technique",
+  "project.type": "Type",
+  "project.context": "Contexte",
+  "project.clientWork": "Projet client, confidentiel",
+  "project.next": "Projet suivant",
+  "project.architecture": "Architecture",
+  "project.figure": "Figure",
+  "project.illustration":
+    "Une illustration pour ce site, pas le code du projet.",
   "project.media": "Captures d’écran",
   "about.title": "À propos",
   "about.body":
