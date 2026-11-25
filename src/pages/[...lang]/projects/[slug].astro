@@ -1,5 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
+import NetworkSimulation from "../../../components/NetworkSimulation.astro";
+import { netcodeLabels } from "../../../data/netcode-labels";
 import Diagram from "../../../components/Diagram.astro";
 import SectionIndex from "../../../components/SectionIndex.astro";
 import { getCollection, render } from "astro:content";
@@ -41,6 +43,9 @@ const t = useTranslations(locale);
 const sections = [
   { id: "facts", label: t("project.facts") },
   { id: "diagram", label: t("project.architecture") },
+  ...(project.slug === "theone"
+    ? [{ id: "network", label: netcodeLabels[locale].title }]
+    : []),
   ...headings
     .filter(({ depth }) => depth === 2)
     .map(({ slug, text }) => ({ id: slug, label: text })),
@@ -110,6 +115,10 @@ const sections = [
           {t("project.illustration")}
         </figcaption>
       </figure>
+
+      {project.slug === "theone" && (
+        <NetworkSimulation locale={locale} number={2} />
+      )}
 
       <div class="prose">
         <Content />

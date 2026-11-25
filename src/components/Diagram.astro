@@ -6,10 +6,11 @@ interface Props {
   project: string;
   locale: Locale;
   label: string;
+  suffix?: string;
 }
-const { project, locale, label } = Astro.props;
+const { project, locale, label, suffix = "" } = Astro.props;
 const d = diagramLabels[locale];
-const marker = `arrow-${project}`;
+const marker = `arrow-${project}${suffix}`;
 interface Node {
   x: number;
   y: number;

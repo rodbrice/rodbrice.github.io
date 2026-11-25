@@ -72,7 +72,7 @@ for (const locale of LOCALES) {
           exact: true,
         });
         await expect(diagram).toBeVisible();
-        await expect(page.getByRole("figure")).toContainText(
+        await expect(page.locator("figure#diagram")).toContainText(
           t("project.illustration"),
         );
         const labels =
@@ -175,7 +175,7 @@ for (const locale of LOCALES) {
           .nth(1)
           .click();
         await expect(page).toHaveURL(`${url}#diagram`);
-        await expect(page.getByRole("figure")).toBeInViewport();
+        await expect(page.locator("figure#diagram")).toBeInViewport();
         await context.close();
       });
 

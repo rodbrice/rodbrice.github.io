@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 
 import { getCollection } from "astro:content";
 
+import NetworkSimulation from "../../components/NetworkSimulation.astro";
 import ButtonLink from "../../components/ButtonLink.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import SectionIndex from "../../components/SectionIndex.astro";
@@ -100,6 +101,7 @@ const person = {
             </li>
           ))}
         </ol>
+        <NetworkSimulation locale={locale} />
       </section>
 
       <section id="about" class="about" aria-labelledby="about-title">
