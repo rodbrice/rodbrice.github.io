@@ -11,7 +11,9 @@ export function initSectionIndex() {
         if (entry.isIntersecting) visible.add(id);
         else visible.delete(id);
       }
-      const current = links.findLast((link) => visible.has(link.hash));
+      const current = links.findLast((link) =>
+        visible.has(decodeURIComponent(link.hash)),
+      );
       if (!current) return;
       for (const link of links) {
         if (link === current) link.setAttribute("aria-current", "location");
@@ -21,7 +23,9 @@ export function initSectionIndex() {
     { rootMargin: "0px 0px -50% 0px" },
   );
   for (const link of links) {
-    const section = document.getElementById(link.hash.slice(1));
+    const section = document.getElementById(
+      decodeURIComponent(link.hash.slice(1)),
+    );
     if (section) observer.observe(section);
   }
 }

@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { Image } from "astro:assets";
+import Diagram from "../../../components/Diagram.astro";
+import SectionIndex from "../../../components/SectionIndex.astro";
 import { getCollection, render } from "astro:content";
 
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../../i18n/locales";
@@ -26,9 +27,24 @@ export const getStaticPaths = (async () => {
 type Props = Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
 
 const { locale, project } = Astro.props;
-const { title, kind, summary, stack, confidential, media } = project.data;
-const { Content } = await render(project);
+const { title, kind, summary, stack, confidential } = project.data;
+const { Content, headings } = await render(project);
+const cases = projectsFor(await getCollection("projects"), locale).filter(
+  (entry) => entry.data.caseStudy,
+);
+const next =
+  cases[
+    (cases.findIndex((entry) => entry.slug === project.slug) + 1) % cases.length
+  ];
+if (!next) throw new Error(`No next case study for ${project.id}`);
 const t = useTranslations(locale);
+const sections = [
+  { id: "facts", label: t("project.facts") },
+  { id: "diagram", label: t("project.architecture") },
+  ...headings
+    .filter(({ depth }) => depth === 2)
+    .map(({ slug, text }) => ({ id: slug, label: text })),
+];
 ---
 
 <BaseLayout
@@ -37,48 +53,128 @@ const t = useTranslations(locale);
   locale={locale}
   path={`/projects/${project.slug}/`}
 >
-  <article class="container case-study">
-    <header class="intro">
-      <p>
-        <a class="back" href={`${localizePath("/", locale)}#projects`}>
-          <span aria-hidden="true">←</span>
-          {t("project.back")}
-        </a>
-      </p>
-      <p class="kind">{kind}</p>
-      <h1>{title}</h1>
-      <p class="lead">{summary}</p>
-      <ul class="technology-list" aria-label={t("project.stack")}>
-        {stack.map((technology) => (
-          <li>{technology}</li>
-        ))}
-      </ul>
-      {confidential && <p class="note">{t("project.confidential")}</p>}
-    </header>
+  <div class="container case-layout">
+    <SectionIndex locale={locale} sections={sections} />
+    <article class="case-study">
+      <header class="intro">
+        <p>
+          <a class="back" href={`${localizePath("/", locale)}#projects`}>
+            <span aria-hidden="true">←</span>
+            {t("project.back")}
+          </a>
+        </p>
+        <p class="kind">{kind}</p>
+        <h1>{title}</h1>
+        <p class="lead">{summary}</p>
+        {confidential && <p class="note">{t("project.confidential")}</p>}
+      </header>
 
-    {media.length > 0 && (
-      <section class="media" aria-label={t("project.media")}>
-        {media.map(({ image, alt, caption }) => (
-          <figure>
-            <Image
-              src={image}
-              alt={alt}
-              widths={[640, 1280, image.width]}
-              sizes="(min-width: 72rem) 72rem, 100vw"
-            />
-            {caption !== undefined && <figcaption>{caption}</figcaption>}
-          </figure>
-        ))}
+      <section id="facts" aria-labelledby="facts-title">
+        <h2 id="facts-title">{t("project.facts")}</h2>
+        <dl class="facts">
+          <dt>{t("project.type")}</dt>
+          <dd>{kind}</dd>
+          <dt>{t("project.stack")}</dt>
+          <dd>
+            <ul class="technology-list" aria-label={t("project.stack")}>
+              {stack.map((technology) => (
+                <li>{technology}</li>
+              ))}
+            </ul>
+          </dd>
+          {confidential && (
+            <>
+              <dt>{t("project.context")}</dt>
+              <dd>{t("project.clientWork")}</dd>
+            </>
+          )}
+        </dl>
       </section>
-    )}
 
-    <div class="prose">
-      <Content />
-    </div>
-  </article>
+      <figure id="diagram">
+        {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Keyboard users need focus to scroll the diagram horizontally. */}
+        <section
+          class="diagram-scroll"
+          tabindex="0"
+          aria-label={t("project.architecture")}
+        >
+          <Diagram
+            project={project.slug}
+            locale={locale}
+            label={t("project.architecture")}
+          />
+        </section>
+        {/* eslint-enable astro/jsx-a11y/no-noninteractive-tabindex */}
+        <figcaption>
+          <strong>{t("project.figure")} 1.</strong> {t("project.architecture")}.{" "}
+          {t("project.illustration")}
+        </figcaption>
+      </figure>
+
+      <div class="prose">
+        <Content />
+      </div>
+      <a class="next" href={localizePath(`/projects/${next.slug}/`, locale)}>
+        <span>{t("project.next")} →</span>
+        <strong>{next.data.title}</strong>
+      </a>
+    </article>
+  </div>
 </BaseLayout>
 
 <style>
+  .case-layout {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .case-study {
+    min-inline-size: 0;
+  }
+  .facts {
+    display: grid;
+    gap: var(--space-3) var(--space-6);
+    margin-block-start: var(--space-4);
+  }
+  dt {
+    font-family: var(--font-technical);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  dd {
+    margin: 0;
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+  .diagram-scroll {
+    overflow-x: auto;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+  }
+  .next {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-6);
+    border-block-start: 1px solid var(--color-border);
+    text-decoration: none;
+  }
+  .next span {
+    font-family: var(--font-technical);
+    font-size: var(--text-sm);
+  }
+  .next strong {
+    font-size: var(--text-xl);
+  }
+  @media (width >= 64rem) {
+    .case-layout {
+      grid-template-columns: 12rem minmax(0, 1fr);
+    }
+    .facts {
+      grid-template-columns: auto 1fr;
+    }
+  }
   .case-study {
     display: grid;
     gap: var(--space-12);
@@ -129,20 +225,10 @@ const t = useTranslations(locale);
     font-size: var(--text-sm);
   }
 
-  .media {
-    display: grid;
-    gap: var(--space-8);
-  }
-
   figure {
     display: grid;
-    gap: var(--space-2);
-  }
-
-  figure :global(img) {
-    border-radius: var(--radius-md);
-    inline-size: 100%;
-    block-size: auto;
+    gap: var(--space-4);
+    min-inline-size: 0;
   }
 
   figcaption {

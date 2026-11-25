@@ -1,28 +1,32 @@
 ---
 import type { Locale } from "../i18n/locales";
-import { useTranslations } from "../i18n/ui";
+import { useTranslations, type UiKey } from "../i18n/ui";
 
 interface Props {
   locale: Locale;
+  sections?: readonly { id: string; label: string }[];
 }
 const t = useTranslations(Astro.props.locale);
-const sections = [
+const homeSections = [
   "projects",
   "about",
   "experience",
   "skills",
   "contact",
 ] as const;
+const sections =
+  Astro.props.sections ??
+  homeSections.map((id) => ({ id, label: t(`${id}.title` satisfies UiKey) }));
 ---
 
 <nav class="section-index" aria-label={t("nav.sections")}>
   <p>{t("nav.sections")}</p>
   <ol>
-    {sections.map((id, index) => (
+    {sections.map(({ id, label }, index) => (
       <li>
         <a href={`#${id}`}>
           <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-          {t(`${id}.title`)}
+          {label}
         </a>
       </li>
     ))}
