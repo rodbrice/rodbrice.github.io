@@ -75,7 +75,9 @@ const sections = [
       </header>
 
       <section id="facts" aria-labelledby="facts-title">
-        <h2 id="facts-title">{t("project.facts")}</h2>
+        <h2 data-reveal id="facts-title">
+          {t("project.facts")}
+        </h2>
         <dl class="facts">
           <dt>{t("project.type")}</dt>
           <dd>{kind}</dd>
@@ -96,7 +98,7 @@ const sections = [
         </dl>
       </section>
 
-      <figure id="diagram">
+      <figure data-reveal id="diagram">
         {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Keyboard users need focus to scroll the diagram horizontally. */}
         <section
           class="diagram-scroll"

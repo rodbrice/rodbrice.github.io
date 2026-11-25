@@ -81,3 +81,56 @@ a {
     content: " · ";
   }
 }
+
+/* Unsupported engines keep the document's ordinary, fully visible styles. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      /* Longhands keep the minifier from folding view() into a shorthand
+       * that engines may not yet accept, despite timeline support. */
+      animation-name: reveal;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* Keyboard focus and anchor navigation must never wait for a reveal. */
+    [data-reveal]:is(:focus-within, :target) {
+      animation: none;
+    }
+
+    @keyframes reveal {
+      from {
+        translate: 0 var(--space-3);
+      }
+      to {
+        translate: 0 0;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
