@@ -42,10 +42,20 @@ Browser tests need Chromium once: `pnpm exec playwright install chromium`.
 Lighthouse uses the Chrome it finds on the system; set `CHROME_PATH` to point it
 at another build.
 
-The Lighthouse budget in `lighthouserc.json` requires, on the median of three
-runs per language: performance and best practices of at least 95,
-accessibility and SEO of 100, a largest contentful paint under 1.5 s, a
-cumulative layout shift under 0.05 and less than 10 kB of JavaScript.
+The Lighthouse budget in `lighthouserc.json` checks the median of three runs
+for each of these six URLs:
+
+- `/`
+- `/pt/`
+- `/fr/`
+- `/projects/theone/`
+- `/pt/projects/field-operations/`
+- `/fr/projects/property-management/`
+
+It requires performance and best practices ≥ 0.95, accessibility and SEO = 1,
+largest contentful paint (LCP) ≤ 1500 ms, cumulative layout shift (CLS) ≤ 0.05,
+script transfer size ≤ 20 KB (20,480 bytes), and total blocking time (TBT)
+≤ 150 ms.
 
 CI also scans the full git history for secrets with
 [gitleaks](https://github.com/gitleaks/gitleaks). Images must be committed
