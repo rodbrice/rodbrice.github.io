@@ -58,6 +58,10 @@ for (const locale of LOCALES) {
       await expect(
         page.locator('link[rel="alternate"][hreflang="x-default"]'),
       ).toHaveAttribute("href", `${SITE}/`);
+      await expect(page.locator('meta[property="og:type"]')).toHaveAttribute(
+        "content",
+        "website",
+      );
     });
   });
 }

@@ -7,7 +7,7 @@ plain HTML and CSS, with no client-side framework.
 
 ## Requirements
 
-- Node.js 24 (see `.nvmrc`; Astro needs 22.12 or later)
+- Node.js 24 (see `.nvmrc`; Astro needs 22.23.4 or later)
 - pnpm 10 (the exact version is pinned in `package.json`)
 
 ## Getting started
@@ -68,9 +68,9 @@ All colours, type sizes, spacing and motion live as CSS custom properties in
 Colours are defined in OKLCH for both themes with `light-dark()`. The site
 follows the system theme, and the header button stores an explicit choice.
 
-The accent colour is a single hue, currently amber (`65`). To change it, edit
-`--accent-hue` in `src/styles/tokens.css` (for example `185` teal or `270`
-indigo); the lightness of each theme is fixed so text contrast stays within
+The accent colour is a single hue, currently blue (`255`). To change it, edit
+`--accent-hue` in `src/styles/tokens.css` (for example `65` amber or `185`
+teal); the lightness of each theme is fixed so text contrast stays within
 WCAG AA.
 
 Inter is self-hosted from `@fontsource-variable/inter` (Latin subset only) and

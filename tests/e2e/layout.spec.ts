@@ -144,3 +144,39 @@ test.describe("section index", () => {
     await context.close();
   });
 });
+
+test.describe("narrow screens", () => {
+  // WCAG 1.4.10 reflow: 320 CSS pixels wide, without scrolling sideways. The
+  // project cards hold the longest unbreakable phrases (their status line).
+  for (const path of ["/", "/pt/", "/fr/"]) {
+    test(`fits a 320 px viewport without horizontal scrolling: ${path}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 320, height: 800 });
+      await page.goto(path);
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
+      // Each card stays inside the content column, not only inside the viewport.
+      const overflowing = await page
+        .locator("article.card")
+        .evaluateAll((cards) =>
+          cards
+            .filter((card) => {
+              const column = card.closest("section");
+              if (!column) return true;
+              return (
+                card.getBoundingClientRect().right >
+                column.getBoundingClientRect().right + 0.5
+              );
+            })
+            .map((card) => card.querySelector("h3")?.textContent ?? ""),
+        );
+      expect(overflowing).toEqual([]);
+    });
+  }
+});

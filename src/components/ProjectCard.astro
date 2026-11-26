@@ -128,9 +128,15 @@ const statusParts = [
     font-size: var(--text-xs);
   }
 
-  /* Visibility and stage wrap as whole phrases. */
-  .part {
-    white-space: nowrap;
+  /*
+   * Visibility and stage wrap as whole phrases, except on the narrowest
+   * screens, where the longest stage ("Validation finale par le client") is
+   * wider than the card and would push the page sideways.
+   */
+  @media (width >= 24rem) {
+    .part {
+      white-space: nowrap;
+    }
   }
 
   .action {
