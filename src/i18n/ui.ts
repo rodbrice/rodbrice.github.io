@@ -26,6 +26,9 @@ const en = {
   "project.type": "Type",
   "project.context": "Context",
   "project.clientWork": "Client work, confidential",
+  "project.private":
+    "Private project: code and screens are not public. This page shares only general information about the project.",
+  "project.privateWork": "Private project, code not public",
   "project.next": "Next project",
   "project.architecture": "Architecture",
   "project.figure": "Figure",
@@ -79,6 +82,9 @@ const pt: Dictionary = {
   "project.type": "Tipo",
   "project.context": "Contexto",
   "project.clientWork": "Projeto de cliente, confidencial",
+  "project.private":
+    "Projeto privado: o código e as telas não são públicos. Esta página apresenta apenas informações gerais sobre o projeto.",
+  "project.privateWork": "Projeto privado, código não público",
   "project.next": "Próximo projeto",
   "project.architecture": "Arquitetura",
   "project.figure": "Figura",
@@ -128,6 +134,9 @@ const fr: Dictionary = {
   "project.type": "Type",
   "project.context": "Contexte",
   "project.clientWork": "Projet client, confidentiel",
+  "project.private":
+    "Projet privé : le code et les écrans ne sont pas publics. Cette page ne présente que des informations générales sur le projet.",
+  "project.privateWork": "Projet privé, code non public",
   "project.next": "Projet suivant",
   "project.architecture": "Architecture",
   "project.figure": "Figure",

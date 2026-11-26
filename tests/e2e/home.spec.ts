@@ -64,7 +64,7 @@ test.describe("home page", () => {
       );
     expect(entries).toEqual([
       "2026–Aujourd’hui Développeur logiciel indépendant Suisse / Europe Missions privées en développement backend et full stack. Travail sur des applications métier avec C#/.NET, ASP.NET Core, React, TypeScript, PostgreSQL, tests automatisés, Docker et CI/CD.",
-      "2023–2025 Développeur logiciel freelance Brésil Réalisation de solutions backend et full stack pour différents clients. Analyse des besoins, conception technique, bases de données relationnelles, API REST, logique métier, interfaces web, tests et livraisons itératives.",
+      "2023–2025 Développeur logiciel freelance Brésil Réalisation de solutions backend et full stack pour différents clients. Analyse des besoins, conception technique, bases de données relationnelles, API REST, logique métier, interfaces web, tests et livraisons itératives. Notamment l’adaptation du frontend d’une application web d’assurance santé en React et TypeScript.",
       "2022 Web Development Le Wagon, Lausanne Programme intensif de 10 semaines en développement web.",
       "Formation en cours Bachelor en ingénierie logicielle Instituto Infnet, Brésil Diplôme prévu en 2029.",
     ]);

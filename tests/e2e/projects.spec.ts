@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+import { hasDiagram } from "../../src/data/diagrams.ts";
 import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
 import { useTranslations } from "../../src/i18n/ui.ts";
 
@@ -13,7 +14,18 @@ const WCAG_TAGS = [
   "best-practice",
 ];
 
-const CASE_STUDIES = ["field-operations", "property-management", "theone"];
+const CASE_STUDIES = [
+  "field-operations",
+  "facture-qr",
+  "property-management",
+  "plan-review",
+  "theone",
+];
+/** Public projects: their case studies link to the source repository. */
+const PUBLIC_SOURCES: Record<string, string> = {
+  "facture-qr": "https://github.com/rodbrice/facture-qr",
+  "plan-review": "https://github.com/rodbrice/plan-review",
+};
 
 test.describe("project list", () => {
   test("shows the projects in order, linking to their case studies", async ({
@@ -23,7 +35,9 @@ test.describe("project list", () => {
     const list = page.getByRole("region", { name: "Selected projects" });
     await expect(list.getByRole("heading", { level: 3 })).toHaveText([
       "Industrial Field Operations Management System",
-      "Property management platform",
+      "Facture QR — Swiss QR-bill invoicing",
+      "Property management application",
+      "plan-review — Terraform change risk review",
       "TheOne",
       "AGV dispatch simulation",
     ]);
@@ -59,7 +73,7 @@ for (const locale of LOCALES) {
         await expect(page).toHaveURL(`${localizePath("/", locale)}#projects`);
       });
 
-      test("shows facts, an accessible diagram and a localized next project", async ({
+      test("shows facts, its diagram if any and a localized next project", async ({
         page,
       }) => {
         await page.goto(url);
@@ -71,25 +85,39 @@ for (const locale of LOCALES) {
           name: t("project.architecture"),
           exact: true,
         });
-        await expect(diagram).toBeVisible();
-        await expect(page.locator("figure#diagram")).toContainText(
-          t("project.illustration"),
-        );
-        const labels =
-          slug === "field-operations"
-            ? ["React + TypeScript", "ASP.NET Core", "PostgreSQL"]
-            : slug === "property-management"
-              ? {
-                  en: ["Domain", "Application", "Infrastructure · API"],
-                  pt: ["Domínio", "Aplicação", "Infraestrutura · API"],
-                  fr: ["Domaine", "Application", "Infrastructure · API"],
-                }[locale]
-              : {
-                  en: ["Client", "Dedicated server"],
-                  pt: ["Cliente", "Servidor dedicado"],
-                  fr: ["Client", "Serveur dédié"],
-                }[locale];
-        for (const label of labels) await expect(diagram).toContainText(label);
+        const index = page.getByRole("navigation", { name: t("nav.sections") });
+        if (hasDiagram(slug)) {
+          await expect(diagram).toBeVisible();
+          await expect(page.locator("figure#diagram")).toContainText(
+            `${t("project.figure")} 1.`,
+          );
+          await expect(page.locator("figure#diagram")).toContainText(
+            t("project.illustration"),
+          );
+          await expect(index.locator('a[href="#diagram"]')).toHaveCount(1);
+          const labels =
+            slug === "field-operations"
+              ? ["React + TypeScript", "ASP.NET Core", "PostgreSQL"]
+              : slug === "property-management"
+                ? {
+                    en: ["Domain", "Application", "Infrastructure · API"],
+                    pt: ["Domínio", "Aplicação", "Infraestrutura · API"],
+                    fr: ["Domaine", "Application", "Infrastructure · API"],
+                  }[locale]
+                : {
+                    en: ["Client", "Dedicated server"],
+                    pt: ["Cliente", "Servidor dedicado"],
+                    fr: ["Client", "Serveur dédié"],
+                  }[locale];
+          for (const label of labels) {
+            await expect(diagram).toContainText(label);
+          }
+        } else {
+          // No approved diagram: no figure, and no index entry pointing to one.
+          await expect(diagram).toHaveCount(0);
+          await expect(page.locator("figure")).toHaveCount(0);
+          await expect(index.locator('a[href="#diagram"]')).toHaveCount(0);
+        }
         expect(
           await page.evaluate(
             () => document.documentElement.scrollWidth <= innerWidth,
@@ -125,7 +153,7 @@ for (const locale of LOCALES) {
           await page.keyboard.press("Enter");
           await expect(page).toHaveURL(`${url}${href}`);
           await expect(page.locator(href)).toBeInViewport();
-          if (href === "#périmètre" || href === "#qualité-et-livraison") {
+          if (href === "#mon-rôle" || href === "#qualité-et-état-actuel") {
             // Put this heading in the reading area, ahead of the following heading.
             await page.locator(href).evaluate((heading) => {
               heading.scrollIntoView({ block: "center" });
@@ -137,11 +165,13 @@ for (const locale of LOCALES) {
           name: t("project.architecture"),
           exact: true,
         });
-        await scrollRegion.focus();
-        const scrolls = await scrollRegion.evaluate(
-          (el) => el.scrollWidth > el.clientWidth,
-        );
+        const scrolls =
+          hasDiagram(slug) &&
+          (await scrollRegion.evaluate(
+            (el) => el.scrollWidth > el.clientWidth,
+          ));
         if (scrolls) {
+          await scrollRegion.focus();
           await page.keyboard.press("ArrowRight");
           await expect
             .poll(() => scrollRegion.evaluate((el) => el.scrollLeft))
@@ -163,26 +193,60 @@ for (const locale of LOCALES) {
         const context = await browser.newContext({ javaScriptEnabled: false });
         const page = await context.newPage();
         await page.goto(`${baseURL ?? "http://localhost:4321"}${url}`);
-        await expect(
-          page.getByRole("img", {
-            name: t("project.architecture"),
-            exact: true,
-          }),
-        ).toBeVisible();
-        await page
+        if (hasDiagram(slug)) {
+          await expect(
+            page.getByRole("img", {
+              name: t("project.architecture"),
+              exact: true,
+            }),
+          ).toBeVisible();
+        }
+        const second = page
           .getByRole("navigation", { name: t("nav.sections") })
           .getByRole("link")
-          .nth(1)
-          .click();
-        await expect(page).toHaveURL(`${url}#diagram`);
-        await expect(page.locator("figure#diagram")).toBeInViewport();
+          .nth(1);
+        const href = (await second.getAttribute("href")) ?? "";
+        if (hasDiagram(slug)) expect(href).toBe("#diagram");
+        await second.click();
+        await expect(page).toHaveURL(`${url}${href}`);
+        await expect(
+          page.locator(`[id="${decodeURIComponent(href.slice(1))}"]`),
+        ).toBeInViewport();
         await context.close();
       });
 
-      test("says when a client project is anonymized", async ({ page }) => {
+      test("links to its public source, or says the code is private", async ({
+        page,
+      }) => {
+        await page.goto(url);
+        const source = PUBLIC_SOURCES[slug];
+        const repositoryLinks = page.locator(
+          '.prose a[href^="https://github.com/"]',
+        );
+        if (source === undefined) {
+          await expect(repositoryLinks).toHaveCount(0);
+        } else {
+          await expect(
+            page.locator(".prose").locator(`a[href="${source}"]`),
+          ).toHaveCount(1);
+        }
+      });
+
+      test("says when a client or private project is anonymized", async ({
+        page,
+      }) => {
         await page.goto(url);
         await expect(page.getByText(t("project.confidential"))).toHaveCount(
-          slug === "theone" ? 0 : 1,
+          slug === "field-operations" ? 1 : 0,
+        );
+        await expect(page.getByText(t("project.private"))).toHaveCount(
+          slug === "property-management" ? 1 : 0,
+        );
+        await expect(page.getByText(t("project.clientWork"))).toHaveCount(
+          slug === "field-operations" ? 1 : 0,
+        );
+        await expect(page.getByText(t("project.privateWork"))).toHaveCount(
+          slug === "property-management" ? 1 : 0,
         );
       });
 

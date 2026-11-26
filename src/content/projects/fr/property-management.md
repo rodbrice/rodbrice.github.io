@@ -1,23 +1,54 @@
 ---
-title: Plateforme de gestion immobilière
-kind: Backend et architecture logicielle
-summary: Une application de gestion immobilière avec un backend ASP.NET Core construit selon la Clean Architecture sur PostgreSQL, qui couvre l’authentification et l’autorisation, le stockage de fichiers et les tâches périodiques.
-order: 2
+title: Application de gestion immobilière
+kind: Projet privé · MVP en développement
+summary: Administrer des logements loués exige de garder cohérents les contrats, les relevés de compteurs, les coûts d’énergie et les charges mensuelles. Je développe le MVP d’une application à cet effet, avec un backend ASP.NET Core et PostgreSQL.
+order: 3
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true
+clientWork: false
 ---
 
-## Périmètre
+## Le besoin
 
-Une application de gestion immobilière. Son backend couvre l’authentification
-et l’autorisation, le stockage de fichiers et les tâches périodiques.
+Administrer des logements loués implique de suivre les contrats et leurs
+évolutions, les relevés de compteurs et l’énergie consommée par chaque logement,
+ainsi que les charges mensuelles et les paiements qui en découlent. Ces chiffres
+dépendent les uns des autres : un relevé donne un montant d’énergie, qui entre
+dans une charge. Les corrections doivent rester traçables au lieu d’écraser ce
+qui a été enregistré.
 
-## Architecture
+## Mon rôle
 
-Le backend est développé en ASP.NET Core selon la Clean Architecture et stocke
-ses données dans PostgreSQL.
+Je conçois et développe l’application, du modèle de données à l’API. Je
+travaille avec des agents de programmation sous ma supervision ; mon rôle est de
+définir les règles à partir d’une spécification écrite, de relire chaque
+changement et de le vérifier par des tests automatisés.
 
-## Qualité et livraison
+## Choix techniques
 
-Le code est couvert par des tests unitaires, d’intégration et d’architecture.
-Le projet utilise Docker et CI/CD.
+- **Des enregistrements en insertion seule, garantis par la base de données.**
+  Le journal d’audit et les enregistrements destinés à rester définitifs peuvent
+  être ajoutés, mais ni modifiés ni supprimés par l’application : son
+  utilisateur de base de données n’a pas le droit de les mettre à jour ou de les
+  supprimer. La garantie repose sur les permissions de la base, pas seulement
+  sur le code, et un test d’architecture vérifie que chaque enregistrement en
+  insertion seule est couvert.
+- **L’argent en décimal, avec une règle d’arrondi explicite.** Les montants sont
+  stockés et calculés en décimal, jamais en virgule flottante. Une seule
+  fonction d’arrondi, à deux décimales avec les demis arrondis en s’éloignant de
+  zéro, est utilisée partout, et la règle d’arrondi est enregistrée avec le calcul de
+  chaque charge.
+- **Connexion avec TOTP.** Les comptes sont créés sur invitation. La première
+  connexion configure un mot de passe à usage unique basé sur le temps, avec des
+  codes de récupération, et chaque connexion suivante se fait en deux étapes.
+
+## Qualité et état actuel
+
+Le code a des tests unitaires, d’intégration et d’architecture ; les tests
+d’intégration s’exécutent sur une vraie base PostgreSQL. Il s’agit d’un projet
+privé et d’un MVP en développement ; cette page n’affirme rien sur un
+déploiement ou une utilisation.
+
+## Éléments vérifiables
+
+Le code est privé. Je peux présenter ces choix lors d’un entretien.

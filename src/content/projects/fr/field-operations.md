@@ -45,9 +45,11 @@ les documents. Les formats de sortie suivent ce travail de bureau.
 ## Qualité et état actuel
 
 L’implémentation comprend des tests automatisés d’intégration, du frontend et
-de bout en bout. Le client teste actuellement le système dans sa phase finale
-de validation. Le déploiement en production et l’impact opérationnel ne sont
-pas établis.
+de bout en bout : plus de 900 tests d’intégration, plus de 2 300 tests du
+frontend et plus de 100 tests de bout en bout, avec plus de 60 décisions
+d’architecture documentées (novembre 2026). Le client teste actuellement le
+système dans sa phase finale de validation. Le déploiement en production et
+l’impact opérationnel ne sont pas établis.
 
 ## Ce que j’ai appris et éléments vérifiables
 

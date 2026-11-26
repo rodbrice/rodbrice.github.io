@@ -99,8 +99,11 @@ Each project is a Markdown file per language in
 `src/content/projects/<locale>/<slug>.md`: the front matter feeds the card on
 the home page (schema in `src/content.config.ts`) and the body is the case
 study at `/projects/<slug>/`. Set `caseStudy: false` for a card without a page,
-and `confidential: true` for client work, which adds a note that names, screens
-and code are withheld. Screenshots go in `src/assets/` and are listed under
+and `confidential: true` for private code, which adds a note that names, screens
+and code are withheld; add `clientWork: false` when it is a private project of
+the author's rather than client work. Architecture diagrams are drawn per
+project in `src/components/Diagram.astro` and listed in `src/data/diagrams.ts`;
+a case study without one has no figure. Screenshots go in `src/assets/` and are listed under
 `media`; Astro serves them as responsive AVIF/WebP. The build fails if a
 project is missing in a language or its translations disagree on order, stack
 or `caseStudy`.
