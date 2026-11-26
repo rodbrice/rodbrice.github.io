@@ -1,13 +1,13 @@
 ---
 title: Facture QR — Swiss QR-bill invoicing
 kind: QR-bill invoicing core
-summary: Swiss QR-bills must follow strict rules for addresses, references and IBANs. I am building a .NET invoicing core in small, verified steps — QR-bill library, PostgreSQL storage, local HTTP API — with each step's checks published.
+summary: Swiss QR-bills must follow strict rules for addresses, references and IBANs. I built a local .NET invoicing tool in small, verified steps — QR-bill library, PostgreSQL storage, HTTP API, React front end in French, Docker Compose demo — and released v0.1.0 with each step's checks published.
 problem: "Swiss QR-bills must follow strict rules for addresses, references and IBANs."
 contribution: "I set the scope, made the design decisions and checked each step against the standard."
-status: inDevelopment
+status: firstRelease
 order: 2
 featured: true
-stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
+stack: [C#, .NET, ASP.NET Core, PostgreSQL, React, Docker]
 source: https://github.com/rodbrice/facture-qr
 ---
 
@@ -18,8 +18,8 @@ Switzerland and Liechtenstein. Producing one correctly means following the SIX
 Implementation Guidelines: structured addresses, a QR-IBAN with a QR reference
 or an IBAN with a Creditor Reference, an exact payload inside the Swiss QR Code
 and a fixed layout. A payment part that breaks these rules can be rejected by
-banks. Facture QR is a small invoicing tool for independents that gets this
-core right before any screen exists.
+banks. Facture QR is a small invoicing tool for independents that got this
+core right first and added the screens after.
 
 ## My role
 
@@ -32,8 +32,8 @@ reviewing the changes and verifying the results.
 ## Approach and constraints
 
 The repository grows in small units, each with a written validation record:
-the QR-bill core library first, then the invoice model and its storage, then
-an HTTP API. The scope is deliberately narrow: CHF only, no VAT logic, and only
+the QR-bill core library first, then the invoice model and its storage, an
+HTTP API, a React front end and a Docker Compose demo. The scope is deliberately narrow: CHF only, no VAT logic, and only
 synthetic data taken from the examples in the SIX guidelines.
 
 ## What exists today
@@ -49,6 +49,13 @@ synthetic data taken from the examples in the SIX guidelines.
 - **Local HTTP API:** customers, drafts with their lines, issuing, recording a
   payment, and the invoice as an A4 PDF with its QR-bill. Errors use
   ProblemDetails, and the OpenAPI document is committed.
+- **Front end in French:** React and TypeScript, served by the API: customers,
+  the invoice list with an overdue flag, the draft editor, issuing, the PDF
+  download and the payment. Each refused request is shown next to its field;
+  the rules stay in the API.
+- **Local demo:** `docker compose up` builds the application, applies the
+  migrations and adds synthetic customers and invoices, on `127.0.0.1` only.
+  Changes sent from another site and unknown host names are refused.
 
 ## Technical decisions
 
@@ -76,15 +83,20 @@ synthetic data taken from the examples in the SIX guidelines.
   database and checks that the numbers are exactly 1 to 40. Replacing the
   allocator with a naive `MAX + 1` made this test fail, as recorded in the
   validation notes.
+- Front-end unit tests and an end-to-end test of the whole flow run against the
+  API and PostgreSQL.
 - Continuous integration builds with warnings as errors, checks formatting,
-  runs the tests and applies the migrations to an empty database.
+  applies the migrations to an empty database, runs all the tests and starts
+  the Docker Compose demo. CodeQL analyses the C# and TypeScript code, and
+  Dependabot proposes dependency updates every week.
 
 ## Current status and limits
 
-In development. Validation of the samples in the SIX portal is still pending.
-There is no user interface yet, and the API has no authentication: it is meant
-to run locally for one person. It is not a hosted billing service. A React front
-end and bank-statement reconciliation are planned next steps, not features.
+Version 0.1.0 is released. Validation of the QR-bills in the SIX portal is
+still pending. The application has no authentication: it is meant to run
+locally for one person and must not be exposed on a network. There is no hosted
+demo, and it is not a billing service. Reconciliation of camt.054 bank
+statements is planned for v0.2, not a feature.
 
 ## What I learned
 
@@ -95,6 +107,7 @@ what is verified and what is still pending.
 ## Evidence
 
 - [Source code and README](https://github.com/rodbrice/facture-qr)
+- [Release v0.1.0 and changelog](https://github.com/rodbrice/facture-qr/releases/tag/v0.1.0)
 - [Architecture decision records](https://github.com/rodbrice/facture-qr/tree/main/docs/adr)
 - [Validation records](https://github.com/rodbrice/facture-qr/tree/main/docs/validation)
 - [Synthetic samples](https://github.com/rodbrice/facture-qr/tree/main/docs/samples)

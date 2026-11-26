@@ -1,13 +1,13 @@
 ---
 title: Facture QR — faturação com QR-bill suíço
 kind: Núcleo de faturação QR-bill
-summary: Um QR-bill suíço precisa seguir regras rígidas de endereço, referência e IBAN. Estou construindo em pequenas etapas verificadas um núcleo de faturação em .NET — biblioteca QR-bill, armazenamento em PostgreSQL, API HTTP local — e publico as verificações de cada etapa.
+summary: Um QR-bill suíço precisa seguir regras rígidas de endereço, referência e IBAN. Construí em pequenas etapas verificadas uma ferramenta local de faturação em .NET — biblioteca QR-bill, armazenamento em PostgreSQL, API HTTP, interface React em francês, demo com Docker Compose — e publiquei a versão 0.1.0 com as verificações de cada etapa.
 problem: "Um QR-bill suíço precisa seguir regras rígidas de endereço, referência e IBAN."
 contribution: "Defini o escopo, tomei as decisões de projeto e conferi cada etapa contra a norma."
-status: inDevelopment
+status: firstRelease
 order: 2
 featured: true
-stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
+stack: [C#, .NET, ASP.NET Core, PostgreSQL, React, Docker]
 source: https://github.com/rodbrice/facture-qr
 ---
 
@@ -18,8 +18,8 @@ Suíça e em Liechtenstein. Gerá-lo corretamente exige seguir as Implementation
 Guidelines da SIX: endereços estruturados, QR-IBAN com referência QR ou IBAN
 com Creditor Reference, conteúdo exato no Swiss QR Code e layout fixo. Uma
 seção de pagamento que viola essas regras pode ser recusada pelos bancos. O
-Facture QR é uma pequena ferramenta de faturação para autônomos que acerta esse
-núcleo antes de existir qualquer tela.
+Facture QR é uma pequena ferramenta de faturação para autônomos que acertou
+esse núcleo primeiro e depois ganhou as telas.
 
 ## Meu papel
 
@@ -33,7 +33,8 @@ as mudanças e verificar os resultados.
 
 O repositório cresce em pequenas unidades, cada uma com um registro de
 validação: primeiro a biblioteca QR-bill, depois o modelo de fatura e seu
-armazenamento, depois uma API HTTP. O escopo é estreito de propósito: só CHF,
+armazenamento, uma API HTTP, uma interface React e uma demo com Docker Compose.
+O escopo é estreito de propósito: só CHF,
 sem lógica de IVA e apenas dados fictícios tirados dos exemplos das diretrizes
 da SIX.
 
@@ -49,6 +50,13 @@ da SIX.
 - **API HTTP local:** clientes, rascunhos com suas linhas, emissão, registro do
   pagamento e a fatura em PDF A4 com o QR-bill. Os erros seguem o formato
   ProblemDetails, e o documento OpenAPI está versionado.
+- **Interface em francês:** React e TypeScript, servida pela API: clientes,
+  lista de faturas com o atraso, editor de rascunho, emissão, download do PDF e
+  pagamento. Cada requisição recusada aparece ao lado do seu campo; as regras
+  ficam na API.
+- **Demo local:** `docker compose up` constrói a aplicação, aplica as migrações
+  e adiciona clientes e faturas fictícios, só em `127.0.0.1`. Alterações
+  enviadas de outro site e nomes de host desconhecidos são recusados.
 
 ## Decisões técnicas
 
@@ -78,16 +86,20 @@ da SIX.
   real e verifica que os números vão exatamente de 1 a 40. Trocar a alocação por
   um `MAX + 1` ingênuo fez esse teste falhar, como registram as notas de
   validação.
+- Testes unitários da interface e um teste de ponta a ponta de todo o fluxo
+  rodam contra a API e o PostgreSQL.
 - A integração contínua compila com avisos tratados como erros, verifica a
-  formatação, executa os testes e aplica as migrações num banco vazio.
+  formatação, aplica as migrações num banco vazio, executa todos os testes e
+  sobe a demo com Docker Compose. O CodeQL analisa o código C# e TypeScript, e o
+  Dependabot propõe atualizações das dependências toda semana.
 
 ## Estado atual e limites
 
-Em desenvolvimento. A validação dos exemplos no portal da SIX ainda está
-pendente. Ainda não há interface, e a API não tem autenticação: foi pensada
-para uso local por uma pessoa. Não é um serviço de faturação hospedado. Uma
-interface em React e a conciliação de extratos bancários são próximos passos
-planejados, não funcionalidades.
+A versão 0.1.0 foi publicada. A validação dos QR-bills no portal da SIX ainda
+está pendente. A aplicação não tem autenticação: foi pensada para uso local por
+uma pessoa e não deve ser exposta numa rede. Não há demo hospedada, e não é um
+serviço de faturação. A conciliação de extratos bancários camt.054 está
+planejada para a versão 0.2, não é uma funcionalidade.
 
 ## O que aprendi
 
@@ -98,6 +110,7 @@ resultado também deixa claro o que está verificado e o que ainda está pendent
 ## Evidências
 
 - [Código-fonte e README](https://github.com/rodbrice/facture-qr)
+- [Versão 0.1.0 e changelog](https://github.com/rodbrice/facture-qr/releases/tag/v0.1.0)
 - [Registros de decisões de arquitetura (ADR)](https://github.com/rodbrice/facture-qr/tree/main/docs/adr)
 - [Registros de validação](https://github.com/rodbrice/facture-qr/tree/main/docs/validation)
 - [Exemplos fictícios](https://github.com/rodbrice/facture-qr/tree/main/docs/samples)

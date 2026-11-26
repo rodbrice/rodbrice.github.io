@@ -8,6 +8,7 @@ import type { Locale } from "../i18n/locales.ts";
  */
 export const PROJECT_STATUSES = [
   "clientValidation",
+  "firstRelease",
   "inDevelopment",
   "mvpInDevelopment",
   "earlyDevelopment",
