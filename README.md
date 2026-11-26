@@ -101,7 +101,9 @@ the home page (schema in `src/content.config.ts`) and the body is the case
 study at `/projects/<slug>/`. Set `caseStudy: false` for a card without a page,
 and `confidential: true` for private code, which adds a note that names, screens
 and code are withheld; add `clientWork: false` when it is a private project of
-the author's rather than client work. Each card shows a one-line `problem`,
+the author's rather than client work. Set `featured: true` to list a card under
+"Featured work" rather than "Other engineering projects"; both groups keep the
+`order`. Each card shows a one-line `problem`,
 a one-line `contribution`, a `status` (labelled per language in
 `src/i18n/ui.ts`), at most six `stack` tags and one action: the case study,
 else the public `source`, else a private-project note. Case studies open with
@@ -111,8 +113,10 @@ are listed in `src/data/diagrams.ts`: SVG architecture diagrams in
 `src/components/FlowDiagram.astro`; a case study without one has no figure.
 Screenshots go in `src/assets/` and are listed under `media`; Astro serves them
 as responsive AVIF/WebP. The build fails if a project is missing in a language,
-its translations disagree on order, stack, `caseStudy`, `status`, visibility or
-`source`, or its card would have no action.
+its translations disagree on order, stack, `caseStudy`, `featured`, `status`,
+visibility or `source`, or its card would have no action. Each skill group in
+`src/data/experience.ts` lists the `projects` where it appears; the home page
+links them to their case study, or to their card when there is none.
 
 ## Project structure
 

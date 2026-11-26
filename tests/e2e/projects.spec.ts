@@ -43,7 +43,7 @@ test.describe("project list", () => {
   }) => {
     await page.goto("/");
     const list = page.getByRole("region", { name: "Selected projects" });
-    await expect(list.getByRole("heading", { level: 3 })).toHaveText([
+    await expect(list.getByRole("heading", { level: 4 })).toHaveText([
       "Industrial Field Operations Management System",
       "Facture QR — Swiss QR-bill invoicing",
       "Property management application",
@@ -95,6 +95,35 @@ test.describe("project list", () => {
     await expect(agv.getByRole("link")).toHaveCount(0);
     await expect(agv.locator(".action")).toHaveText("Private project");
   });
+
+  for (const locale of LOCALES) {
+    test(`splits featured work from other projects in ${locale}`, async ({
+      page,
+    }) => {
+      const t = useTranslations(locale);
+      await page.goto(localizePath("/", locale));
+      const list = page.getByRole("region", { name: t("projects.title") });
+      await expect(list.getByRole("heading", { level: 3 })).toHaveText([
+        t("projects.featured"),
+        t("projects.other"),
+      ]);
+      const ids = (name: string) =>
+        list
+          .getByRole("region", { name, exact: true })
+          .locator("article.card")
+          .evaluateAll((cards) => cards.map((card) => card.id));
+      expect(await ids(t("projects.featured"))).toEqual([
+        "project-field-operations",
+        "project-facture-qr",
+      ]);
+      expect(await ids(t("projects.other"))).toEqual([
+        "project-property-management",
+        "project-plan-review",
+        "project-theone",
+        "project-agv-dispatch",
+      ]);
+    });
+  }
 
   test("every card action leads to a page that exists", async ({
     page,
@@ -414,12 +443,37 @@ for (const locale of LOCALES) {
             page.locator(`dl.facts a[href="${source}"]`),
           ).toContainText(t("project.publicRepository"));
         }
+        if (slug === "theone") {
+          // Private code: no repository link, a walkthrough instead.
+          await expect(page.locator(".prose").last()).toContainText(
+            {
+              en: "Code private — walkthrough available on request.",
+              pt: "Código privado — apresentação disponível sob pedido.",
+              fr: "Code privé — présentation possible sur demande.",
+            }[locale],
+          );
+        }
         if (slug === "field-operations" || slug === "property-management") {
           await expect(evidence).toHaveCount(1);
           await expect(page.locator("dl.facts")).toContainText(
             t("project.walkthrough"),
           );
         }
+      });
+
+      test("covers role, status, learning and evidence", async ({ page }) => {
+        await page.goto(url);
+        const headings = await page
+          .locator(".prose h2")
+          .evaluateAll((all) => all.map((heading) => heading.textContent));
+        const covered = (pattern: RegExp) =>
+          headings.some((heading) => pattern.test(heading));
+        const sections = {
+          en: [/role/i, /status/i, /learned/i, /evidence/i],
+          pt: [/papel/i, /estado/i, /aprend/i, /evidências/i],
+          fr: [/rôle/i, /état/i, /appris/i, /vérifiables/i],
+        }[locale];
+        expect(sections.filter((pattern) => !covered(pattern))).toEqual([]);
       });
 
       test("says when a client or private project is anonymized", async ({

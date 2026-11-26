@@ -17,6 +17,13 @@ je travaille des problèmes que le logiciel métier pose rarement : réseau en
 temps réel, animation et combat physique, le tout dans un budget de frame
 serré.
 
+## Mon rôle
+
+C’est mon projet personnel. Je conçois et développe les systèmes décrits
+ci-dessous, du serveur autoritaire et de la prédiction côté client au combat au
+corps à corps et à l’outillage des personnages, ainsi que les tests de chaque
+domaine.
+
 ## Choix d’architecture
 
 - **Serveur dédié autoritaire.** Le serveur détient l’état du jeu et valide
@@ -46,3 +53,16 @@ serré.
 Une barrière sélective de tests EditMode exécute les tests des parties
 touchées par un changement avant son merge, ce qui garde un retour rapide à
 mesure que le projet grandit.
+
+## État actuel
+
+Un projet personnel en développement. Le jeu n’est pas sorti.
+
+## Ce que j’ai appris
+
+Faire du serveur la seule autorité m’a appris à décider tôt quel côté détient
+chaque élément d’état, et ce que le client peut seulement prédire.
+
+## Éléments vérifiables
+
+Code privé — présentation possible sur demande.

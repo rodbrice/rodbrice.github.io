@@ -22,6 +22,7 @@ export interface ProjectFacts {
   order: number;
   stack: readonly string[];
   caseStudy: boolean;
+  featured: boolean;
   status: ProjectStatus;
   confidential: boolean;
   clientWork: boolean;
@@ -54,6 +55,35 @@ export function primaryAction(
   );
 }
 
+/**
+ * The site path where a project can be read about: its case study, or else
+ * its card on the home page, so a mention of the project never leads nowhere.
+ */
+export function projectPath(
+  slug: string,
+  facts: Pick<ProjectFacts, "caseStudy">,
+): string {
+  return facts.caseStudy ? `/projects/${slug}/` : `/#${cardId(slug)}`;
+}
+
+/** The `id` of a project's card on the home page. */
+export function cardId(slug: string): string {
+  return `project-${slug}`;
+}
+
+/**
+ * Splits projects already in display order into the featured ones and the
+ * others, each keeping that order.
+ */
+export function splitFeatured<
+  Entry extends { data: Pick<ProjectFacts, "featured"> },
+>(projects: readonly Entry[]): { featured: Entry[]; other: Entry[] } {
+  return {
+    featured: projects.filter(({ data }) => data.featured),
+    other: projects.filter(({ data }) => !data.featured),
+  };
+}
+
 export interface ProjectEntry {
   /** Content id such as `fr/theone`: the locale folder, then the project slug. */
   id: string;
@@ -74,7 +104,7 @@ export function parseProjectId(id: string): { locale: Locale; slug: string } {
 /**
  * The projects of one locale, in display order. Throws when a project is
  * missing in another language, its translations disagree on a shared fact
- * (order, stack, case study, status, visibility or source), or it offers no
+ * (order, stack, case study, featured, status, visibility or source), or it offers no
  * card action, so a translation gap fails the build instead of shipping.
  */
 export function projectsFor<Entry extends ProjectEntry>(
@@ -125,6 +155,7 @@ function sameFacts(a: ProjectFacts, b: ProjectFacts): boolean {
   return (
     a.order === b.order &&
     a.caseStudy === b.caseStudy &&
+    a.featured === b.featured &&
     a.status === b.status &&
     a.confidential === b.confidential &&
     a.clientWork === b.clientWork &&

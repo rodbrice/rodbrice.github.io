@@ -10,10 +10,12 @@ interface Props {
   project: CollectionEntry<"projects">["data"];
   /** Link to the case study, for projects that have one. */
   href?: string | undefined;
+  /** Anchor for links to this card, e.g. from the skills that it shows. */
+  id?: string | undefined;
   locale: Locale;
 }
 
-const { project, href, locale } = Astro.props;
+const { project, href, id, locale } = Astro.props;
 const t = useTranslations(locale);
 const action = primaryAction(project);
 const visibility = project.confidential
@@ -28,9 +30,9 @@ const statusParts = [
 ].filter((part) => part !== undefined);
 ---
 
-<article class="card">
+<article class="card" id={id}>
   <p class="kind">{project.kind}</p>
-  <h3>{project.title}</h3>
+  <h4>{project.title}</h4>
   <dl class="lines">
     <dt>{t("project.problem")}</dt>
     <dd>{project.problem}</dd>
@@ -88,6 +90,7 @@ const statusParts = [
     padding: var(--space-6);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    scroll-margin-block-start: var(--space-8);
     transition: border-color var(--duration-fast) var(--ease-out);
 
     &:has(a:hover) {
@@ -102,7 +105,7 @@ const statusParts = [
     font-weight: var(--font-weight-medium);
   }
 
-  h3 {
+  h4 {
     font-size: var(--text-xl);
   }
 

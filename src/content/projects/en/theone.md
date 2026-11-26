@@ -16,6 +16,12 @@ Unity 6 and the FishNet networking library. It is where I work on problems that
 business software rarely raises: real-time networking, animation and physical
 combat, all under a tight frame budget.
 
+## My role
+
+This is my personal project. I design and build the systems described below,
+from the authoritative server and client-side prediction to melee combat and
+the character tooling, along with the tests for each domain.
+
 ## Architecture choices
 
 - **Dedicated authoritative server.** The server owns the game state and
@@ -44,3 +50,16 @@ combat, all under a tight frame budget.
 
 A selective EditMode test gate runs the tests of the parts a change touches
 before it is merged, which keeps feedback fast as the project grows.
+
+## Current status
+
+A personal project in development. The game has not been released.
+
+## What I learned
+
+Making the server the only authority taught me to decide early which side
+owns each piece of state, and what the client may only predict.
+
+## Evidence
+
+Code private — walkthrough available on request.

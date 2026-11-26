@@ -33,6 +33,8 @@ const projects = defineCollection({
       confidential: z.boolean().default(false),
       /** With `confidential`: client work (the default), or the author's own private project. */
       clientWork: z.boolean().default(true),
+      /** Shown under "Featured work" on the home page; the rest go under "Other engineering projects". */
+      featured: z.boolean().default(false),
       /** Whether the project has its own case study page, or only a card. */
       caseStudy: z.boolean().default(true),
       /** Approved screenshots, shown on the case study page. */

@@ -6,6 +6,7 @@ problem: "Um QR-bill suíço precisa seguir regras rígidas de endereço, refer�
 contribution: "Defini o escopo, tomei as decisões de projeto e conferi cada etapa contra a norma."
 status: inDevelopment
 order: 2
+featured: true
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
 source: https://github.com/rodbrice/facture-qr
 ---
