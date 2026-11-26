@@ -1,7 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-import { hasDiagram } from "../../src/data/diagrams.ts";
+import { flowLabels } from "../../src/data/diagram-labels.ts";
+import { figureFor, hasDiagram } from "../../src/data/diagrams.ts";
 import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
 import { useTranslations } from "../../src/i18n/ui.ts";
 
@@ -20,6 +21,15 @@ const CASE_STUDIES = [
   "property-management",
   "plan-review",
   "theone",
+];
+/** The verified stage shown on each card, in display order. */
+const CARD_STATUSES = [
+  "Private client project · Final client validation",
+  "Public repository · In development",
+  "Private project · MVP in development",
+  "Public repository · Early development",
+  "Personal project",
+  "Experiment",
 ];
 /** Public projects: their case studies link to the source repository. */
 const PUBLIC_SOURCES: Record<string, string> = {
@@ -42,9 +52,87 @@ test.describe("project list", () => {
       "AGV dispatch simulation",
     ]);
     await expect(list.getByRole("link")).toHaveCount(CASE_STUDIES.length);
-    await list.getByRole("link", { name: "TheOne" }).click();
+    await list.getByRole("link", { name: "Read case study: TheOne" }).click();
     await expect(page).toHaveURL("/projects/theone/");
   });
+
+  test("cards give the problem, my contribution, a status and one action", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const cards = page
+      .getByRole("region", { name: "Selected projects" })
+      .locator(".project-list > li");
+    await expect(cards).toHaveCount(CARD_STATUSES.length);
+    for (const [index, status] of CARD_STATUSES.entries()) {
+      const card = cards.nth(index);
+      await expect(card.locator("dt")).toHaveText([
+        "Problem",
+        "My contribution",
+      ]);
+      for (const line of await card.locator("dd").allInnerTexts()) {
+        expect(line.length).toBeGreaterThan(20);
+        expect(line.length).toBeLessThanOrEqual(160);
+      }
+      const marker = card.locator(".status");
+      await expect(marker).toContainText(`Current status: ${status}`);
+      await expect(marker.locator("svg")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      const tags = card.getByRole("list", { name: "Technologies" });
+      expect(await tags.getByRole("listitem").count()).toBeLessThanOrEqual(6);
+      // Tags stay secondary: smaller than the problem and contribution lines.
+      const size = (locator: typeof tags) =>
+        locator.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+      expect(await size(tags)).toBeLessThan(
+        await size(card.locator("dd").first()),
+      );
+      expect(await card.getByRole("link").count()).toBeLessThanOrEqual(1);
+    }
+    // Without a case study or public code, the card names the project private.
+    const agv = cards.last();
+    await expect(agv.getByRole("link")).toHaveCount(0);
+    await expect(agv.locator(".action")).toHaveText("Private project");
+  });
+
+  test("every card action leads to a page that exists", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/");
+    const links = page.locator(".project-list a");
+    for (const href of await links.evaluateAll((all) =>
+      all.map((link) => link.getAttribute("href") ?? ""),
+    )) {
+      expect(href).toMatch(/^\/projects\/[a-z-]+\/$/);
+      expect((await request.get(href)).status()).toBe(200);
+    }
+  });
+
+  for (const locale of LOCALES.filter((other) => other !== "en")) {
+    test(`cards are localized in ${locale}`, async ({ page }) => {
+      const t = useTranslations(locale);
+      await page.goto(localizePath("/", locale));
+      const first = page.locator(".project-list > li").first();
+      await expect(first.locator("dt")).toHaveText([
+        t("project.problem"),
+        t("project.contribution"),
+      ]);
+      await expect(first.locator(".status")).toContainText(
+        `${t("project.clientProject")} · ${t("status.clientValidation")}`,
+      );
+      await expect(
+        first.getByRole("link", { name: new RegExp(t("project.readCase")) }),
+      ).toHaveAttribute(
+        "href",
+        localizePath("/projects/field-operations/", locale),
+      );
+      await expect(page.locator(".project-list .action").last()).toHaveText(
+        t("project.privateProject"),
+      );
+    });
+  }
 
   test("is reachable from the main call to action", async ({ page }) => {
     await page.goto("/");
@@ -73,6 +161,52 @@ for (const locale of LOCALES) {
         await expect(page).toHaveURL(`${localizePath("/", locale)}#projects`);
       });
 
+      test("opens with the story, status and contribution before the facts", async ({
+        page,
+      }) => {
+        await page.goto(url);
+        const callouts = page.locator(".callouts");
+        await expect(callouts.locator("dt")).toHaveText([
+          t("project.status"),
+          t("project.contribution"),
+        ]);
+        await expect(callouts.locator(".status svg")).toHaveAttribute(
+          "aria-hidden",
+          "true",
+        );
+        await expect(callouts.locator("dd").last()).not.toBeEmpty();
+        // Document order: header callouts, then the story, then the facts.
+        const order = await page.evaluate(() => {
+          const at = (selector: string) =>
+            [...document.querySelectorAll("*")].findIndex((el) =>
+              el.matches(selector),
+            );
+          return [at(".callouts"), at(".story h2"), at("#facts")];
+        });
+        expect(order[0]).toBeGreaterThan(-1);
+        expect(order).toEqual([...order].sort((a, b) => a - b));
+        const index = page.getByRole("navigation", { name: t("nav.sections") });
+        await expect(index.getByRole("link").first()).toHaveAttribute(
+          "href",
+          `#${(await page.locator(".story h2").getAttribute("id")) ?? ""}`,
+        );
+        // The index lists every target in page order, each exactly once.
+        const hrefs = await index
+          .getByRole("link")
+          .evaluateAll((links) => links.map((l) => l.getAttribute("href")));
+        const targets = await page.evaluate((ids) => {
+          const all = [...document.querySelectorAll("*")];
+          return ids.map((id) =>
+            all.findIndex(
+              (el) => el.id === decodeURIComponent((id ?? "").slice(1)),
+            ),
+          );
+        }, hrefs);
+        expect(targets.every((position) => position > -1)).toBe(true);
+        expect(targets).toEqual([...targets].sort((a, b) => a - b));
+        expect(new Set(hrefs).size).toBe(hrefs.length);
+      });
+
       test("shows facts, its diagram if any and a localized next project", async ({
         page,
       }) => {
@@ -80,13 +214,36 @@ for (const locale of LOCALES) {
         await expect(
           page.getByRole("heading", { name: t("project.facts"), exact: true }),
         ).toBeVisible();
-        await expect(page.locator("dl")).toContainText(t("project.type"));
+        await expect(page.locator("dl.facts")).toContainText(t("project.type"));
+        const figure = figureFor(slug);
         const diagram = page.getByRole("img", {
           name: t("project.architecture"),
           exact: true,
         });
         const index = page.getByRole("navigation", { name: t("nav.sections") });
-        if (hasDiagram(slug)) {
+        if (figure?.kind === "flow") {
+          const caption = page.locator("figure#diagram figcaption");
+          await expect(caption).toHaveText(
+            `${t("project.figure")} 1. ${t(figure.title)}. ${t("project.synthetic")}`,
+          );
+          await expect(
+            page.getByRole("figure", { name: new RegExp(t(figure.title)) }),
+          ).toBeVisible();
+          const flow = page.getByRole("list", { name: t(figure.title) });
+          const { steps, outputs, formats } = flowLabels[locale];
+          await expect(flow.locator(":scope > li > strong")).toHaveText([
+            ...steps.map(({ title }) => title),
+            outputs,
+          ]);
+          await expect(flow.locator(".formats li")).toHaveText(formats);
+          // Synthetic and schematic: no figures, values or screenshots.
+          expect(await flow.innerText()).not.toMatch(/\d/);
+          await expect(page.locator("figure#diagram img")).toHaveCount(0);
+          await expect(diagram).toHaveCount(0);
+          await expect(index.locator('a[href="#diagram"]')).toHaveText(
+            new RegExp(t(figure.title)),
+          );
+        } else if (hasDiagram(slug)) {
           await expect(diagram).toBeVisible();
           await expect(page.locator("figure#diagram")).toContainText(
             `${t("project.figure")} 1.`,
@@ -96,23 +253,22 @@ for (const locale of LOCALES) {
           );
           await expect(index.locator('a[href="#diagram"]')).toHaveCount(1);
           const labels =
-            slug === "field-operations"
-              ? ["React + TypeScript", "ASP.NET Core", "PostgreSQL"]
-              : slug === "property-management"
-                ? {
-                    en: ["Domain", "Application", "Infrastructure · API"],
-                    pt: ["Domínio", "Aplicação", "Infraestrutura · API"],
-                    fr: ["Domaine", "Application", "Infrastructure · API"],
-                  }[locale]
-                : {
-                    en: ["Client", "Dedicated server"],
-                    pt: ["Cliente", "Servidor dedicado"],
-                    fr: ["Client", "Serveur dédié"],
-                  }[locale];
+            slug === "property-management"
+              ? {
+                  en: ["Domain", "Application", "Infrastructure · API"],
+                  pt: ["Domínio", "Aplicação", "Infraestrutura · API"],
+                  fr: ["Domaine", "Application", "Infrastructure · API"],
+                }[locale]
+              : {
+                  en: ["Client", "Dedicated server"],
+                  pt: ["Cliente", "Servidor dedicado"],
+                  fr: ["Client", "Serveur dédié"],
+                }[locale];
           for (const label of labels) {
             await expect(diagram).toContainText(label);
           }
         } else {
+          expect(figure).toBeUndefined();
           // No approved diagram: no figure, and no index entry pointing to one.
           await expect(diagram).toHaveCount(0);
           await expect(page.locator("figure")).toHaveCount(0);
@@ -146,7 +302,10 @@ for (const locale of LOCALES) {
           await first.evaluate((el) => getComputedStyle(el).outlineStyle),
         ).toBe("solid");
         await page.keyboard.press("Enter");
-        await expect(page).toHaveURL(`${url}#facts`);
+        await expect(page).toHaveURL(
+          `${url}${(await first.getAttribute("href")) ?? ""}`,
+        );
+        await expect(page.locator(".story h2")).toBeInViewport();
         for (const link of await index.getByRole("link").all()) {
           const href = (await link.getAttribute("href")) ?? "";
           await link.focus();
@@ -166,7 +325,7 @@ for (const locale of LOCALES) {
           exact: true,
         });
         const scrolls =
-          hasDiagram(slug) &&
+          figureFor(slug)?.kind === "architecture" &&
           (await scrollRegion.evaluate(
             (el) => el.scrollWidth > el.clientWidth,
           ));
@@ -193,7 +352,7 @@ for (const locale of LOCALES) {
         const context = await browser.newContext({ javaScriptEnabled: false });
         const page = await context.newPage();
         await page.goto(`${baseURL ?? "http://localhost:4321"}${url}`);
-        if (hasDiagram(slug)) {
+        if (figureFor(slug)?.kind === "architecture") {
           await expect(
             page.getByRole("img", {
               name: t("project.architecture"),
@@ -201,13 +360,17 @@ for (const locale of LOCALES) {
             }),
           ).toBeVisible();
         }
-        const second = page
+        if (figureFor(slug)?.kind === "flow") {
+          await expect(page.locator("figure#diagram ol > li")).toHaveCount(5);
+        }
+        const links = page
           .getByRole("navigation", { name: t("nav.sections") })
-          .getByRole("link")
-          .nth(1);
-        const href = (await second.getAttribute("href")) ?? "";
+          .getByRole("link");
+        await expect(links.nth(1)).toHaveAttribute("href", "#facts");
+        const target = hasDiagram(slug) ? links.nth(2) : links.nth(1);
+        const href = (await target.getAttribute("href")) ?? "";
         if (hasDiagram(slug)) expect(href).toBe("#diagram");
-        await second.click();
+        await target.click();
         await expect(page).toHaveURL(`${url}${href}`);
         await expect(
           page.locator(`[id="${decodeURIComponent(href.slice(1))}"]`),
@@ -223,12 +386,28 @@ for (const locale of LOCALES) {
         const repositoryLinks = page.locator(
           '.prose a[href^="https://github.com/"]',
         );
+        const evidence = page.locator("dl.facts dt", {
+          hasText: t("project.evidence"),
+        });
         if (source === undefined) {
           await expect(repositoryLinks).toHaveCount(0);
+          await expect(
+            page.locator('dl.facts a[href^="https://github.com/"]'),
+          ).toHaveCount(0);
         } else {
           await expect(
             page.locator(".prose").locator(`a[href="${source}"]`),
           ).toHaveCount(1);
+          await expect(evidence).toHaveCount(1);
+          await expect(
+            page.locator(`dl.facts a[href="${source}"]`),
+          ).toContainText(t("project.publicRepository"));
+        }
+        if (slug === "field-operations" || slug === "property-management") {
+          await expect(evidence).toHaveCount(1);
+          await expect(page.locator("dl.facts")).toContainText(
+            t("project.walkthrough"),
+          );
         }
       });
 

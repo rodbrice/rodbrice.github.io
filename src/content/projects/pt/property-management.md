@@ -1,7 +1,10 @@
 ---
 title: Aplicação de gestão imobiliária
-kind: Projeto privado · MVP em desenvolvimento
+kind: Backend de aplicação de negócio
 summary: Administrar unidades alugadas exige manter coerentes os contratos, as leituras de medidores, os custos de energia e as cobranças mensais. Estou desenvolvendo o MVP de uma aplicação para isso, com backend em ASP.NET Core e PostgreSQL.
+problem: "Contratos, leituras de medidores, custos de energia e cobranças mensais de unidades alugadas precisam ser coerentes."
+contribution: "Estou projetando e desenvolvendo a aplicação, do modelo de dados à API."
+status: mvpInDevelopment
 order: 3
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true

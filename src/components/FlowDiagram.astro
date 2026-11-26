@@ -1,0 +1,117 @@
+---
+import { flowLabels } from "../data/diagram-labels";
+import type { Locale } from "../i18n/locales";
+
+interface Props {
+  locale: Locale;
+  /** Accessible name of the step list. */
+  label: string;
+}
+
+const { locale, label } = Astro.props;
+const f = flowLabels[locale];
+/** The first two steps happen in the field, the others in the office. */
+const FIELD_STEPS = 2;
+---
+
+<ol class="flow" aria-label={label}>
+  {f.steps.map(({ title, detail }, index) => (
+    <li class:list={["step", { office: index >= FIELD_STEPS }]}>
+      <span class="place">{index < FIELD_STEPS ? f.field : f.office}</span>
+      <strong>{title}</strong>
+      <span class="detail">{detail}</span>
+    </li>
+  ))}
+  <li class="step office outputs">
+    <span class="place">{f.office}</span>
+    <strong>{f.outputs}</strong>
+    <ul class="formats">
+      {f.formats.map((format) => (
+        <li>{format}</li>
+      ))}
+    </ul>
+  </li>
+</ol>
+
+<style>
+  .flow {
+    --arrow: var(--space-6);
+
+    display: grid;
+    gap: var(--arrow);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    counter-increment: step;
+
+    &.office {
+      border-color: var(--color-accent);
+      background: var(--color-accent-soft);
+    }
+
+    /* A drawn arrow to the next step: down when stacked, right in a row. */
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      inset-block-start: calc(100% + var(--arrow) / 2 - 0.3rem);
+      inset-inline-start: calc(50% - 0.3rem);
+      inline-size: 0.6rem;
+      block-size: 0.6rem;
+      border-block-end: 1.5px solid var(--color-accent);
+      border-inline-end: 1.5px solid var(--color-accent);
+      rotate: 45deg;
+
+      @media (width >= 48rem) {
+        inset-block-start: calc(50% - 0.3rem);
+        inset-inline-start: calc(100% + var(--arrow) / 2 - 0.45rem);
+        rotate: -45deg;
+      }
+    }
+  }
+
+  .place {
+    color: var(--color-text-muted);
+    font-family: var(--font-technical);
+    font-size: var(--text-xs);
+
+    &::before {
+      content: counter(step) " · " / "";
+    }
+  }
+
+  strong {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-tight);
+  }
+
+  .detail,
+  .formats {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .formats {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-technical);
+  }
+</style>

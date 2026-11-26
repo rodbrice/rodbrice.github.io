@@ -1,9 +1,13 @@
 ---
 title: Facture QR — faturação com QR-bill suíço
-kind: Repositório público · Em desenvolvimento
+kind: Núcleo de faturação QR-bill
 summary: Um QR-bill suíço precisa seguir regras rígidas de endereço, referência e IBAN. Estou construindo em pequenas etapas verificadas um núcleo de faturação em .NET — biblioteca QR-bill, armazenamento em PostgreSQL, API HTTP local — e publico as verificações de cada etapa.
+problem: "Um QR-bill suíço precisa seguir regras rígidas de endereço, referência e IBAN."
+contribution: "Defini o escopo, tomei as decisões de projeto e conferi cada etapa contra a norma."
+status: inDevelopment
 order: 2
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
+source: https://github.com/rodbrice/facture-qr
 ---
 
 ## O problema

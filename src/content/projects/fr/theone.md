@@ -2,6 +2,9 @@
 title: TheOne
 kind: Systèmes de jeu multijoueur
 summary: Un jeu de survie à la première personne dans un univers de dark fantasy, en Unity 6, avec un serveur dédié autoritaire, une prédiction côté client et un combat au corps à corps physique.
+problem: "Réseau en temps réel, animation et combat physique doivent tenir dans un budget de frame serré."
+contribution: "Je travaille sur le serveur autoritaire, la prédiction côté client et le combat au corps à corps."
+status: personal
 order: 5
 stack: [C#, Unity 6, FishNet, Blender]
 ---

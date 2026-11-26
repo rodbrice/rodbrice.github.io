@@ -101,12 +101,18 @@ the home page (schema in `src/content.config.ts`) and the body is the case
 study at `/projects/<slug>/`. Set `caseStudy: false` for a card without a page,
 and `confidential: true` for private code, which adds a note that names, screens
 and code are withheld; add `clientWork: false` when it is a private project of
-the author's rather than client work. Architecture diagrams are drawn per
-project in `src/components/Diagram.astro` and listed in `src/data/diagrams.ts`;
-a case study without one has no figure. Screenshots go in `src/assets/` and are listed under
-`media`; Astro serves them as responsive AVIF/WebP. The build fails if a
-project is missing in a language or its translations disagree on order, stack
-or `caseStudy`.
+the author's rather than client work. Each card shows a one-line `problem`,
+a one-line `contribution`, a `status` (labelled per language in
+`src/i18n/ui.ts`), at most six `stack` tags and one action: the case study,
+else the public `source`, else a private-project note. Case studies open with
+their first section, the business story, before the facts and figure. Figures
+are listed in `src/data/diagrams.ts`: SVG architecture diagrams in
+`src/components/Diagram.astro`, the field-to-office flow in
+`src/components/FlowDiagram.astro`; a case study without one has no figure.
+Screenshots go in `src/assets/` and are listed under `media`; Astro serves them
+as responsive AVIF/WebP. The build fails if a project is missing in a language,
+its translations disagree on order, stack, `caseStudy`, `status`, visibility or
+`source`, or its card would have no action.
 
 ## Project structure
 
