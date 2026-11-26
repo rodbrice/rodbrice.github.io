@@ -6,6 +6,7 @@ problem: "Les chefs d’équipe consignaient le travail sur papier ; le bureau l
 contribution: "J’ai conçu et développé la saisie sur tablette hors ligne, le backend et l’application de bureau."
 status: clientValidation
 order: 1
+featured: true
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true
 ---

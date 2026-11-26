@@ -78,7 +78,14 @@ test.describe("section index", () => {
   }) => {
     await page.goto("/#experience");
     const index = page.getByRole("navigation", { name: "On this page" });
-    for (const id of ["experience", "contact", "skills", "about", "projects"]) {
+    for (const id of [
+      "experience",
+      "contact",
+      "skills",
+      "about",
+      "approach",
+      "projects",
+    ]) {
       await page.locator(`#${id}`).evaluate((section) => {
         section.scrollIntoView();
       });
@@ -174,7 +181,7 @@ test.describe("narrow screens", () => {
                 column.getBoundingClientRect().right + 0.5
               );
             })
-            .map((card) => card.querySelector("h3")?.textContent ?? ""),
+            .map((card) => card.querySelector("h4")?.textContent ?? ""),
         );
       expect(overflowing).toEqual([]);
     });

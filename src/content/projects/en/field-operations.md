@@ -6,6 +6,7 @@ problem: "Field teams recorded daily work on paper; office staff re-entered it i
 contribution: "I designed and built the offline-capable tablet workflow, the backend and the office application."
 status: clientValidation
 order: 1
+featured: true
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true
 ---

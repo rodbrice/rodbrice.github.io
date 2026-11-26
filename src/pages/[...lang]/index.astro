@@ -9,13 +9,22 @@ import ButtonLink from "../../components/ButtonLink.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import SectionIndex from "../../components/SectionIndex.astro";
 import Timeline from "../../components/Timeline.astro";
-import { SKILLS, TIMELINE } from "../../data/experience";
+import {
+  AI_ASSISTED_DEVELOPMENT,
+  SKILLS,
+  TIMELINE,
+} from "../../data/experience";
 import { PROFILES } from "../../data/profile";
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../i18n/locales";
 import type { Locale } from "../../i18n/locales";
 import { useTranslations } from "../../i18n/ui";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { projectsFor } from "../../lib/projects";
+import {
+  cardId,
+  projectPath,
+  projectsFor,
+  splitFeatured,
+} from "../../lib/projects";
 
 export const getStaticPaths = (() =>
   LOCALES.map((locale) => ({
@@ -30,6 +39,23 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const projects = projectsFor(await getCollection("projects"), locale);
+const groups = splitFeatured(projects);
+const projectGroups = [
+  { id: "featured", title: t("projects.featured"), list: groups.featured },
+  { id: "other", title: t("projects.other"), list: groups.other },
+];
+const bySlug = new Map(projects.map((project) => [project.slug, project]));
+/** A skill group's projects, by the part of their title before any dash. */
+const skillProjects = (slugs: readonly string[]) =>
+  slugs.map((slug) => {
+    const project = bySlug.get(slug);
+    if (!project) throw new Error(`Skill group names unknown project ${slug}`);
+    return {
+      name: project.data.title.split(" — ")[0] ?? project.data.title,
+      href: localizePath(projectPath(slug, project.data), locale),
+    };
+  });
+const steps = ["understand", "prototype", "build", "review"] as const;
 
 // Structured data so search engines can tie the site to its author and profiles.
 const person = {
@@ -38,7 +64,13 @@ const person = {
   name: "Roduit Brice",
   url: new URL(localizePath("/", locale), Astro.site).href,
   jobTitle: t("meta.jobTitle"),
-  knowsAbout: ["C#", ".NET", "React", "TypeScript", "AI-assisted development"],
+  knowsAbout: [
+    "C#",
+    ".NET",
+    "React",
+    "TypeScript",
+    AI_ASSISTED_DEVELOPMENT[locale],
+  ],
   sameAs: [PROFILES.github, PROFILES.linkedin],
 };
 ---
@@ -90,29 +122,59 @@ const person = {
           </span>
           {t("projects.title")}
         </h2>
-        <ol class="project-list">
-          {projects.map(({ slug, data }) => (
+        {projectGroups.map(({ id, title, list }) => (
+          <section
+            class="project-group"
+            aria-labelledby={`${id}-title`}
+            data-group={id}
+          >
+            <h3 id={`${id}-title`}>{title}</h3>
+            <ol class="project-list">
+              {list.map(({ slug, data }) => (
+                <li>
+                  <ProjectCard
+                    project={data}
+                    id={cardId(slug)}
+                    href={
+                      data.caseStudy
+                        ? localizePath(`/projects/${slug}/`, locale)
+                        : undefined
+                    }
+                    locale={locale}
+                  />
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+        <NetworkSimulation locale={locale} />
+        <DispatchSimulation locale={locale} />
+      </section>
+
+      <section id="approach" class="approach" aria-labelledby="approach-title">
+        <h2 data-reveal id="approach-title">
+          <span class="section-number" aria-hidden="true">
+            02
+          </span>
+          {t("approach.title")}
+        </h2>
+        <ol class="steps">
+          {steps.map((step, index) => (
             <li>
-              <ProjectCard
-                project={data}
-                href={
-                  data.caseStudy
-                    ? localizePath(`/projects/${slug}/`, locale)
-                    : undefined
-                }
-                locale={locale}
-              />
+              <span class="step-number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3>{t(`approach.${step}.title`)}</h3>
+              <p>{t(`approach.${step}.body`)}</p>
             </li>
           ))}
         </ol>
-        <NetworkSimulation locale={locale} />
-        <DispatchSimulation locale={locale} />
       </section>
 
       <section id="about" class="about" aria-labelledby="about-title">
         <h2 data-reveal id="about-title">
           <span class="section-number" aria-hidden="true">
-            02
+            03
           </span>
           {t("about.title")}
         </h2>
@@ -129,7 +191,7 @@ const person = {
       >
         <h2 data-reveal id="experience-title">
           <span class="section-number" aria-hidden="true">
-            03
+            04
           </span>
           {t("experience.title")}
         </h2>
@@ -139,19 +201,35 @@ const person = {
       <section id="skills" class="skills" aria-labelledby="skills-title">
         <h2 data-reveal id="skills-title">
           <span class="section-number" aria-hidden="true">
-            04
+            05
           </span>
           {t("skills.title")}
         </h2>
         <ul class="skill-groups">
-          {SKILLS.map(({ label, skills }) => (
+          {SKILLS.map(({ label, skills, projects: slugs }) => (
             <li>
               <h3>{label[locale]}</h3>
-              <ul class="technology-list" aria-label={label[locale]}>
-                {skills.map((skill) => (
-                  <li>{skill[locale]}</li>
-                ))}
-              </ul>
+              <div class="skill-detail">
+                <ul class="technology-list" aria-label={label[locale]}>
+                  {skills.map((skill) => (
+                    <li>{skill[locale]}</li>
+                  ))}
+                </ul>
+                <p class="used-in">
+                  <span>
+                    {t("skills.usedIn")}
+                    {locale === "fr" ? "\u00a0:" : ":"}
+                  </span>{" "}
+                  <span class="used-in-links">
+                    {skillProjects(slugs).map(({ name, href }, index) => (
+                      <>
+                        {index > 0 && ", "}
+                        <a href={href}>{name}</a>
+                      </>
+                    ))}
+                  </span>
+                </p>
+              </div>
             </li>
           ))}
         </ul>
@@ -160,7 +238,7 @@ const person = {
       <section id="contact" class="contact" aria-labelledby="contact-title">
         <h2 data-reveal id="contact-title">
           <span class="section-number" aria-hidden="true">
-            05
+            06
           </span>
           {t("contact.title")}
         </h2>
@@ -243,6 +321,7 @@ const person = {
   }
 
   .projects,
+  .approach,
   .about,
   .experience,
   .skills,
@@ -258,6 +337,52 @@ const person = {
     align-items: baseline;
     gap: var(--space-4);
     font-size: var(--text-2xl);
+  }
+
+  .project-group {
+    display: grid;
+    gap: var(--space-4);
+
+    & + & {
+      margin-block-start: var(--space-6);
+    }
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      display: grid;
+      align-content: start;
+      gap: var(--space-2);
+      padding-block-start: var(--space-4);
+      border-block-start: 1px solid var(--color-border);
+    }
+
+    & p {
+      color: var(--color-text-muted);
+    }
+  }
+
+  .step-number {
+    color: var(--color-accent);
+    font-family: var(--font-technical);
+    font-size: var(--text-sm);
+  }
+
+  .skill-detail {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+
+  .used-in {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
   }
 
   .project-list {

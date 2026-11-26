@@ -86,12 +86,24 @@ export const TIMELINE: readonly TimelineEntry[] = [
 export interface SkillGroup {
   label: Localized;
   skills: readonly Localized[];
+  /**
+   * Slugs of the projects where these skills appear, in display order. Each
+   * one must be supported by the project's stack or case study.
+   */
+  projects: readonly string[];
 }
 
 /** Proper names read the same in every language. */
 function same(name: string): Localized {
   return { en: name, pt: name, fr: name };
 }
+
+/** How AI tools are part of the work, without naming a vendor or a product. */
+export const AI_ASSISTED_DEVELOPMENT: Localized = {
+  en: "AI-assisted development (supervised coding agents)",
+  pt: "Desenvolvimento assistido por IA (agentes de programação supervisionados)",
+  fr: "Développement assisté par IA (agents de programmation supervisés)",
+};
 
 /** Technologies named in the timeline above or in the projects, plus the AI-assisted way of working. */
 export const SKILLS: readonly SkillGroup[] = [
@@ -103,10 +115,17 @@ export const SKILLS: readonly SkillGroup[] = [
       same("ASP.NET Core"),
       { en: "REST APIs", pt: "APIs REST", fr: "API REST" },
     ],
+    projects: [
+      "field-operations",
+      "facture-qr",
+      "property-management",
+      "theone",
+    ],
   },
   {
     label: same("Frontend"),
     skills: [same("React"), same("TypeScript")],
+    projects: ["field-operations"],
   },
   {
     label: { en: "Data", pt: "Dados", fr: "Données" },
@@ -118,6 +137,7 @@ export const SKILLS: readonly SkillGroup[] = [
         fr: "Bases de données relationnelles",
       },
     ],
+    projects: ["field-operations", "facture-qr", "property-management"],
   },
   {
     label: {
@@ -134,21 +154,38 @@ export const SKILLS: readonly SkillGroup[] = [
       same("Docker"),
       same("CI/CD"),
     ],
+    projects: [
+      "field-operations",
+      "facture-qr",
+      "property-management",
+      "plan-review",
+      "theone",
+    ],
   },
   {
     label: {
-      en: "AI-assisted development",
-      pt: "Desenvolvimento assistido por IA",
-      fr: "Développement assisté par IA",
+      en: "Automation and tooling",
+      pt: "Automação e ferramentas",
+      fr: "Automatisation et outillage",
     },
+    skills: [same("Python")],
+    projects: ["plan-review", "agv-dispatch"],
+  },
+  {
+    label: AI_ASSISTED_DEVELOPMENT,
     skills: [
-      same("Claude Code"),
       { en: "Code review", pt: "Revisão de código", fr: "Revue de code" },
       {
         en: "Automated testing",
         pt: "Testes automatizados",
         fr: "Tests automatisés",
       },
+    ],
+    projects: [
+      "field-operations",
+      "facture-qr",
+      "property-management",
+      "plan-review",
     ],
   },
   {
@@ -157,6 +194,7 @@ export const SKILLS: readonly SkillGroup[] = [
       pt: "Jogos e simulação",
       fr: "Jeux et simulation",
     },
-    skills: [same("Unity"), same("FishNet"), same("Blender"), same("Python")],
+    skills: [same("Unity"), same("FishNet"), same("Blender")],
+    projects: ["theone"],
   },
 ];

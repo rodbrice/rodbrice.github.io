@@ -6,6 +6,7 @@ problem: "As equipes registravam o trabalho diário em papel; o escritório redi
 contribution: "Projetei e desenvolvi o fluxo offline no tablet, o backend e a aplicação de escritório."
 status: clientValidation
 order: 1
+featured: true
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true
 ---

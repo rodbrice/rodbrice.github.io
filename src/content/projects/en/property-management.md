@@ -47,6 +47,14 @@ The code has unit, integration and architecture tests, with integration tests
 running against a real PostgreSQL database. This is a private project and an
 MVP in development; this page makes no claim about deployment or use.
 
+## What I learned and next steps
+
+Writing the rules down before the code gave me something concrete to review
+each change against. Rules that must never break, such as insert-only records
+and the rounding of money, proved easier to trust once the database and the
+tests enforced them rather than review alone. The next step is to complete the
+MVP; there are no users yet.
+
 ## Evidence
 
 The code is private. I can walk through these decisions in an interview.

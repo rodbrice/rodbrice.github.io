@@ -6,6 +6,7 @@ problem: "Une QR-facture suisse doit respecter des règles strictes d’adresse,
 contribution: "J’ai fixé le périmètre, pris les décisions de conception et vérifié chaque étape par rapport à la norme."
 status: inDevelopment
 order: 2
+featured: true
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
 source: https://github.com/rodbrice/facture-qr
 ---

@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 
-import { parseProjectId, primaryAction, projectsFor } from "./projects.ts";
+import {
+  parseProjectId,
+  primaryAction,
+  projectPath,
+  projectsFor,
+  splitFeatured,
+} from "./projects.ts";
 import type { ProjectEntry, ProjectFacts } from "./projects.ts";
 
 const facts: ProjectFacts = {
   order: 1,
   stack: ["C#", "Unity"],
   caseStudy: true,
+  featured: false,
   status: "inDevelopment",
   confidential: false,
   clientWork: true,
@@ -68,6 +75,7 @@ describe("projectsFor", () => {
 
   it.each<[string, Partial<ProjectFacts>]>([
     ["status", { status: "experiment" }],
+    ["featured flag", { featured: true }],
     ["visibility", { confidential: true }],
     ["kind of private work", { clientWork: false }],
     ["source", { source: "https://github.com/rodbrice/other" }],
@@ -124,6 +132,34 @@ describe("primaryAction", () => {
   it("refuses a card that would lead nowhere", () => {
     expect(() => primaryAction({ ...facts, caseStudy: false })).toThrow(
       "needs a case study",
+    );
+  });
+});
+
+describe("splitFeatured", () => {
+  it("keeps the display order within each group", () => {
+    const projects = [
+      { slug: "a", data: { featured: true } },
+      { slug: "b", data: { featured: false } },
+      { slug: "c", data: { featured: true } },
+      { slug: "d", data: { featured: false } },
+    ];
+    const { featured, other } = splitFeatured(projects);
+    expect(featured.map(({ slug }) => slug)).toEqual(["a", "c"]);
+    expect(other.map(({ slug }) => slug)).toEqual(["b", "d"]);
+  });
+});
+
+describe("projectPath", () => {
+  it("leads to the case study when there is one", () => {
+    expect(projectPath("theone", { caseStudy: true })).toBe(
+      "/projects/theone/",
+    );
+  });
+
+  it("leads to the card on the home page otherwise", () => {
+    expect(projectPath("agv-dispatch", { caseStudy: false })).toBe(
+      "/#project-agv-dispatch",
     );
   });
 });

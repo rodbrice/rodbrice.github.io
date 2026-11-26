@@ -52,6 +52,15 @@ d’intégration s’exécutent sur une vraie base PostgreSQL. Il s’agit d’u
 privé et d’un MVP en développement ; cette page n’affirme rien sur un
 déploiement ou une utilisation.
 
+## Ce que j’ai appris et prochaines étapes
+
+Écrire les règles avant le code m’a donné une référence concrète pour relire
+chaque changement. Les règles qui ne doivent jamais être enfreintes, comme les
+enregistrements en insertion seule et l’arrondi des montants, inspirent plus
+confiance quand la base de données et les tests les imposent, plutôt que la
+seule relecture. La prochaine étape est de terminer le MVP ; il n’a pas encore
+d’utilisateurs.
+
 ## Éléments vérifiables
 
 Le code est privé. Je peux présenter ces choix lors d’un entretien.

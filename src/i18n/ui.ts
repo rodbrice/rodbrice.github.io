@@ -18,6 +18,8 @@ const en = {
   "home.projectsLink": "View projects",
   "home.contactLink": "Contact",
   "projects.title": "Selected projects",
+  "projects.featured": "Featured work",
+  "projects.other": "Other engineering projects",
   "project.back": "All projects",
   "project.stack": "Technologies",
   "project.confidential":
@@ -58,8 +60,22 @@ const en = {
     "Software developer based in Switzerland, working professionally as a freelancer since 2023. I build backend and full-stack applications in C#/.NET, React and TypeScript, with a particular interest in software architecture, automation, testing and business software. I use AI tools to move faster without giving up control: I design the architecture, review every change and only ship what is tested.",
   "about.availability":
     "I am open to software developer positions in Switzerland and to freelance projects.",
+  "approach.title": "How I work",
+  "approach.understand.title": "Understand the workflow",
+  "approach.understand.body":
+    "I start from how the work is done today, working directly with the people who do it to clarify their rules.",
+  "approach.prototype.title": "Prototype and validate",
+  "approach.prototype.body":
+    "Before implementation, I check the rules and interactive prototypes with the people who will use the software.",
+  "approach.build.title": "Build and test",
+  "approach.build.body":
+    "I build in small steps with supervised coding agents, review every change and check it with automated tests and continuous integration.",
+  "approach.review.title": "Review with users",
+  "approach.review.body":
+    "I review the result with the people who use it; the field operations system is now in final validation with the client.",
   "experience.title": "Experience and education",
   "skills.title": "Technologies",
+  "skills.usedIn": "Used in",
   "contact.title": "Contact",
   "contact.body": "You can reach me on LinkedIn or find my code on GitHub.",
   "notFound.pageTitle": "Page not found",
@@ -92,6 +108,8 @@ const pt: Dictionary = {
   "home.projectsLink": "Ver projetos",
   "home.contactLink": "Contato",
   "projects.title": "Projetos selecionados",
+  "projects.featured": "Trabalhos em destaque",
+  "projects.other": "Outros projetos de engenharia",
   "project.back": "Todos os projetos",
   "project.stack": "Tecnologias",
   "project.confidential":
@@ -132,8 +150,22 @@ const pt: Dictionary = {
     "Desenvolvedor de software baseado na Suíça, com experiência profissional como freelancer desde 2023. Desenvolvo aplicações backend e full stack em C#/.NET, React e TypeScript, com interesse particular em arquitetura de software, automação, testes e sistemas de negócio. Uso ferramentas de IA para ganhar velocidade, sem abrir mão do controle: eu defino a arquitetura, reviso cada mudança e só entrego o que está testado.",
   "about.availability":
     "Estou aberto a vagas de desenvolvedor de software na Suíça e a projetos freelance.",
+  "approach.title": "Como eu trabalho",
+  "approach.understand.title": "Entender o fluxo de trabalho",
+  "approach.understand.body":
+    "Parto de como o trabalho é feito hoje, diretamente com quem o faz, para esclarecer as regras.",
+  "approach.prototype.title": "Prototipar e validar",
+  "approach.prototype.body":
+    "Antes de implementar, confiro as regras e protótipos interativos com quem vai usar o software.",
+  "approach.build.title": "Desenvolver e testar",
+  "approach.build.body":
+    "Desenvolvo em pequenas etapas com agentes de programação sob minha supervisão, reviso cada mudança e a verifico com testes automatizados e integração contínua.",
+  "approach.review.title": "Revisar com os usuários",
+  "approach.review.body":
+    "Reviso o resultado com quem o usa; o sistema de gestão de operações em campo está agora em validação final com o cliente.",
   "experience.title": "Trajetória",
   "skills.title": "Tecnologias",
+  "skills.usedIn": "Usado em",
   "contact.title": "Contato",
   "contact.body":
     "Você pode falar comigo pelo LinkedIn ou ver meu código no GitHub.",
@@ -162,6 +194,8 @@ const fr: Dictionary = {
   "home.projectsLink": "Voir les projets",
   "home.contactLink": "Contact",
   "projects.title": "Projets choisis",
+  "projects.featured": "Projets phares",
+  "projects.other": "Autres projets d’ingénierie",
   "project.back": "Tous les projets",
   "project.stack": "Technologies",
   "project.confidential":
@@ -202,8 +236,22 @@ const fr: Dictionary = {
     "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier. J’utilise des outils d’IA pour aller plus vite, sans perdre le contrôle\u00a0: je conçois l’architecture, je relis chaque changement et je ne livre que ce qui est testé.",
   "about.availability":
     "Je suis ouvert à un poste de développeur logiciel en Suisse ainsi qu’à des missions freelance.",
+  "approach.title": "Ma façon de travailler",
+  "approach.understand.title": "Comprendre le processus",
+  "approach.understand.body":
+    "Je pars de la façon dont le travail se fait aujourd’hui, directement avec les personnes concernées, pour clarifier leurs règles.",
+  "approach.prototype.title": "Prototyper et valider",
+  "approach.prototype.body":
+    "Avant l’implémentation, je vérifie les règles et des prototypes interactifs avec les personnes qui utiliseront le logiciel.",
+  "approach.build.title": "Développer et tester",
+  "approach.build.body":
+    "Je développe par petites étapes avec des agents de programmation sous ma supervision, je relis chaque changement et je le vérifie par des tests automatisés et l’intégration continue.",
+  "approach.review.title": "Vérifier avec les utilisateurs",
+  "approach.review.body":
+    "Je valide le résultat avec les personnes qui l’utilisent\u00a0; le système de gestion des opérations de chantier est actuellement en validation finale par le client.",
   "experience.title": "Parcours",
   "skills.title": "Technologies",
+  "skills.usedIn": "Utilisé dans",
   "contact.title": "Contact",
   "contact.body":
     "Vous pouvez me contacter sur LinkedIn ou voir mon code sur GitHub.",

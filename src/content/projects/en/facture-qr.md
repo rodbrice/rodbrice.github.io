@@ -6,6 +6,7 @@ problem: "Swiss QR-bills must follow strict rules for addresses, references and 
 contribution: "I set the scope, made the design decisions and checked each step against the standard."
 status: inDevelopment
 order: 2
+featured: true
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
 source: https://github.com/rodbrice/facture-qr
 ---

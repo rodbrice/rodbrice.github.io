@@ -1,7 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-import { SKILLS, TIMELINE } from "../../src/data/experience.ts";
+import {
+  AI_ASSISTED_DEVELOPMENT,
+  SKILLS,
+  TIMELINE,
+} from "../../src/data/experience.ts";
 import { PROFILES } from "../../src/data/profile.ts";
 import { LOCALES, localizePath } from "../../src/i18n/locales.ts";
 import { useTranslations } from "../../src/i18n/ui.ts";
@@ -78,6 +82,7 @@ test.describe("home page", () => {
       const index = page.getByRole("navigation", { name: t("nav.sections") });
       const ids = [
         "projects",
+        "approach",
         "about",
         "experience",
         "skills",
@@ -125,6 +130,75 @@ test.describe("home page", () => {
         contact.getByRole("link", { name: "GitHub" }),
       ).toHaveAttribute("href", PROFILES.github);
       await expect(contact.getByRole("link")).toHaveCount(2);
+    });
+  }
+
+  for (const locale of LOCALES) {
+    const t = useTranslations(locale);
+
+    test(`explains how I work in four steps in ${locale}`, async ({ page }) => {
+      await page.goto(localizePath("/", locale));
+      const approach = page.getByRole("region", { name: t("approach.title") });
+      const steps = ["understand", "prototype", "build", "review"] as const;
+      await expect(approach.getByRole("listitem")).toHaveCount(steps.length);
+      await expect(approach.getByRole("heading", { level: 3 })).toHaveText(
+        steps.map((step) => t(`approach.${step}.title`)),
+      );
+      await expect(approach.locator("li p")).toHaveText(
+        steps.map((step) => t(`approach.${step}.body`)),
+      );
+    });
+
+    test(`links every skill group to the projects that show it in ${locale}`, async ({
+      page,
+      request,
+    }) => {
+      await page.goto(localizePath("/", locale));
+      const groups = page
+        .getByRole("region", { name: t("skills.title") })
+        .locator(".skill-groups > li");
+      await expect(groups).toHaveCount(SKILLS.length);
+      for (const [index, { projects }] of SKILLS.entries()) {
+        const links = groups.nth(index).locator(".used-in a");
+        await expect(links).toHaveCount(projects.length);
+        const hrefs = await links.evaluateAll((all) =>
+          all.map((link) => link.getAttribute("href") ?? ""),
+        );
+        for (const [position, slug] of projects.entries()) {
+          const href = hrefs[position] ?? "";
+          if (href.includes("#")) {
+            // A project without a case study: its card on this page.
+            expect(href).toBe(`${localizePath("/", locale)}#project-${slug}`);
+            await expect(page.locator(`#project-${slug}`)).toHaveCount(1);
+          } else {
+            expect(href).toBe(localizePath(`/projects/${slug}/`, locale));
+            expect((await request.get(href)).status()).toBe(200);
+          }
+        }
+      }
+      const python = groups.filter({
+        has: page.getByRole("listitem").filter({ hasText: /^Python$/ }),
+      });
+      await expect(python.locator(".used-in a").first()).toHaveAttribute(
+        "href",
+        localizePath("/projects/plan-review/", locale),
+      );
+    });
+
+    test(`names no AI vendor or product in ${locale}`, async ({ page }) => {
+      await page.goto(localizePath("/", locale));
+      const text = await page.locator("body").innerText();
+      const data = await page
+        .locator('script[type="application/ld+json"]')
+        .textContent();
+      for (const source of [text, data ?? ""]) {
+        expect(source).not.toMatch(
+          /claude|anthropic|openai|chatgpt|copilot|codex|cursor|gemini/i,
+        );
+      }
+      expect(JSON.parse(data ?? "")).toMatchObject({
+        knowsAbout: expect.arrayContaining([AI_ASSISTED_DEVELOPMENT[locale]]),
+      });
     });
   }
 

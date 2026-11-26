@@ -50,6 +50,14 @@ O código tem testes de unidade, integração e arquitetura; os testes de
 integração rodam contra um PostgreSQL real. É um projeto privado e um MVP em
 desenvolvimento; esta página não afirma nada sobre implantação ou uso.
 
+## O que aprendi e próximos passos
+
+Escrever as regras antes do código me deu uma referência concreta para revisar
+cada mudança. Regras que nunca podem ser quebradas, como os registros só de
+inserção e o arredondamento de valores, ficaram mais confiáveis quando o banco
+de dados e os testes passaram a garanti-las, e não só a revisão. O próximo
+passo é concluir o MVP; ainda não há usuários.
+
 ## Evidências
 
 O código é privado. Posso apresentar essas decisões numa entrevista.
