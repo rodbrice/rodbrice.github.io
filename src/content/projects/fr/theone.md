@@ -17,7 +17,7 @@ je travaille des problèmes que le logiciel métier pose rarement : réseau en
 temps réel, animation et combat physique, le tout dans un budget de frame
 serré.
 
-## Architecture
+## Choix d’architecture
 
 - **Serveur dédié autoritaire.** Le serveur détient l’état du jeu et valide
   chaque action ; un client ne décide jamais seul si un coup a porté.

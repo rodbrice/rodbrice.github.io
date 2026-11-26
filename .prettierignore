@@ -1,3 +1,5 @@
 dist/
 .astro/
 pnpm-lock.yaml
+# Local agent settings, excluded from git
+.claude/

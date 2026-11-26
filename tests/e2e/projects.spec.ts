@@ -154,6 +154,10 @@ for (const locale of LOCALES) {
       test("has a title, its technologies and a way back", async ({ page }) => {
         await page.goto(url);
         await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+        await expect(page.locator('meta[property="og:type"]')).toHaveAttribute(
+          "content",
+          "article",
+        );
         await expect(
           page.getByRole("list", { name: t("project.stack") }),
         ).toBeVisible();
@@ -205,6 +209,13 @@ for (const locale of LOCALES) {
         expect(targets.every((position) => position > -1)).toBe(true);
         expect(targets).toEqual([...targets].sort((a, b) => a - b));
         expect(new Set(hrefs).size).toBe(hrefs.length);
+        // Two entries never read the same, e.g. a figure named like a section.
+        const labels = await index
+          .getByRole("link")
+          .evaluateAll((links) =>
+            links.map((l) => l.textContent.replace(/^\s*\d+/, "").trim()),
+          );
+        expect(new Set(labels).size).toBe(labels.length);
       });
 
       test("shows facts, its diagram if any and a localized next project", async ({

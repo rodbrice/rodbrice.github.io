@@ -16,7 +16,7 @@ Unity 6 and the FishNet networking library. It is where I work on problems that
 business software rarely raises: real-time networking, animation and physical
 combat, all under a tight frame budget.
 
-## Architecture
+## Architecture choices
 
 - **Dedicated authoritative server.** The server owns the game state and
   validates every action; a client never decides on its own whether a hit

@@ -16,7 +16,7 @@ sombria, feito com Unity 6 e a biblioteca de rede FishNet. É onde eu trabalho
 problemas que software de negócio raramente traz: rede em tempo real, animação
 e combate físico, tudo dentro de um orçamento de frame apertado.
 
-## Arquitetura
+## Decisões de arquitetura
 
 - **Servidor dedicado autoritativo.** O servidor é dono do estado do jogo e
   valida cada ação; um cliente nunca decide sozinho se um golpe acertou.

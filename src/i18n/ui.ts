@@ -156,7 +156,7 @@ const fr: Dictionary = {
     "Roduit Brice, développeur full stack en Suisse. Je conçois des logiciels adaptés à des processus de travail réels avec C#/.NET, React et TypeScript.",
   "home.role": "Développeur full stack | C#/.NET · React · TypeScript",
   "home.lead":
-    "Je construis des logiciels adaptés à des processus de travail réels : comprendre les besoins, concevoir et développer la solution, la tester, puis la valider avec les utilisateurs.",
+    "Je construis des logiciels adaptés à des processus de travail réels\u00a0: comprendre les besoins, concevoir et développer la solution, la tester, puis la valider avec les utilisateurs.",
   "home.linkedinLink": "Profil LinkedIn",
   "home.githubLink": "Code sur GitHub",
   "home.projectsLink": "Voir les projets",
@@ -171,7 +171,7 @@ const fr: Dictionary = {
   "project.context": "Contexte",
   "project.clientWork": "Projet client, confidentiel",
   "project.private":
-    "Projet privé : le code et les écrans ne sont pas publics. Cette page ne présente que des informations générales sur le projet.",
+    "Projet privé\u00a0: le code et les écrans ne sont pas publics. Cette page ne présente que des informations générales sur le projet.",
   "project.privateWork": "Projet privé, code non public",
   "project.next": "Projet suivant",
   "project.architecture": "Architecture",
@@ -189,7 +189,7 @@ const fr: Dictionary = {
   "project.publicRepository": "Dépôt public",
   "project.evidence": "Éléments vérifiables",
   "project.walkthrough": "Présentation de l’architecture possible sur demande",
-  "project.flow": "Du terrain au bureau",
+  "project.flow": "Flux du terrain au bureau",
   "project.synthetic": "Illustration — données synthétiques.",
   "status.clientValidation": "Validation finale par le client",
   "status.inDevelopment": "En développement",
@@ -199,7 +199,7 @@ const fr: Dictionary = {
   "status.experiment": "Expérimentation",
   "about.title": "À propos",
   "about.body":
-    "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier. J'utilise des outils d'IA pour aller plus vite, sans perdre le contrôle : je conçois l'architecture, je relis chaque changement et je ne livre que ce qui est testé.",
+    "Développeur logiciel basé en Suisse, avec une expérience professionnelle freelance depuis 2023. Je conçois des applications backend et full stack en C#/.NET, React et TypeScript, avec un intérêt particulier pour l’architecture logicielle, l’automatisation, les tests et les systèmes métier. J’utilise des outils d’IA pour aller plus vite, sans perdre le contrôle\u00a0: je conçois l’architecture, je relis chaque changement et je ne livre que ce qui est testé.",
   "about.availability":
     "Je suis ouvert à un poste de développeur logiciel en Suisse ainsi qu’à des missions freelance.",
   "experience.title": "Parcours",
