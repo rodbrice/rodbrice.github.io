@@ -42,8 +42,11 @@ o fluxo de trabalho do escritório.
 ## Qualidade e estado atual
 
 A implementação inclui testes automatizados de integração, frontend e ponta a
-ponta. O cliente está testando o sistema na fase final de validação. Ainda não
-há confirmação de entrada em produção nem de impacto operacional.
+ponta: mais de 900 testes de integração, mais de 2.300 de frontend e mais de
+100 de ponta a ponta, além de mais de 60 decisões de arquitetura documentadas
+(novembro de 2026). O cliente está testando o sistema na fase final de
+validação. Ainda não há confirmação de entrada em produção nem de impacto
+operacional.
 
 ## Aprendizado e evidências
 

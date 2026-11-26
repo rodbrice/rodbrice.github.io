@@ -41,7 +41,9 @@ generating documents. The output formats follow that office workflow.
 
 ## Quality and current status
 
-The implementation has automated integration, frontend and end-to-end tests.
+The implementation has automated integration, frontend and end-to-end tests:
+900+ integration, 2,300+ frontend and 100+ end-to-end tests, with 60+
+architecture decision records (November 2026).
 The client is currently testing the system in final validation. Production
 rollout and operational impact have not been established.
 
