@@ -125,7 +125,7 @@ export const SKILLS: readonly SkillGroup[] = [
   {
     label: same("Frontend"),
     skills: [same("React"), same("TypeScript")],
-    projects: ["field-operations"],
+    projects: ["field-operations", "facture-qr"],
   },
   {
     label: { en: "Data", pt: "Dados", fr: "Données" },

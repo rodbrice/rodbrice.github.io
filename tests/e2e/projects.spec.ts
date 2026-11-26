@@ -25,7 +25,7 @@ const CASE_STUDIES = [
 /** The verified stage shown on each card, in display order. */
 const CARD_STATUSES = [
   "Private client project · Final client validation",
-  "Public repository · In development",
+  "Public repository · v0.1.0 released",
   "Private project · MVP in development",
   "Public repository · Early development",
   "Personal project",
@@ -150,6 +150,9 @@ test.describe("project list", () => {
       ]);
       await expect(first.locator(".status")).toContainText(
         `${t("project.clientProject")} · ${t("status.clientValidation")}`,
+      );
+      await expect(page.locator("#project-facture-qr .status")).toContainText(
+        `${t("project.publicRepository")} · ${t("status.firstRelease")}`,
       );
       await expect(
         first.getByRole("link", { name: new RegExp(t("project.readCase")) }),
@@ -442,6 +445,16 @@ for (const locale of LOCALES) {
           await expect(
             page.locator(`dl.facts a[href="${source}"]`),
           ).toContainText(t("project.publicRepository"));
+        }
+        if (slug === "facture-qr") {
+          // The published release is part of the evidence.
+          await expect(
+            page
+              .locator(".prose")
+              .locator(
+                'a[href="https://github.com/rodbrice/facture-qr/releases/tag/v0.1.0"]',
+              ),
+          ).toHaveCount(1);
         }
         if (slug === "theone") {
           // Private code: no repository link, a walkthrough instead.
