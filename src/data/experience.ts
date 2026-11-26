@@ -40,9 +40,9 @@ export const TIMELINE: readonly TimelineEntry[] = [
     },
     place: { en: "Brazil", pt: "Brasil", fr: "Brésil" },
     description: {
-      en: "Delivered backend and full-stack solutions for various clients. Requirements analysis, technical design, relational databases, REST APIs, business logic, web interfaces, testing and iterative delivery.",
-      pt: "Desenvolvimento de soluções backend e full stack para diversos clientes. Análise de requisitos, concepção técnica, bancos de dados relacionais, APIs REST, lógica de negócio, interfaces web, testes e entregas iterativas.",
-      fr: "Réalisation de solutions backend et full stack pour différents clients. Analyse des besoins, conception technique, bases de données relationnelles, API REST, logique métier, interfaces web, tests et livraisons itératives.",
+      en: "Delivered backend and full-stack solutions for various clients. Requirements analysis, technical design, relational databases, REST APIs, business logic, web interfaces, testing and iterative delivery. This included adapting the frontend of a health-insurance web application in React and TypeScript.",
+      pt: "Desenvolvimento de soluções backend e full stack para diversos clientes. Análise de requisitos, concepção técnica, bancos de dados relacionais, APIs REST, lógica de negócio, interfaces web, testes e entregas iterativas. Inclui a adaptação do frontend de uma aplicação web de seguros de saúde em React e TypeScript.",
+      fr: "Réalisation de solutions backend et full stack pour différents clients. Analyse des besoins, conception technique, bases de données relationnelles, API REST, logique métier, interfaces web, tests et livraisons itératives. Notamment l’adaptation du frontend d’une application web d’assurance santé en React et TypeScript.",
     },
   },
   {

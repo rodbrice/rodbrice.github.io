@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import NetworkSimulation from "../../../components/NetworkSimulation.astro";
 import { netcodeLabels } from "../../../data/netcode-labels";
 import Diagram from "../../../components/Diagram.astro";
+import { hasDiagram } from "../../../data/diagrams";
 import SectionIndex from "../../../components/SectionIndex.astro";
 import { getCollection, render } from "astro:content";
 
@@ -29,7 +30,7 @@ export const getStaticPaths = (async () => {
 type Props = Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
 
 const { locale, project } = Astro.props;
-const { title, kind, summary, stack, confidential } = project.data;
+const { title, kind, summary, stack, confidential, clientWork } = project.data;
 const { Content, headings } = await render(project);
 const cases = projectsFor(await getCollection("projects"), locale).filter(
   (entry) => entry.data.caseStudy,
@@ -42,7 +43,9 @@ if (!next) throw new Error(`No next case study for ${project.id}`);
 const t = useTranslations(locale);
 const sections = [
   { id: "facts", label: t("project.facts") },
-  { id: "diagram", label: t("project.architecture") },
+  ...(hasDiagram(project.slug)
+    ? [{ id: "diagram", label: t("project.architecture") }]
+    : []),
   ...(project.slug === "theone"
     ? [{ id: "network", label: netcodeLabels[locale].title }]
     : []),
@@ -71,7 +74,11 @@ const sections = [
         <p class="kind">{kind}</p>
         <h1>{title}</h1>
         <p class="lead">{summary}</p>
-        {confidential && <p class="note">{t("project.confidential")}</p>}
+        {confidential && (
+          <p class="note">
+            {t(clientWork ? "project.confidential" : "project.private")}
+          </p>
+        )}
       </header>
 
       <section id="facts" aria-labelledby="facts-title">
@@ -92,31 +99,35 @@ const sections = [
           {confidential && (
             <>
               <dt>{t("project.context")}</dt>
-              <dd>{t("project.clientWork")}</dd>
+              <dd>
+                {t(clientWork ? "project.clientWork" : "project.privateWork")}
+              </dd>
             </>
           )}
         </dl>
       </section>
 
-      <figure data-reveal id="diagram">
-        {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Keyboard users need focus to scroll the diagram horizontally. */}
-        <section
-          class="diagram-scroll"
-          tabindex="0"
-          aria-label={t("project.architecture")}
-        >
-          <Diagram
-            project={project.slug}
-            locale={locale}
-            label={t("project.architecture")}
-          />
-        </section>
-        {/* eslint-enable astro/jsx-a11y/no-noninteractive-tabindex */}
-        <figcaption>
-          <strong>{t("project.figure")} 1.</strong> {t("project.architecture")}.{" "}
-          {t("project.illustration")}
-        </figcaption>
-      </figure>
+      {hasDiagram(project.slug) && (
+        <figure data-reveal id="diagram">
+          {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Keyboard users need focus to scroll the diagram horizontally. */}
+          <section
+            class="diagram-scroll"
+            tabindex="0"
+            aria-label={t("project.architecture")}
+          >
+            <Diagram
+              project={project.slug}
+              locale={locale}
+              label={t("project.architecture")}
+            />
+          </section>
+          {/* eslint-enable astro/jsx-a11y/no-noninteractive-tabindex */}
+          <figcaption>
+            <strong>{t("project.figure")} 1.</strong>{" "}
+            {t("project.architecture")}. {t("project.illustration")}
+          </figcaption>
+        </figure>
+      )}
 
       {project.slug === "theone" && (
         <NetworkSimulation locale={locale} number={2} />

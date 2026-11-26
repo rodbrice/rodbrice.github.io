@@ -18,8 +18,10 @@ const projects = defineCollection({
       /** Position in the project list, starting at 1. */
       order: z.number().int().positive(),
       stack: z.array(z.string()).nonempty(),
-      /** Client work: names, screens and code stay private. */
+      /** Private code: names, screens and code stay private. */
       confidential: z.boolean().default(false),
+      /** With `confidential`: client work (the default), or the author's own private project. */
+      clientWork: z.boolean().default(true),
       /** Whether the project has its own case study page, or only a card. */
       caseStudy: z.boolean().default(true),
       /** Approved screenshots, shown on the case study page. */
