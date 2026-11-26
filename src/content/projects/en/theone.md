@@ -2,6 +2,9 @@
 title: TheOne
 kind: Multiplayer game systems
 summary: A first-person dark fantasy survival game in Unity 6, with a dedicated authoritative server, client-side prediction and physical melee combat.
+problem: "Real-time networking, animation and physical combat must fit a tight frame budget."
+contribution: "I work on the authoritative server, client-side prediction and melee combat systems."
+status: personal
 order: 5
 stack: [C#, Unity 6, FishNet, Blender]
 ---

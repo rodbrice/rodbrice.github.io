@@ -1,7 +1,10 @@
 ---
 title: Property management application
-kind: Private project · MVP in development
+kind: Business application backend
 summary: Administering rented units means keeping contracts, meter readings, energy costs and monthly charges consistent. I am building the MVP of an application for this, with an ASP.NET Core backend and PostgreSQL.
+problem: "Contracts, meter readings, energy costs and monthly charges for rented units must stay consistent."
+contribution: "I am designing and building the application, from the data model to the API."
+status: mvpInDevelopment
 order: 3
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true

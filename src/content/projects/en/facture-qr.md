@@ -1,9 +1,13 @@
 ---
 title: Facture QR — Swiss QR-bill invoicing
-kind: Public repository · In development
+kind: QR-bill invoicing core
 summary: Swiss QR-bills must follow strict rules for addresses, references and IBANs. I am building a .NET invoicing core in small, verified steps — QR-bill library, PostgreSQL storage, local HTTP API — with each step's checks published.
+problem: "Swiss QR-bills must follow strict rules for addresses, references and IBANs."
+contribution: "I set the scope, made the design decisions and checked each step against the standard."
+status: inDevelopment
 order: 2
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
+source: https://github.com/rodbrice/facture-qr
 ---
 
 ## The problem

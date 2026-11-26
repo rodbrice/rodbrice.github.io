@@ -1,9 +1,13 @@
 ---
 title: Facture QR — facturation avec QR-facture suisse
-kind: Dépôt public · En développement
+kind: Noyau de facturation QR-facture
 summary: Une QR-facture suisse doit respecter des règles strictes d’adresse, de référence et d’IBAN. Je construis par petites étapes vérifiées un noyau de facturation .NET — bibliothèque QR-facture, stockage PostgreSQL, API HTTP locale — et je publie les contrôles de chaque étape.
+problem: "Une QR-facture suisse doit respecter des règles strictes d’adresse, de référence et d’IBAN."
+contribution: "J’ai fixé le périmètre, pris les décisions de conception et vérifié chaque étape par rapport à la norme."
+status: inDevelopment
 order: 2
 stack: [C#, .NET, ASP.NET Core, PostgreSQL, EF Core]
+source: https://github.com/rodbrice/facture-qr
 ---
 
 ## Le problème

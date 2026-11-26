@@ -3,13 +3,16 @@ import type { GetStaticPaths } from "astro";
 import NetworkSimulation from "../../../components/NetworkSimulation.astro";
 import { netcodeLabels } from "../../../data/netcode-labels";
 import Diagram from "../../../components/Diagram.astro";
-import { hasDiagram } from "../../../data/diagrams";
+import FlowDiagram from "../../../components/FlowDiagram.astro";
+import { figureFor } from "../../../data/diagrams";
 import SectionIndex from "../../../components/SectionIndex.astro";
+import StatusMarker from "../../../components/StatusMarker.astro";
 import { getCollection, render } from "astro:content";
 
 import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../../i18n/locales";
 import { useTranslations } from "../../../i18n/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { splitStory } from "../../../lib/case-study";
 import { projectsFor } from "../../../lib/projects";
 
 export const getStaticPaths = (async () => {
@@ -30,8 +33,25 @@ export const getStaticPaths = (async () => {
 type Props = Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
 
 const { locale, project } = Astro.props;
-const { title, kind, summary, stack, confidential, clientWork } = project.data;
-const { Content, headings } = await render(project);
+const {
+  title,
+  kind,
+  summary,
+  stack,
+  confidential,
+  clientWork,
+  status,
+  contribution,
+  source,
+} = project.data;
+const { headings } = await render(project);
+// The business story (the first section) comes before the facts and figure.
+const { story, rest } = splitStory(project.rendered?.html ?? "");
+const [storyHeading, ...restHeadings] = headings
+  .filter(({ depth }) => depth === 2)
+  .map(({ slug, text }) => ({ id: slug, label: text }));
+if (!storyHeading) throw new Error(`${project.id} has no section`);
+const figure = figureFor(project.slug);
 const cases = projectsFor(await getCollection("projects"), locale).filter(
   (entry) => entry.data.caseStudy,
 );
@@ -41,17 +61,15 @@ const next =
   ];
 if (!next) throw new Error(`No next case study for ${project.id}`);
 const t = useTranslations(locale);
+// The index follows the page order; figures are numbered in the same order.
 const sections = [
+  storyHeading,
   { id: "facts", label: t("project.facts") },
-  ...(hasDiagram(project.slug)
-    ? [{ id: "diagram", label: t("project.architecture") }]
-    : []),
+  ...(figure ? [{ id: "diagram", label: t(figure.title) }] : []),
   ...(project.slug === "theone"
     ? [{ id: "network", label: netcodeLabels[locale].title }]
     : []),
-  ...headings
-    .filter(({ depth }) => depth === 2)
-    .map(({ slug, text }) => ({ id: slug, label: text })),
+  ...restHeadings,
 ];
 ---
 
@@ -79,7 +97,23 @@ const sections = [
             {t(clientWork ? "project.confidential" : "project.private")}
           </p>
         )}
+        <dl class="callouts">
+          <div class="callout">
+            <dt>{t("project.status")}</dt>
+            <dd>
+              <StatusMarker status={status}>
+                {t(`status.${status}`)}
+              </StatusMarker>
+            </dd>
+          </div>
+          <div class="callout">
+            <dt>{t("project.contribution")}</dt>
+            <dd>{contribution}</dd>
+          </div>
+        </dl>
       </header>
+
+      <div class="prose story" set:html={story} />
 
       <section id="facts" aria-labelledby="facts-title">
         <h2 data-reveal id="facts-title">
@@ -104,38 +138,63 @@ const sections = [
               </dd>
             </>
           )}
+          {source !== undefined && (
+            <>
+              <dt>{t("project.evidence")}</dt>
+              <dd>
+                <a href={source} rel="external">
+                  {t("project.publicRepository")}:{" "}
+                  {source.replace("https://", "")}
+                </a>
+              </dd>
+            </>
+          )}
+          {confidential && (
+            <>
+              <dt>{t("project.evidence")}</dt>
+              <dd>{t("project.walkthrough")}</dd>
+            </>
+          )}
         </dl>
       </section>
 
-      {hasDiagram(project.slug) && (
+      {figure?.kind === "flow" && (
+        <figure data-reveal id="diagram">
+          <FlowDiagram locale={locale} label={t(figure.title)} />
+          <figcaption>
+            <strong>{t("project.figure")} 1.</strong> {t(figure.title)}.{" "}
+            {t(figure.note)}
+          </figcaption>
+        </figure>
+      )}
+
+      {figure?.kind === "architecture" && (
         <figure data-reveal id="diagram">
           {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Keyboard users need focus to scroll the diagram horizontally. */}
           <section
             class="diagram-scroll"
             tabindex="0"
-            aria-label={t("project.architecture")}
+            aria-label={t(figure.title)}
           >
             <Diagram
               project={project.slug}
               locale={locale}
-              label={t("project.architecture")}
+              label={t(figure.title)}
             />
           </section>
           {/* eslint-enable astro/jsx-a11y/no-noninteractive-tabindex */}
           <figcaption>
-            <strong>{t("project.figure")} 1.</strong>{" "}
-            {t("project.architecture")}. {t("project.illustration")}
+            <strong>{t("project.figure")} 1.</strong> {t(figure.title)}.{" "}
+            {t(figure.note)}
           </figcaption>
         </figure>
       )}
 
       {project.slug === "theone" && (
-        <NetworkSimulation locale={locale} number={2} />
+        <NetworkSimulation locale={locale} number={figure ? 2 : 1} />
       )}
 
-      <div class="prose">
-        <Content />
-      </div>
+      <div class="prose" set:html={rest} />
       <a class="next" href={localizePath(`/projects/${next.slug}/`, locale)}>
         <span>{t("project.next")} →</span>
         <strong>{next.data.title}</strong>
@@ -237,6 +296,27 @@ const sections = [
   .lead {
     color: var(--color-text-muted);
     font-size: var(--text-lg);
+  }
+
+  /* Neutral callouts: the current status and my own part, before the story. */
+  .callouts {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+
+    @media (width >= 48rem) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+  }
+
+  .callout {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
   }
 
   .note {

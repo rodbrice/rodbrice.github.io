@@ -1,9 +1,13 @@
 ---
 title: plan-review — Terraform change risk review
-kind: Public repository · Early development
+kind: Python command-line tool
 summary: Risky infrastructure changes can hide in a long Terraform plan. plan-review is an early-stage Python command-line tool that reads a saved plan and flags what this change destroys, replaces or opens up.
+problem: "Risky infrastructure changes can hide in a long Terraform plan."
+contribution: "I chose the scope, defined the rules and checked each milestone against real Terraform output."
+status: earlyDevelopment
 order: 4
 stack: [Python, Terraform, pytest]
+source: https://github.com/rodbrice/plan-review
 ---
 
 ## The problem

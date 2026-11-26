@@ -1,7 +1,10 @@
 ---
 title: Application de gestion immobilière
-kind: Projet privé · MVP en développement
+kind: Backend d’application métier
 summary: Administrer des logements loués exige de garder cohérents les contrats, les relevés de compteurs, les coûts d’énergie et les charges mensuelles. Je développe le MVP d’une application à cet effet, avec un backend ASP.NET Core et PostgreSQL.
+problem: "Contrats, relevés de compteurs, coûts d’énergie et charges mensuelles des logements loués doivent rester cohérents."
+contribution: "Je conçois et développe l’application, du modèle de données à l’API."
+status: mvpInDevelopment
 order: 3
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true

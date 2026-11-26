@@ -1,9 +1,13 @@
 ---
 title: plan-review — revisão de risco de mudanças no Terraform
-kind: Repositório público · Desenvolvimento inicial
+kind: Ferramenta de linha de comando em Python
 summary: Uma mudança de infraestrutura arriscada pode passar despercebida num plano Terraform longo. O plan-review é uma ferramenta de linha de comando em Python, em fase inicial, que lê um plano salvo e aponta o que a mudança destrói, substitui ou expõe.
+problem: "Uma mudança de infraestrutura arriscada pode passar despercebida num plano Terraform longo."
+contribution: "Escolhi o escopo, defini as regras e conferi cada marco com saídas reais do Terraform."
+status: earlyDevelopment
 order: 4
 stack: [Python, Terraform, pytest]
+source: https://github.com/rodbrice/plan-review
 ---
 
 ## O problema

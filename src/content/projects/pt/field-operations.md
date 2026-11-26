@@ -1,7 +1,10 @@
 ---
 title: Sistema de gestão de operações em campo
-kind: Projeto privado para cliente · Validação final com o cliente
+kind: Aplicação de campo e escritório
 summary: As equipes registravam o trabalho diário em papel, e o escritório redigitava os dados em planilhas. Projetei e implementei fluxos no tablet offline e no escritório para ligar o registro à revisão.
+problem: "As equipes registravam o trabalho diário em papel; o escritório redigitava tudo em planilhas."
+contribution: "Projetei e desenvolvi o fluxo offline no tablet, o backend e a aplicação de escritório."
+status: clientValidation
 order: 1
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true

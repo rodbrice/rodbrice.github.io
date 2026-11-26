@@ -3,12 +3,6 @@ import type { Locale } from "../i18n/locales";
 /** Diagram labels approved with the Laboratory design. */
 export const diagramLabels = {
   en: {
-    fe: "front end",
-    be: "backend",
-    data: "data",
-    docs: "documents",
-    authwf: "authentication · workflows",
-    tests: "unit · integration · E2E tests",
     inner: "Domain",
     app: "Application",
     infra: "Infrastructure · API",
@@ -30,12 +24,6 @@ export const diagramLabels = {
     ai: "AI",
   },
   pt: {
-    fe: "front end",
-    be: "backend",
-    data: "dados",
-    docs: "documentos",
-    authwf: "autenticação · workflows",
-    tests: "testes unitários · integração · E2E",
     inner: "Domínio",
     app: "Aplicação",
     infra: "Infraestrutura · API",
@@ -57,12 +45,6 @@ export const diagramLabels = {
     ai: "IA",
   },
   fr: {
-    fe: "front end",
-    be: "backend",
-    data: "données",
-    docs: "documents",
-    authwf: "authentification · workflows",
-    tests: "tests unitaires · intégration · E2E",
     inner: "Domaine",
     app: "Application",
     infra: "Infrastructure · API",
@@ -84,3 +66,70 @@ export const diagramLabels = {
     ai: "IA",
   },
 } satisfies Record<Locale, Record<string, string>>;
+
+/**
+ * The field-to-office flow, drawn from scratch with synthetic labels only:
+ * no client name, real value, form layout or screen.
+ */
+export const flowLabels = {
+  en: {
+    field: "In the field",
+    office: "In the office",
+    steps: [
+      { title: "Tablet", detail: "field report, captured offline" },
+      { title: "Sync", detail: "reports reach the office application" },
+      { title: "Office review queue", detail: "reports wait for review" },
+      { title: "Validation", detail: "checked before any document is made" },
+    ],
+    outputs: "Outputs",
+    formats: ["PDF", "Excel", "SAP-ready blocks"],
+  },
+  pt: {
+    field: "Em campo",
+    office: "No escritório",
+    steps: [
+      { title: "Tablet", detail: "relatório de campo, registrado offline" },
+      {
+        title: "Sincronização",
+        detail: "os relatórios chegam à aplicação do escritório",
+      },
+      {
+        title: "Fila de revisão no escritório",
+        detail: "os relatórios aguardam revisão",
+      },
+      { title: "Validação", detail: "conferidos antes de gerar documentos" },
+    ],
+    outputs: "Saídas",
+    formats: ["PDF", "Excel", "Blocos prontos para o SAP"],
+  },
+  fr: {
+    field: "Sur le terrain",
+    office: "Au bureau",
+    steps: [
+      { title: "Tablette", detail: "rapport de terrain, saisi hors ligne" },
+      {
+        title: "Synchronisation",
+        detail: "les rapports rejoignent l’application de bureau",
+      },
+      {
+        title: "File de contrôle au bureau",
+        detail: "les rapports attendent leur contrôle",
+      },
+      {
+        title: "Validation",
+        detail: "vérifiés avant de produire les documents",
+      },
+    ],
+    outputs: "Sorties",
+    formats: ["PDF", "Excel", "Blocs prêts pour SAP"],
+  },
+} satisfies Record<
+  Locale,
+  {
+    field: string;
+    office: string;
+    steps: { title: string; detail: string }[];
+    outputs: string;
+    formats: string[];
+  }
+>;

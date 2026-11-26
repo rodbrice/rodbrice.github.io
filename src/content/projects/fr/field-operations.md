@@ -1,7 +1,10 @@
 ---
 title: Système de gestion des opérations de chantier
-kind: Projet client privé · Validation finale par le client
+kind: Application terrain et bureau
 summary: Les chefs d’équipe consignaient le travail quotidien sur papier, puis le bureau le ressaisissait dans des tableurs. J’ai conçu et développé une saisie sur tablette utilisable hors ligne, reliée au contrôle au bureau.
+problem: "Les chefs d’équipe consignaient le travail sur papier ; le bureau le ressaisissait dans des tableurs."
+contribution: "J’ai conçu et développé la saisie sur tablette hors ligne, le backend et l’application de bureau."
+status: clientValidation
 order: 1
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true

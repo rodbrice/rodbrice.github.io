@@ -2,6 +2,9 @@
 title: TheOne
 kind: Sistemas de jogo multiplayer
 summary: Um jogo de sobrevivência em primeira pessoa, de fantasia sombria, em Unity 6, com servidor dedicado autoritativo, predição no cliente e combate corpo a corpo físico.
+problem: "Rede em tempo real, animação e combate físico precisam caber num orçamento de frame apertado."
+contribution: "Trabalho no servidor autoritativo, na predição no cliente e no combate corpo a corpo."
+status: personal
 order: 5
 stack: [C#, Unity 6, FishNet, Blender]
 ---

@@ -23,28 +23,7 @@ interface Node {
 let nodes: Node[] = [];
 let paths: string[] = [];
 let notes: { x: number; y: number; text: string }[] = [];
-if (project === "field-operations") {
-  nodes = [
-    { x: 16, y: 32, w: 176, h: 72, title: "React + TypeScript", sub: d.fe },
-    {
-      x: 232,
-      y: 32,
-      w: 176,
-      h: 72,
-      title: "ASP.NET Core",
-      sub: d.be,
-      accent: true,
-    },
-    { x: 448, y: 32, w: 176, h: 72, title: "PostgreSQL", sub: d.data },
-    { x: 232, y: 174, w: 176, h: 64, title: "Excel · PDF", sub: d.docs },
-  ];
-  paths = ["M192 68 H230", "M408 68 H446", "M320 142 V172"];
-  notes = [
-    { x: 320, y: 130, text: d.authwf },
-    { x: 320, y: 276, text: d.tests },
-    { x: 320, y: 302, text: "Docker · GitHub Actions" },
-  ];
-} else if (project === "property-management") {
+if (project === "property-management") {
   nodes = [
     { x: 16, y: 252, w: 184, h: 58, title: "PostgreSQL" },
     { x: 228, y: 252, w: 184, h: 58, title: d.files },

@@ -1,7 +1,10 @@
 ---
 title: Industrial Field Operations Management System
-kind: Private client project · Final client validation
+kind: Field and office workflow application
 summary: Field teams recorded daily work on paper, and office staff re-entered it into spreadsheets. I designed and built offline-capable tablet and connected office workflows to link field capture with office review.
+problem: "Field teams recorded daily work on paper; office staff re-entered it into spreadsheets."
+contribution: "I designed and built the offline-capable tablet workflow, the backend and the office application."
+status: clientValidation
 order: 1
 stack: [ASP.NET Core, PostgreSQL, React, TypeScript, Docker]
 confidential: true

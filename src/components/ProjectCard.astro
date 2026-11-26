@@ -1,34 +1,89 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
+import StatusMarker from "./StatusMarker.astro";
+import type { Locale } from "../i18n/locales";
+import { useTranslations } from "../i18n/ui";
+import { primaryAction } from "../lib/projects";
+
 interface Props {
   project: CollectionEntry<"projects">["data"];
-  /** Link to the case study; cards without one show the summary only. */
+  /** Link to the case study, for projects that have one. */
   href?: string | undefined;
-  stackLabel: string;
+  locale: Locale;
 }
 
-const { project, href, stackLabel } = Astro.props;
+const { project, href, locale } = Astro.props;
+const t = useTranslations(locale);
+const action = primaryAction(project);
+const visibility = project.confidential
+  ? t(project.clientWork ? "project.clientProject" : "project.privateProject")
+  : project.source === undefined
+    ? undefined
+    : t("project.publicRepository");
+// A private project without a page names its visibility where the link would be.
+const statusParts = [
+  action.kind === "private" ? undefined : visibility,
+  t(`status.${project.status}`),
+].filter((part) => part !== undefined);
 ---
 
 <article class="card">
   <p class="kind">{project.kind}</p>
-  <h3>
-    {href === undefined ? project.title : <a href={href}>{project.title}</a>}
-  </h3>
-  <p class="summary">{project.summary}</p>
-  <ul class="technology-list" aria-label={stackLabel}>
+  <h3>{project.title}</h3>
+  <dl class="lines">
+    <dt>{t("project.problem")}</dt>
+    <dd>{project.problem}</dd>
+    <dt>{t("project.contribution")}</dt>
+    <dd>{project.contribution}</dd>
+  </dl>
+  <StatusMarker status={project.status} label={t("project.status")}>
+    {statusParts.map((part, index) => (
+      <>
+        {index > 0 && " "}
+        <span class="part">
+          {part}
+          {index < statusParts.length - 1 && " ·"}
+        </span>
+      </>
+    ))}
+  </StatusMarker>
+  <ul class="technology-list" aria-label={t("project.stack")}>
     {project.stack.map((technology) => (
       <li>{technology}</li>
     ))}
   </ul>
+  <p class="action">
+    {action.kind === "caseStudy" && href !== undefined && (
+      <a
+        class="primary"
+        href={href}
+        aria-label={`${t("project.readCase")}: ${project.title}`}
+      >
+        {t("project.readCase")}
+        <span aria-hidden="true">→</span>
+      </a>
+    )}
+    {action.kind === "source" && (
+      <a
+        class="primary"
+        href={action.href}
+        rel="external"
+        aria-label={`${t("project.viewSource")}: ${project.title}`}
+      >
+        {t("project.viewSource")}
+        <span aria-hidden="true">↗</span>
+      </a>
+    )}
+    {action.kind === "private" && <span class="private">{visibility}</span>}
+  </p>
 </article>
 
 <style>
   .card {
     position: relative;
     display: grid;
-    align-content: start;
+    grid-template-rows: auto auto 1fr auto auto auto;
     gap: var(--space-3);
     padding: var(--space-6);
     border: 1px solid var(--color-border);
@@ -51,9 +106,47 @@ const { project, href, stackLabel } = Astro.props;
     font-size: var(--text-xl);
   }
 
-  a {
-    color: var(--color-text);
-    text-decoration: none;
+  .lines {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  dt {
+    font-family: var(--font-technical);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  dd {
+    margin: 0 0 var(--space-2);
+  }
+
+  /* Technologies stay secondary to the problem and the contribution. */
+  .technology-list {
+    font-size: var(--text-xs);
+  }
+
+  /* Visibility and stage wrap as whole phrases. */
+  .part {
+    white-space: nowrap;
+  }
+
+  .action {
+    margin-block-start: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 2.75rem;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: var(--space-1);
 
     /* The whole card is the link's hit area. */
     &::after {
@@ -64,11 +157,14 @@ const { project, href, stackLabel } = Astro.props;
     }
 
     &:hover {
-      color: var(--color-accent);
+      color: var(--color-text);
     }
   }
 
-  .summary {
+  .private {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
     color: var(--color-text-muted);
   }
 </style>
