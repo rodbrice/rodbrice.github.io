@@ -12,10 +12,12 @@ interface Props {
   href?: string | undefined;
   /** Anchor for links to this card, e.g. from the skills that it shows. */
   id?: string | undefined;
+  /** The title's view transition name, shared with the case study's heading. */
+  titleTransition?: string | undefined;
   locale: Locale;
 }
 
-const { project, href, id, locale } = Astro.props;
+const { project, href, id, titleTransition, locale } = Astro.props;
 const t = useTranslations(locale);
 const action = primaryAction(project);
 const visibilityKey = projectVisibility(project);
@@ -30,7 +32,7 @@ const statusParts = [
 
 <article class="card" id={id}>
   <p class="kind">{project.kind}</p>
-  <h4>{project.title}</h4>
+  <h4 data-title-transition={titleTransition}>{project.title}</h4>
   <dl class="lines">
     <dt>{t("project.problem")}</dt>
     <dd>{project.problem}</dd>

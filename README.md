@@ -68,6 +68,13 @@ All colours, type sizes, spacing and motion live as CSS custom properties in
 Colours are defined in OKLCH for both themes with `light-dark()`. The site
 follows the system theme, and the header button stores an explicit choice.
 
+Moving between pages uses cross-document view transitions: the old page lifts
+away, the new one settles in, and a project's title travels between its home
+card and its case study. A small inline script in `BaseLayout.astro` names only
+the title that both pages show. Browsers without cross-document view
+transitions, such as Firefox, navigate normally, and reduced motion turns the
+transitions off.
+
 The accent colour is a single hue, currently blue (`255`). To change it, edit
 `--accent-hue` in `src/styles/tokens.css` (for example `65` amber or `185`
 teal); the lightness of each theme is fixed so text contrast stays within

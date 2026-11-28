@@ -23,6 +23,7 @@ import {
   projectPath,
   projectsFor,
   splitFeatured,
+  titleTransitionName,
 } from "../../lib/projects";
 
 export const getStaticPaths = (() =>
@@ -151,6 +152,9 @@ const person = {
                       data.caseStudy
                         ? localizePath(`/projects/${slug}/`, locale)
                         : undefined
+                    }
+                    titleTransition={
+                      data.caseStudy ? titleTransitionName(slug) : undefined
                     }
                     locale={locale}
                   />

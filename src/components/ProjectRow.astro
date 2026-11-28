@@ -12,6 +12,8 @@ interface Props {
   href?: string | undefined;
   /** Anchor for links to this row, e.g. from the skills that it shows. */
   id?: string | undefined;
+  /** The title's view transition name, shared with the case study's heading. */
+  titleTransition?: string | undefined;
   locale: Locale;
 }
 
@@ -21,7 +23,7 @@ interface Props {
  * status and technologies. No contribution line and no figure: the featured
  * cards carry the detail.
  */
-const { project, href, id, locale } = Astro.props;
+const { project, href, id, titleTransition, locale } = Astro.props;
 const t = useTranslations(locale);
 const action = primaryAction(project);
 const visibility = projectVisibility(project);
@@ -33,7 +35,7 @@ const statusParts = [
 
 <article class="row" id={id}>
   <p class="kind">{project.kind}</p>
-  <h4>
+  <h4 data-title-transition={titleTransition}>
     {action.kind === "caseStudy" && href !== undefined ? (
       <a href={href}>
         {project.title}

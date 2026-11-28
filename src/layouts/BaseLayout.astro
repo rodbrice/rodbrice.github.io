@@ -88,6 +88,45 @@ const shareImage = new URL("/og.png", Astro.site).href;
         // Storage unavailable: follow the system theme.
       }
     </script>
+    <script is:inline>
+      // Page transitions: of the project titles marked with
+      // data-title-transition, name only the one that both pages show, and
+      // only while it is on screen, so that one title travels and none other
+      // flies across the page. It runs from the head, because pagereveal fires
+      // before the first paint.
+      (() => {
+        const project = (url) =>
+          url
+            ? /\/projects\/([a-z0-9-]+)\/$/.exec(new URL(url).pathname)?.[1]
+            : undefined;
+        const nameTitle = (from, to) => {
+          const slug = project(to) ?? project(from);
+          const name = slug && `project-title-${slug}`;
+          for (const title of document.querySelectorAll(
+            "[data-title-transition]",
+          )) {
+            const { top, bottom } = title.getBoundingClientRect();
+            title.style.viewTransitionName =
+              title.dataset.titleTransition === name &&
+              bottom > 0 &&
+              top < innerHeight
+                ? name
+                : "";
+          }
+        };
+        addEventListener("pageswap", (event) => {
+          if (event.viewTransition)
+            nameTitle(location.href, event.activation?.entry?.url);
+        });
+        addEventListener("pagereveal", (event) => {
+          if (event.viewTransition)
+            nameTitle(
+              globalThis.navigation?.activation?.from?.url,
+              location.href,
+            );
+        });
+      })();
+    </script>
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" preload />
   </head>

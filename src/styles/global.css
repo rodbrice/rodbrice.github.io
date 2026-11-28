@@ -89,6 +89,36 @@ a {
     navigation: auto;
   }
 
+  /* The old page lifts away and the new one settles in, while the project
+   * title that both pages show moves between them (see BaseLayout). */
+  ::view-transition-old(root) {
+    animation: var(--duration-page-out) var(--ease-in-out) both page-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: var(--duration-page-in) var(--ease-out) var(--delay-page-in) both
+      page-in;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: var(--duration-title);
+    animation-timing-function: var(--ease-in-out);
+  }
+
+  @keyframes page-out {
+    to {
+      opacity: 0;
+      transform: translateY(var(--distance-page-out)) scale(0.985);
+    }
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--distance-page-in));
+    }
+  }
+
   @supports (animation-timeline: view()) {
     [data-reveal] {
       /* Longhands keep the minifier from folding view() into a shorthand

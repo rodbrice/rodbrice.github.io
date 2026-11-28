@@ -67,6 +67,16 @@
 
   --duration-fast: 150ms;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Page transitions: the old page leaves, the new one settles, a project's
+   * title travels between its card and its case study. */
+  --duration-page-out: 260ms;
+  --duration-page-in: 380ms;
+  --delay-page-in: 60ms;
+  --duration-title: 520ms;
+  --distance-page-out: -2.5rem;
+  --distance-page-in: 3rem;
 }
 
 :root[data-theme="light"] {
@@ -80,5 +90,9 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
+    --duration-page-out: 0ms;
+    --duration-page-in: 0ms;
+    --delay-page-in: 0ms;
+    --duration-title: 0ms;
   }
 }

@@ -11,7 +11,7 @@ import { DEFAULT_LOCALE, LOCALES, localizePath } from "../../../i18n/locales";
 import { useTranslations } from "../../../i18n/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { splitStory } from "../../../lib/case-study";
-import { projectsFor } from "../../../lib/projects";
+import { projectsFor, titleTransitionName } from "../../../lib/projects";
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection("projects");
@@ -86,7 +86,9 @@ const sections = [
           </a>
         </p>
         <p class="kind">{kind}</p>
-        <h1>{title}</h1>
+        <h1 data-title-transition={titleTransitionName(project.slug)}>
+          {title}
+        </h1>
         <p class="lead">{summary}</p>
         {confidential && (
           <p class="note">
@@ -189,7 +191,15 @@ const sections = [
       <div class="prose" set:html={rest} />
       <a class="next" href={localizePath(`/projects/${next.slug}/`, locale)}>
         <span>{t("project.next")} →</span>
-        <strong>{next.data.title}</strong>
+        <strong
+          data-title-transition={
+            next.slug === project.slug
+              ? undefined
+              : titleTransitionName(next.slug)
+          }
+        >
+          {next.data.title}
+        </strong>
       </a>
     </article>
   </div>
