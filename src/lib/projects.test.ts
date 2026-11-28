@@ -4,6 +4,7 @@ import {
   parseProjectId,
   primaryAction,
   projectPath,
+  projectVisibility,
   projectsFor,
   splitFeatured,
 } from "./projects.ts";
@@ -164,5 +165,23 @@ describe("projectPath", () => {
     expect(projectPath("agv-dispatch", { caseStudy: false })).toBe(
       "/#project-agv-dispatch",
     );
+  });
+});
+
+describe("projectVisibility", () => {
+  it.each([
+    [{ confidential: true, clientWork: true }, "clientProject"],
+    [{ confidential: true, clientWork: false }, "privateProject"],
+    [
+      {
+        confidential: false,
+        clientWork: false,
+        source: "https://github.com/rodbrice/plan-review",
+      },
+      "publicRepository",
+    ],
+    [{ confidential: false, clientWork: false }, undefined],
+  ] as const)("names who can see the code of %o", (data, expected) => {
+    expect(projectVisibility(data)).toBe(expected);
   });
 });

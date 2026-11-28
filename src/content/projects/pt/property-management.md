@@ -6,6 +6,7 @@ problem: "Contratos, leituras de medidores, custos de energia e cobranças mensa
 contribution: "Estou projetando e desenvolvendo a aplicação, do modelo de dados à API."
 status: mvpInDevelopment
 order: 3
+featured: true
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true
 clientWork: false

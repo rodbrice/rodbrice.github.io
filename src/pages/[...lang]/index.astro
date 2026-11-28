@@ -3,10 +3,9 @@ import type { GetStaticPaths } from "astro";
 
 import { getCollection } from "astro:content";
 
-import DispatchSimulation from "../../components/DispatchSimulation.astro";
-import NetworkSimulation from "../../components/NetworkSimulation.astro";
 import ButtonLink from "../../components/ButtonLink.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import ProjectRow from "../../components/ProjectRow.astro";
 import SectionIndex from "../../components/SectionIndex.astro";
 import Timeline from "../../components/Timeline.astro";
 import {
@@ -40,9 +39,22 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const projects = projectsFor(await getCollection("projects"), locale);
 const groups = splitFeatured(projects);
+// Featured apps get a full card; other projects get one plain row each.
 const projectGroups = [
-  { id: "featured", title: t("projects.featured"), list: groups.featured },
-  { id: "other", title: t("projects.other"), list: groups.other },
+  {
+    id: "featured",
+    title: t("projects.featured"),
+    list: groups.featured,
+    listClass: "project-list",
+    Item: ProjectCard,
+  },
+  {
+    id: "other",
+    title: t("projects.other"),
+    list: groups.other,
+    listClass: "project-rows",
+    Item: ProjectRow,
+  },
 ];
 const bySlug = new Map(projects.map((project) => [project.slug, project]));
 /** A skill group's projects, by the part of their title before any dash. */
@@ -122,17 +134,17 @@ const person = {
           </span>
           {t("projects.title")}
         </h2>
-        {projectGroups.map(({ id, title, list }) => (
+        {projectGroups.map(({ id, title, list, listClass, Item }) => (
           <section
             class="project-group"
             aria-labelledby={`${id}-title`}
             data-group={id}
           >
             <h3 id={`${id}-title`}>{title}</h3>
-            <ol class="project-list">
+            <ol class={listClass}>
               {list.map(({ slug, data }) => (
                 <li>
-                  <ProjectCard
+                  <Item
                     project={data}
                     id={cardId(slug)}
                     href={
@@ -147,8 +159,6 @@ const person = {
             </ol>
           </section>
         ))}
-        <NetworkSimulation locale={locale} />
-        <DispatchSimulation locale={locale} />
       </section>
 
       <section id="approach" class="approach" aria-labelledby="approach-title">
@@ -395,6 +405,12 @@ const person = {
     & > li {
       display: grid;
     }
+  }
+
+  .project-rows {
+    padding: 0;
+    list-style: none;
+    border-block-start: 1px solid var(--color-border);
   }
 
   .skill-groups {

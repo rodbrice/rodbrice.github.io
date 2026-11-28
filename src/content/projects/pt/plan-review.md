@@ -6,6 +6,7 @@ problem: "Uma mudança de infraestrutura arriscada pode passar despercebida num 
 contribution: "Escolhi o escopo, defini as regras e conferi cada marco com saídas reais do Terraform."
 status: earlyDevelopment
 order: 4
+featured: true
 stack: [Python, Terraform, pytest]
 source: https://github.com/rodbrice/plan-review
 ---

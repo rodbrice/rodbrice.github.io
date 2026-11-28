@@ -102,8 +102,10 @@ study at `/projects/<slug>/`. Set `caseStudy: false` for a card without a page,
 and `confidential: true` for private code, which adds a note that names, screens
 and code are withheld; add `clientWork: false` when it is a private project of
 the author's rather than client work. Set `featured: true` to list a card under
-"Featured work" rather than "Other engineering projects"; both groups keep the
-`order`. Each card shows a one-line `problem`,
+"Featured work"; the rest are listed as plain rows, without a figure, under
+"Other engineering projects", and both groups keep the `order`. A row shows the
+`kind`, the title (linked to the case study or public source), the `problem`,
+the `status` and the `stack`. Each card shows a one-line `problem`,
 a one-line `contribution`, a `status` (labelled per language in
 `src/i18n/ui.ts`), at most six `stack` tags and one action: the case study,
 else the public `source`, else a private-project note. Case studies open with

@@ -57,6 +57,23 @@ export function primaryAction(
 }
 
 /**
+ * Who can see a project's code, as a `project.<value>` label: a private
+ * client or personal project, a public repository, or nothing to say when the
+ * code is neither private nor published.
+ */
+export type ProjectVisibility =
+  "clientProject" | "privateProject" | "publicRepository";
+
+export function projectVisibility(
+  facts: Pick<ProjectFacts, "confidential" | "clientWork" | "source">,
+): ProjectVisibility | undefined {
+  if (facts.confidential) {
+    return facts.clientWork ? "clientProject" : "privateProject";
+  }
+  return facts.source === undefined ? undefined : "publicRepository";
+}
+
+/**
  * The site path where a project can be read about: its case study, or else
  * its card on the home page, so a mention of the project never leads nowhere.
  */

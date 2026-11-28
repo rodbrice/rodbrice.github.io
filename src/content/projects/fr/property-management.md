@@ -6,6 +6,7 @@ problem: "Contrats, relevés de compteurs, coûts d’énergie et charges mensue
 contribution: "Je conçois et développe l’application, du modèle de données à l’API."
 status: mvpInDevelopment
 order: 3
+featured: true
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true
 clientWork: false

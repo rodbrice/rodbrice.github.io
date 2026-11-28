@@ -22,14 +22,17 @@ const CASE_STUDIES = [
   "plan-review",
   "rot-and-resolve",
 ];
-/** The verified stage shown on each card, in display order. */
+/** The verified stage shown on each featured card, in display order. */
 const CARD_STATUSES = [
   "Private client project · Final client validation",
   "Public repository · v0.1.0 released",
   "Private project · MVP in development",
   "Public repository · Early development",
-  "Personal project",
-  "Experiment",
+];
+/** The other projects, each one plain row: its title and verified stage. */
+const ROWS = [
+  { title: "Rot & Resolve", status: "Personal project" },
+  { title: "AGV dispatch simulation", status: "Private project · Experiment" },
 ];
 /** Public projects: their case studies link to the source repository. */
 const PUBLIC_SOURCES: Record<string, string> = {
@@ -48,13 +51,12 @@ test.describe("project list", () => {
       "Facture QR — Swiss QR-bill invoicing",
       "Property management application",
       "plan-review — Terraform change risk review",
-      "Rot & Resolve",
+      // The row's title link ends with a decorative arrow.
+      /^Rot & Resolve/,
       "AGV dispatch simulation",
     ]);
     await expect(list.getByRole("link")).toHaveCount(CASE_STUDIES.length);
-    await list
-      .getByRole("link", { name: "Read case study: Rot & Resolve" })
-      .click();
+    await list.getByRole("link", { name: "Rot & Resolve" }).click();
     await expect(page).toHaveURL("/projects/rot-and-resolve/");
   });
 
@@ -63,7 +65,7 @@ test.describe("project list", () => {
   }) => {
     await page.goto("/");
     const cards = page
-      .getByRole("region", { name: "Selected projects" })
+      .getByRole("region", { name: "Featured work" })
       .locator(".project-list > li");
     await expect(cards).toHaveCount(CARD_STATUSES.length);
     for (const [index, status] of CARD_STATUSES.entries()) {
@@ -90,12 +92,40 @@ test.describe("project list", () => {
       expect(await size(tags)).toBeLessThan(
         await size(card.locator("dd").first()),
       );
-      expect(await card.getByRole("link").count()).toBeLessThanOrEqual(1);
+      await expect(card.getByRole("link")).toHaveCount(1);
     }
-    // Without a case study or public code, the card names the project private.
-    const agv = cards.last();
-    await expect(agv.getByRole("link")).toHaveCount(0);
-    await expect(agv.locator(".action")).toHaveText("Private project");
+  });
+
+  test("other projects are plain rows: kind, title, problem, status and technologies", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const rows = page
+      .getByRole("region", { name: "Other engineering projects" })
+      .locator(".project-rows > li");
+    await expect(rows).toHaveCount(ROWS.length);
+    for (const [index, { title, status }] of ROWS.entries()) {
+      const row = rows.nth(index);
+      await expect(row.getByRole("heading", { level: 4 })).toHaveText(
+        new RegExp(`^${title}`),
+      );
+      await expect(row.locator(".problem")).not.toBeEmpty();
+      await expect(row.locator(".status")).toContainText(
+        `Current status: ${status}`,
+      );
+      await expect(
+        row.getByRole("list", { name: "Technologies" }).getByRole("listitem"),
+      ).not.toHaveCount(0);
+      // No contribution line, figure or card chrome: the featured cards carry that.
+      await expect(row.locator("dl, figure")).toHaveCount(0);
+      await expect(row.locator("svg")).toHaveCount(1); // The status marker.
+    }
+    // A case study is linked from the title; without one, the title is text.
+    await expect(rows.first().getByRole("link")).toHaveAttribute(
+      "href",
+      "/projects/rot-and-resolve/",
+    );
+    await expect(rows.last().getByRole("link")).toHaveCount(0);
   });
 
   for (const locale of LOCALES) {
@@ -109,18 +139,18 @@ test.describe("project list", () => {
         t("projects.featured"),
         t("projects.other"),
       ]);
-      const ids = (name: string) =>
+      const ids = (name: string, selector: string) =>
         list
           .getByRole("region", { name, exact: true })
-          .locator("article.card")
-          .evaluateAll((cards) => cards.map((card) => card.id));
-      expect(await ids(t("projects.featured"))).toEqual([
+          .locator(selector)
+          .evaluateAll((items) => items.map((item) => item.id));
+      expect(await ids(t("projects.featured"), "article.card")).toEqual([
         "project-field-operations",
         "project-facture-qr",
-      ]);
-      expect(await ids(t("projects.other"))).toEqual([
         "project-property-management",
         "project-plan-review",
+      ]);
+      expect(await ids(t("projects.other"), "article.row")).toEqual([
         "project-rot-and-resolve",
         "project-agv-dispatch",
       ]);
@@ -132,7 +162,7 @@ test.describe("project list", () => {
     request,
   }) => {
     await page.goto("/");
-    const links = page.locator(".project-list a");
+    const links = page.locator(".project-list a, .project-rows a");
     for (const href of await links.evaluateAll((all) =>
       all.map((link) => link.getAttribute("href") ?? ""),
     )) {
@@ -162,8 +192,8 @@ test.describe("project list", () => {
         "href",
         localizePath("/projects/field-operations/", locale),
       );
-      await expect(page.locator(".project-list .action").last()).toHaveText(
-        t("project.privateProject"),
+      await expect(page.locator("#project-agv-dispatch .status")).toContainText(
+        `${t("project.privateProject")} · ${t("status.experiment")}`,
       );
     });
   }

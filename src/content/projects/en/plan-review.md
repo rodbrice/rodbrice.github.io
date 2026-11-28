@@ -6,6 +6,7 @@ problem: "Risky infrastructure changes can hide in a long Terraform plan."
 contribution: "I chose the scope, defined the rules and checked each milestone against real Terraform output."
 status: earlyDevelopment
 order: 4
+featured: true
 stack: [Python, Terraform, pytest]
 source: https://github.com/rodbrice/plan-review
 ---

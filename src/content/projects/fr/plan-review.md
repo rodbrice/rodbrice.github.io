@@ -6,6 +6,7 @@ problem: "Un changement d’infrastructure risqué peut passer inaperçu dans un
 contribution: "J’ai choisi le périmètre, défini les règles et vérifié chaque jalon sur de vraies sorties Terraform."
 status: earlyDevelopment
 order: 4
+featured: true
 stack: [Python, Terraform, pytest]
 source: https://github.com/rodbrice/plan-review
 ---
