@@ -31,15 +31,18 @@ function translations(
 
 describe("parseProjectId", () => {
   it("reads the locale folder and the slug", () => {
-    expect(parseProjectId("fr/theone")).toEqual({
+    expect(parseProjectId("fr/rot-and-resolve")).toEqual({
       locale: "fr",
-      slug: "theone",
+      slug: "rot-and-resolve",
     });
   });
 
-  it.each(["theone", "de/theone", "en/", "en/a/b"])("rejects %s", (id) => {
-    expect(() => parseProjectId(id)).toThrow("<locale>/<slug>.md");
-  });
+  it.each(["rot-and-resolve", "de/rot-and-resolve", "en/", "en/a/b"])(
+    "rejects %s",
+    (id) => {
+      expect(() => parseProjectId(id)).toThrow("<locale>/<slug>.md");
+    },
+  );
 });
 
 describe("projectsFor", () => {
@@ -54,22 +57,22 @@ describe("projectsFor", () => {
   });
 
   it("fails when a translation is missing", () => {
-    const entries = translations("theone").filter(
-      ({ id }) => id !== "fr/theone",
+    const entries = translations("rot-and-resolve").filter(
+      ({ id }) => id !== "fr/rot-and-resolve",
     );
     expect(() => projectsFor(entries, "en")).toThrow(
-      '"theone" has no fr translation',
+      '"rot-and-resolve" has no fr translation',
     );
   });
 
   it("fails when translations disagree on the shared facts", () => {
-    const entries = translations("theone").map((entry) =>
-      entry.id === "fr/theone"
+    const entries = translations("rot-and-resolve").map((entry) =>
+      entry.id === "fr/rot-and-resolve"
         ? { ...entry, data: { ...facts, stack: ["C#"] } }
         : entry,
     );
     expect(() => projectsFor(entries, "en")).toThrow(
-      '"fr/theone" differs from "en/theone"',
+      '"fr/rot-and-resolve" differs from "en/rot-and-resolve"',
     );
   });
 
@@ -80,13 +83,13 @@ describe("projectsFor", () => {
     ["kind of private work", { clientWork: false }],
     ["source", { source: "https://github.com/rodbrice/other" }],
   ])("fails when translations disagree on the %s", (_, change) => {
-    const entries = translations("theone").map((entry) =>
-      entry.id === "pt/theone"
+    const entries = translations("rot-and-resolve").map((entry) =>
+      entry.id === "pt/rot-and-resolve"
         ? { ...entry, data: { ...facts, ...change } }
         : entry,
     );
     expect(() => projectsFor(entries, "en")).toThrow(
-      '"pt/theone" differs from "en/theone"',
+      '"pt/rot-and-resolve" differs from "en/rot-and-resolve"',
     );
   });
 
@@ -152,8 +155,8 @@ describe("splitFeatured", () => {
 
 describe("projectPath", () => {
   it("leads to the case study when there is one", () => {
-    expect(projectPath("theone", { caseStudy: true })).toBe(
-      "/projects/theone/",
+    expect(projectPath("rot-and-resolve", { caseStudy: true })).toBe(
+      "/projects/rot-and-resolve/",
     );
   });
 

@@ -24,7 +24,7 @@ for (const mode of ["unsupported", "reduce"] as const) {
         });
       });
     }
-    for (const path of ["/", "/projects/theone/"]) {
+    for (const path of ["/", "/projects/rot-and-resolve/"]) {
       await page.goto(path);
       const reveals = page.locator("[data-reveal]");
       expect(await reveals.count()).toBeGreaterThan(0);
@@ -121,7 +121,7 @@ test("supported view timelines reveal on entry and leave focused diagrams visibl
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/projects/theone/");
+  await page.goto("/projects/rot-and-resolve/");
   test.skip(
     !(await page.evaluate(() => CSS.supports("animation-timeline: view()"))),
   );

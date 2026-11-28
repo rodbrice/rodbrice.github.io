@@ -1,0 +1,44 @@
+---
+// The game's case study moved when TheOne was renamed Rot & Resolve. GitHub
+// Pages has no server redirects, so the old address in each language is a
+// small page that sends the reader to the new one.
+import type { GetStaticPaths } from "astro";
+
+import {
+  DEFAULT_LOCALE,
+  LOCALE_INFO,
+  LOCALES,
+  localizePath,
+} from "../../../i18n/locales";
+import type { Locale } from "../../../i18n/locales";
+
+export const getStaticPaths = (() =>
+  LOCALES.map((locale) => ({
+    params: { lang: locale === DEFAULT_LOCALE ? undefined : locale },
+    props: { locale },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const target = localizePath("/projects/rot-and-resolve/", locale);
+---
+
+<!doctype html>
+<html lang={LOCALE_INFO[locale].lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Rot &amp; Resolve · Roduit Brice</title>
+    <link rel="canonical" href={new URL(target, Astro.site).href} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+  </head>
+  <body>
+    <p>
+      <a href={target}>Rot &amp; Resolve</a>
+    </p>
+  </body>
+</html>

@@ -11,13 +11,15 @@ import {
 describe("localizePath", () => {
   it("keeps the default locale at the root", () => {
     expect(localizePath("/", DEFAULT_LOCALE)).toBe("/");
-    expect(localizePath("/projects/theone/", "en")).toBe("/projects/theone/");
+    expect(localizePath("/projects/rot-and-resolve/", "en")).toBe(
+      "/projects/rot-and-resolve/",
+    );
   });
 
   it("prefixes the other locales", () => {
     expect(localizePath("/", "pt")).toBe("/pt/");
-    expect(localizePath("/projects/theone/", "fr")).toBe(
-      "/fr/projects/theone/",
+    expect(localizePath("/projects/rot-and-resolve/", "fr")).toBe(
+      "/fr/projects/rot-and-resolve/",
     );
   });
 

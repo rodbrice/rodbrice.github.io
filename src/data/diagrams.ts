@@ -29,7 +29,7 @@ export const PROJECT_FIGURES: Readonly<Record<string, ProjectFigure>> = {
     title: "project.architecture",
     note: "project.illustration",
   },
-  theone: {
+  "rot-and-resolve": {
     kind: "architecture",
     title: "project.architecture",
     note: "project.illustration",

@@ -119,7 +119,7 @@ export const SKILLS: readonly SkillGroup[] = [
       "field-operations",
       "facture-qr",
       "property-management",
-      "theone",
+      "rot-and-resolve",
     ],
   },
   {
@@ -159,7 +159,7 @@ export const SKILLS: readonly SkillGroup[] = [
       "facture-qr",
       "property-management",
       "plan-review",
-      "theone",
+      "rot-and-resolve",
     ],
   },
   {
@@ -195,6 +195,6 @@ export const SKILLS: readonly SkillGroup[] = [
       fr: "Jeux et simulation",
     },
     skills: [same("Unity"), same("FishNet"), same("Blender")],
-    projects: ["theone"],
+    projects: ["rot-and-resolve"],
   },
 ];

@@ -20,7 +20,7 @@ const CASE_STUDIES = [
   "facture-qr",
   "property-management",
   "plan-review",
-  "theone",
+  "rot-and-resolve",
 ];
 /** The verified stage shown on each card, in display order. */
 const CARD_STATUSES = [
@@ -48,12 +48,14 @@ test.describe("project list", () => {
       "Facture QR — Swiss QR-bill invoicing",
       "Property management application",
       "plan-review — Terraform change risk review",
-      "TheOne",
+      "Rot & Resolve",
       "AGV dispatch simulation",
     ]);
     await expect(list.getByRole("link")).toHaveCount(CASE_STUDIES.length);
-    await list.getByRole("link", { name: "Read case study: TheOne" }).click();
-    await expect(page).toHaveURL("/projects/theone/");
+    await list
+      .getByRole("link", { name: "Read case study: Rot & Resolve" })
+      .click();
+    await expect(page).toHaveURL("/projects/rot-and-resolve/");
   });
 
   test("cards give the problem, my contribution, a status and one action", async ({
@@ -119,7 +121,7 @@ test.describe("project list", () => {
       expect(await ids(t("projects.other"))).toEqual([
         "project-property-management",
         "project-plan-review",
-        "project-theone",
+        "project-rot-and-resolve",
         "project-agv-dispatch",
       ]);
     });
@@ -173,6 +175,33 @@ test.describe("project list", () => {
     await expect(
       page.getByRole("heading", { name: "Selected projects" }),
     ).toBeInViewport();
+  });
+});
+
+test.describe("renamed game case study", () => {
+  for (const locale of LOCALES) {
+    const from = localizePath("/projects/theone/", locale);
+    const to = localizePath("/projects/rot-and-resolve/", locale);
+
+    test(`${from} leads to ${to}`, async ({ page }) => {
+      await page.goto(from);
+      await expect(page).toHaveURL(to);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+        "Rot & Resolve",
+      );
+    });
+  }
+
+  test("the old name is gone from every page in every language", async ({
+    page,
+  }) => {
+    for (const locale of LOCALES) {
+      for (const path of ["/", "/projects/rot-and-resolve/"]) {
+        await page.goto(localizePath(path, locale));
+        await expect(page.locator("body")).not.toContainText("TheOne");
+        await expect(page).not.toHaveTitle(/TheOne/);
+      }
+    }
   });
 });
 
@@ -456,7 +485,7 @@ for (const locale of LOCALES) {
               ),
           ).toHaveCount(1);
         }
-        if (slug === "theone") {
+        if (slug === "rot-and-resolve") {
           // Private code: no repository link, a walkthrough instead.
           await expect(page.locator(".prose").last()).toContainText(
             {

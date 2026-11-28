@@ -4,7 +4,7 @@ import { netcodeLabels } from "../../src/data/netcode-labels";
 
 for (const locale of LOCALES) {
   const labels = netcodeLabels[locale];
-  for (const path of ["/", "/projects/theone/"]) {
+  for (const path of ["/", "/projects/rot-and-resolve/"]) {
     test(`network controls work by keyboard: ${locale} ${path}`, async ({
       page,
     }) => {
@@ -56,7 +56,7 @@ for (const locale of LOCALES) {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto(
-      `${baseURL ?? "http://localhost:4321"}${localizePath("/projects/theone/", locale)}`,
+      `${baseURL ?? "http://localhost:4321"}${localizePath("/projects/rot-and-resolve/", locale)}`,
     );
     const island = page.locator("[data-network]");
     await expect(island.getByRole("img", { name: labels.title })).toBeVisible();
@@ -70,7 +70,7 @@ test("stops offscreen and resumes without overriding an explicit pause", async (
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/projects/theone/");
+  await page.goto("/projects/rot-and-resolve/");
   const island = page.locator("[data-network]");
   await island.scrollIntoViewIfNeeded();
   await expect(island).toHaveAttribute("data-running", "true");
