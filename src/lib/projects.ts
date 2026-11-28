@@ -90,6 +90,20 @@ export function cardId(slug: string): string {
 }
 
 /**
+ * The `view-transition-name` of a project's title, set by the page-transition
+ * script in BaseLayout on the one title that both pages of a navigation show:
+ * the home card, the case study's heading or the "next case" link. Each name
+ * appears at most once per page. Throws for a slug that is not a CSS
+ * identifier, which the browser would ignore.
+ */
+export function titleTransitionName(slug: string): string {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(`Project slug "${slug}" cannot name a view transition`);
+  }
+  return `project-title-${slug}`;
+}
+
+/**
  * Splits projects already in display order into the featured ones and the
  * others, each keeping that order.
  */

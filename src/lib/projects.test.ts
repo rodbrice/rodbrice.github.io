@@ -7,6 +7,7 @@ import {
   projectVisibility,
   projectsFor,
   splitFeatured,
+  titleTransitionName,
 } from "./projects.ts";
 import type { ProjectEntry, ProjectFacts } from "./projects.ts";
 
@@ -166,6 +167,21 @@ describe("projectPath", () => {
       "/#project-agv-dispatch",
     );
   });
+});
+
+describe("titleTransitionName", () => {
+  it("names the title after the project", () => {
+    expect(titleTransitionName("rot-and-resolve")).toBe(
+      "project-title-rot-and-resolve",
+    );
+  });
+
+  it.each(["", "Rot", "rot and resolve", "-rot", "rot-", "rot--resolve"])(
+    "rejects %j, which is not a plain lowercase slug",
+    (slug) => {
+      expect(() => titleTransitionName(slug)).toThrow(/view transition/);
+    },
+  );
 });
 
 describe("projectVisibility", () => {
