@@ -1,7 +1,5 @@
 ---
 import type { GetStaticPaths } from "astro";
-import NetworkSimulation from "../../../components/NetworkSimulation.astro";
-import { netcodeLabels } from "../../../data/netcode-labels";
 import Diagram from "../../../components/Diagram.astro";
 import FlowDiagram from "../../../components/FlowDiagram.astro";
 import { figureFor } from "../../../data/diagrams";
@@ -66,9 +64,6 @@ const sections = [
   storyHeading,
   { id: "facts", label: t("project.facts") },
   ...(figure ? [{ id: "diagram", label: t(figure.title) }] : []),
-  ...(project.slug === "rot-and-resolve"
-    ? [{ id: "network", label: netcodeLabels[locale].title }]
-    : []),
   ...restHeadings,
 ];
 ---
@@ -189,10 +184,6 @@ const sections = [
             {t(figure.note)}
           </figcaption>
         </figure>
-      )}
-
-      {project.slug === "rot-and-resolve" && (
-        <NetworkSimulation locale={locale} number={figure ? 2 : 1} />
       )}
 
       <div class="prose" set:html={rest} />

@@ -6,6 +6,7 @@ problem: "Contracts, meter readings, energy costs and monthly charges for rented
 contribution: "I am designing and building the application, from the data model to the API."
 status: mvpInDevelopment
 order: 3
+featured: true
 stack: [ASP.NET Core, PostgreSQL, Docker, CI/CD]
 confidential: true
 clientWork: false

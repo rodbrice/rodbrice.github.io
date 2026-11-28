@@ -98,14 +98,6 @@ test("reduced motion removes transitions and animations, including pseudo elemen
     ["none", "0s", "0s"],
     ["none", "0s", "0s"],
   ]);
-  await expect(page.locator("[data-network]")).toHaveAttribute(
-    "data-running",
-    "false",
-  );
-  await expect(page.locator("[data-dispatch]")).toHaveAttribute(
-    "data-running",
-    "false",
-  );
   // A live preference change also removes an already attached reveal timeline.
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.emulateMedia({ reducedMotion: "reduce" });

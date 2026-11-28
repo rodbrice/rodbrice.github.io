@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import StatusMarker from "./StatusMarker.astro";
 import type { Locale } from "../i18n/locales";
 import { useTranslations } from "../i18n/ui";
-import { primaryAction } from "../lib/projects";
+import { primaryAction, projectVisibility } from "../lib/projects";
 
 interface Props {
   project: CollectionEntry<"projects">["data"];
@@ -18,11 +18,9 @@ interface Props {
 const { project, href, id, locale } = Astro.props;
 const t = useTranslations(locale);
 const action = primaryAction(project);
-const visibility = project.confidential
-  ? t(project.clientWork ? "project.clientProject" : "project.privateProject")
-  : project.source === undefined
-    ? undefined
-    : t("project.publicRepository");
+const visibilityKey = projectVisibility(project);
+const visibility =
+  visibilityKey === undefined ? undefined : t(`project.${visibilityKey}`);
 // A private project without a page names its visibility where the link would be.
 const statusParts = [
   action.kind === "private" ? undefined : visibility,

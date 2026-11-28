@@ -19,3 +19,5 @@ dist/
 test-results/
 playwright-report/
 .lighthouseci/
+# Chrome profiles that Lighthouse under WSL writes to a Windows-style relative path
+/C:*

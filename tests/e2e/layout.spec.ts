@@ -168,9 +168,9 @@ test.describe("narrow screens", () => {
             document.documentElement.clientWidth,
         ),
       ).toBe(true);
-      // Each card stays inside the content column, not only inside the viewport.
+      // Each card and row stays inside the content column, not only inside the viewport.
       const overflowing = await page
-        .locator("article.card")
+        .locator(".project-group article")
         .evaluateAll((cards) =>
           cards
             .filter((card) => {

@@ -36,6 +36,24 @@ test.describe("home page", () => {
     ).toHaveAttribute("href", "#contact");
   });
 
+  test("leads the projects with the four apps, without simulations", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const projects = page.getByRole("region", { name: "Selected projects" });
+    await expect(
+      projects
+        .getByRole("region", { name: "Featured work" })
+        .getByRole("heading", { level: 4 }),
+    ).toHaveText([
+      "Industrial Field Operations Management System",
+      "Facture QR — Swiss QR-bill invoicing",
+      "Property management application",
+      "plan-review — Terraform change risk review",
+    ]);
+    await expect(projects.locator("figure, canvas, input")).toHaveCount(0);
+  });
+
   test("links to the public profiles", async ({ page }) => {
     await page.goto("/");
     await expect(
