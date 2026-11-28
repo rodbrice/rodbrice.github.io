@@ -1,5 +1,5 @@
 ---
-title: TheOne
+title: "Rot & Resolve"
 kind: Multiplayer game systems
 summary: A first-person dark fantasy survival game in Unity 6, with a dedicated authoritative server, client-side prediction and physical melee combat.
 problem: "Real-time networking, animation and physical combat must fit a tight frame budget."
@@ -11,10 +11,10 @@ stack: [C#, Unity 6, FishNet, Blender]
 
 ## The project
 
-TheOne is a first-person survival game set in a dark fantasy world, built with
-Unity 6 and the FishNet networking library. It is where I work on problems that
-business software rarely raises: real-time networking, animation and physical
-combat, all under a tight frame budget.
+Rot & Resolve is a first-person survival game set in a dark fantasy world, built
+with Unity 6 and the FishNet networking library. It is where I work on problems
+that business software rarely raises: real-time networking, animation and
+physical combat, all under a tight frame budget.
 
 ## My role
 

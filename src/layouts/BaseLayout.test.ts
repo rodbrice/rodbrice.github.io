@@ -134,8 +134,8 @@ describe("BaseLayout", () => {
 
   it("lets case studies declare themselves as articles", async () => {
     const html = await render({
-      url: "/projects/theone/",
-      path: "/projects/theone/",
+      url: "/projects/rot-and-resolve/",
+      path: "/projects/rot-and-resolve/",
       type: "article",
     });
     expect(html).toMatch(meta("og:type", "article"));

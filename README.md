@@ -48,7 +48,7 @@ for each of these six URLs:
 - `/`
 - `/pt/`
 - `/fr/`
-- `/projects/theone/`
+- `/projects/rot-and-resolve/`
 - `/pt/projects/field-operations/`
 - `/fr/projects/property-management/`
 

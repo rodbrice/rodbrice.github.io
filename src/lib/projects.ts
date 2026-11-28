@@ -86,12 +86,12 @@ export function splitFeatured<
 }
 
 export interface ProjectEntry {
-  /** Content id such as `fr/theone`: the locale folder, then the project slug. */
+  /** Content id such as `fr/rot-and-resolve`: the locale folder, then the project slug. */
   id: string;
   data: ProjectFacts;
 }
 
-/** Splits a content id such as `fr/theone` into its locale and slug. */
+/** Splits a content id such as `fr/rot-and-resolve` into its locale and slug. */
 export function parseProjectId(id: string): { locale: Locale; slug: string } {
   const [locale, slug, ...rest] = id.split("/");
   if (!isLocale(locale) || !slug || rest.length > 0) {
